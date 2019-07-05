@@ -8,12 +8,15 @@
     "prod": "vue-cli-service build",
     "dev": "vue-cli-service build --mode developement",
     "lint": "vue-cli-service lint",
-    "watch" : "vue-cli-service build --mode=developement --watch"
+    "watch": "vue-cli-service build --mode=developement --watch"
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "sass-loader": "^7.1.0",
     "vue": "^2.6.10",
-    "vuex": "^3.0.1"
+    "vue-localstorage": "^0.6.2",
+    "vuex": "^3.0.1",
+    "vuex-persist": "^2.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
