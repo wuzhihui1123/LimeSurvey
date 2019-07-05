@@ -54,11 +54,7 @@ class questionedit extends Survey_Common_Action
         }
         
         $condarray = ($oQuestion->qid != null) ? getQuestDepsForConditions($iSurveyID, "all", "all", $oQuestion->qid, "by-targqid", "outsidegroup") : [];
-        
-        $this->getController()->renderPartial('/admin/survey/Question2/topbar_view', [
-            'qid' => $qid,
-            'gid' => $gid,
-        ], true);
+       
         
         $this->getController()->renderPartial('/admin/survey/Question/questionbar_view', $aData, true);
         $aData['display']['menu_bars']['gid_action'] = 'viewquestion';
@@ -159,6 +155,12 @@ class questionedit extends Survey_Common_Action
         $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
         $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['questiongroupbar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
+ 
+        $aData['topbarcontainer'] = $this->getController()->renderPartial('/admin/survey/Question2/topbar_view', [
+            'qid' => $qid,
+            'gid' => $gid,
+            'surveyid' => $surveyid,
+        ],true);
 
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }
