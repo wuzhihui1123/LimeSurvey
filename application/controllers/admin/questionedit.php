@@ -160,6 +160,9 @@ class questionedit extends Survey_Common_Action
             'qid' => $qid,
             'gid' => $gid,
             'surveyid' => $surveyid,
+            'oSurvey' => $oSurvey,
+            'qrrow' => $qrrow,
+            'qtypes'=> Question::typeList(),
         ],true);
 
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
