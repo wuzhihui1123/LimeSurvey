@@ -17,7 +17,7 @@
             $array = [
                 $language => [
                     'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
-                    'name' => eT("Check logic"),
+                    'name' => gT("Check logic"),
                 ],
             ];
             array_push($buttons['check_logic'], $array);
@@ -32,7 +32,7 @@
         // Delete Button 
         $buttons['delete'] = [
             'url' => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid" => $gid]),
-            'name' => eT("Delete")
+            'name' => gT("Delete")
         ];
 
         array_push($buttons, $buttons['delete']);
@@ -45,7 +45,7 @@
 
         $buttons['export'] = [
             'url' => $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name'=> eT("Export")
+            'name'=> gT("Export")
         ];
 
         array_push($buttons, $buttons['export']);
@@ -59,7 +59,7 @@
         // Button Copy
         $buttons['copy'] = [
             'url'  => $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name' => eT("Copy")
+            'name' => gT("Copy")
         ];
 
         array_push($buttons, $buttons['copy']);
@@ -73,7 +73,7 @@
         // Conditions Button 
         $buttons['conditions'] = [
             'url'  => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name' => eT("Set conditions")
+            'name' => gT("Set conditions")
         ];
         array_push($buttons, $buttons['conditions']);
 
@@ -81,7 +81,7 @@
         if($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
             $buttons['default_values'] = [
                 'url' => $this->createUrl("admin/questions/sa/editdefaultvalues/suveyid/".$surveyid."/gid/".$gid."/qid/".$qid),
-                'name' => eT("Edit default anwers")
+                'name' => gT("Edit default anwers")
             ];
 
             array_push($buttons, $buttons['default_values']);
