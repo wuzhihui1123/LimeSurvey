@@ -21,11 +21,19 @@
 <script>
 export default {
   name: 'TopBarPanel',
-  props: ['permissions'],
-
+  props: ['permissions', 'buttons'],
+  data: () => {
+    return {
+      'ownPermissions' : Array, 
+      'ownButtons': Array,
+    }
+  },
   mounted() {
     console.log('topbarpanel mounted.');
-    console.log(this.permissions);
+    this.ownPermissions = JSON.parse(this.permissions);
+    this.ownButtons = JSON.parse(this.buttons);
+    console.log(this.ownPermissions);
+    console.log(this.ownButtons);
   }
 }
 </script>
