@@ -1,88 +1,159 @@
 <?php 
-    $languages = $oSurvey->allLanguages;
-
+    $languages   = $oSurvey->allLanguages;
     $permissions = [];
-    $buttons = [];
+    $buttons     = [];
 
     $hasReadPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read');
     if ($hasReadPermission) {
-        $readPermission = ['read', $hasReadPermission];
-        array_push($permissions, $readPermission);
+        $permissions['read'] = ['read', $hasReadPermission];
 
+        // Preview Survey / Execute Survey Button 
+        if ($oSurvey->active === 'N') {
+            $title = 'preview_survey';
+        } else {
+            $title = 'execute_survey';
+        }
+
+        $buttons[$title] = [];
+
+        foreach($languages as $language) {
+            $buttons[$title] = [
+                'url' => $this->createUrl("survey/index", 
+                            array('sid'     => $surveyid, 
+                                  'newtest' => "Y",
+                                  'lang'    => $language)),
+                'name' => gT("Preview survey"),
+                'icon' => 'fa fa-cog',
+            ];
+        }
+
+        // Preview Question Group Button
+        $buttons['preview_question_group'] = [];
+        if(count($languages) > 1) {
+            foreach($languages as $language) {
+                $data= [
+                    'url'  => $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $language),
+                    'name' => gT("Preview question group"),
+                    'icon' => 'fa fa-cog',
+                ];
+                array_push($buttons['preview_question_group'], $data);
+            }
+        } else {
+            foreach($languages as $language) {
+                $buttons['preview_question_group']= [
+                    'url'  => $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $language),
+                    'name' => gT("Preview question group"),
+                    'icon' => 'fa fa-cog',
+                ];
+            }
+        }
+
+        // Preview Question Button
+        $buttons['preview_question'] = [];
+        if (count($languages) > 1) {
+            foreach($languages as $language) {
+                $data = [
+                    'url' => $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
+                    'name' => gT("Preview question"),
+                    'icon' => 'fa fa-cog',
+                ];
+                array_push($buttons['preview_question'], $data);
+            }
+        } else {
+            foreach($languages as $language) {
+                $buttons['preview_question'] = [
+                    'url' => $this->createUrl("survey/index/action/previewquestion/sid/" . $surveyid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
+                    'name' => gT("Preview question"),
+                    'icon' => 'fa fa-cog',
+                ];
+            }
+        }
+        
         // Check Logic Button
         $buttons['check_logic'] = [];
-        foreach($languages as $language) {
-            $data = [
-                'lang' => $language,
-                'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
+
+        if(count($languages) > 1) {
+            foreach($languages as $language) {
+                $data = [
+                    'lang' => $language,
+                    'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
+                    'name' => gT("Check logic"),
+                ];
+                array_push($buttons['check_logic'], $data);
+            }
+        } else {
+            $buttons['check_logic'] = [
+                'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
                 'name' => gT("Check logic"),
+                'icon' => 'icon-expressionmanagercheck'
             ];
-            array_push($buttons['check_logic'], $data);
         }
+        
     }
     
     $hasDeletePermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' );
     if ($hasDeletePermission) {
-        $deletePermission = ['delete', $hasDeletePermission];
-        array_push($permissions, $deletePermission);
+        $permissions['delete'] = ['delete', $hasDeletePermission];
 
         // Delete Button 
         $buttons['delete'] = [
-            'url' => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid" => $gid]),
-            'name' => gT("Delete")
+            'url'  => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid" => $gid]),
+            'name' => gT("Delete"),
+            'icon' => 'fa fa-trash text-danger'
         ];
     }
 
     $hasExportPermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export');
     if ($hasExportPermission) {
-        $exportPermission = ['export', $hasExportPermission];
-        array_push($permissions, $exportPermission);
+        $permissions['export'] = ['export', $hasExportPermission];
 
+        // Export Button
         $buttons['export'] = [
-            'url' => $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name'=> gT("Export")
+            'url'  => $this->createUrl("admin/export/sa/question/surveyid/$surveyid/gid/$gid/qid/$qid"),
+            'name' => gT("Export"),
+            'icon' => 'icon-export',
         ];
     }
 
     $hasCopyPermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create');
     if ($hasCopyPermission) {
-        $copyPermission = ['copy', $hasCopyPermission];
-        array_push($permissions, $copyPermission);
+        $permissions['copy'] = ['copy', $hasCopyPermission];
 
-        // Button Copy
+        // Copy Button
         $buttons['copy'] = [
             'url'  => $this->createUrl("admin/questions/sa/copyquestion/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name' => gT("Copy")
+            'name' => gT("Copy"),
+            'icon' => 'icon-copy',
         ];
     }
 
     $hasUpdatePermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update');
     if ($hasUpdatePermission) {
-        $updatePermission = ['update', $hasUpdatePermission];
-        array_push($permissions, $updatePermission);
+        $permissions['update'] = ['update', $hasUpdatePermission];
 
         // Conditions Button 
         $buttons['conditions'] = [
             'url'  => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
-            'name' => gT("Set conditions")
+            'name' => gT("Set conditions"),
+            'icon' => 'icon-conditions',
         ];
 
-        // qtypes wird global gesetzt
         if($qtypes[$qrrow['type']]['hasdefaultvalues'] > 0) {
             $buttons['default_values'] = [
-                'url' => $this->createUrl("admin/questions/sa/editdefaultvalues/suveyid/".$surveyid."/gid/".$gid."/qid/".$qid),
-                'name' => gT("Edit default anwers")
+                'url'  => $this->createUrl("admin/questions/sa/editdefaultvalues/suveyid/".$surveyid."/gid/".$gid."/qid/".$qid),
+                'name' => gT("Edit default anwers"),
+                'icon' => 'icon-defaultanswers',
             ];
         }
     }
 
     $permissionsJSON = json_encode($permissions);
-    $buttonsJSON = json_encode($buttons);
+    $buttonsJSON     = json_encode($buttons);
 
 ?>
 
 <div id="vue-topbar-container">
-    <topbar permissions='<?php echo $permissionsJSON ?>'
-            buttons='<?php echo $buttonsJSON ?>'>
+    <topbar permissions = '<?php echo $permissionsJSON ?>'
+            buttons     = '<?php echo $buttonsJSON ?>'>
     </topbar>
 </div>

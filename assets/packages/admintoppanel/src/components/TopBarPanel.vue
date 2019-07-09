@@ -1,44 +1,39 @@
 <template>
   <div class="topbarpanel">
-    <nav class="navbar navbar-default">
-        <div class="collapse navbar-collapse" id="navbar-topbar">
+    <nav class="navbar navbar-default">  
+      <div class="collapse navbar-collapse" id="navbar-topbar"> 
           <ul class="nav navbar-nav">
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="fa fa-cog"></span>Preview Survey</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="fa fa-cog"></span>Preview Question Group</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="fa fa-cog"></span>Preview Question</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="icon-expressionmanagercheck"></span>Check Logic</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="fa fa-trash text-danger"></span>Delete</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="icon-export"></span>Export</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="icon-copy"></span>Copy</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="icon-conditions"></span>Set Conditions</button>
-            <button type="button" class="btn btn-default navbar-btn" href="#"><span class="icon-defaultanswers"></span>Edit Default answers</button>
-          </ul>
-        </div>
+              <li v-for="button in ownButtons" :key="button.id">
+                <topbarbutton :button="button" />
+              </li>
+          </ul>        
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
+import TopBarButton from "./TopBarButton.vue";
+
 export default {
   name: 'TopBarPanel',
   props: ['permissions', 'buttons'],
+  components: {
+    'topbarbutton': TopBarButton,
+  },
   data: () => {
     return {
       'ownPermissions' : Array, 
-      'ownButtons': Array,
+      'ownButtons'     : Array,
     }
   },
   mounted() {
-    console.log('topbarpanel mounted.');
     this.ownPermissions = JSON.parse(this.permissions);
-    this.ownButtons = JSON.parse(this.buttons);
-    console.log(this.ownPermissions);
-    console.log(this.ownButtons);
+    this.ownButtons     = JSON.parse(this.buttons);
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 
 </style>
