@@ -1,13 +1,13 @@
-<?php 
+<?php
     $languages   = $oSurvey->allLanguages;
     $permissions = [];
     $buttons     = [];
 
     $hasReadPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'read');
     if ($hasReadPermission) {
-        $permissions['read'] = ['read', $hasReadPermission];
+        $permissions['read'] = ['read' => $hasReadPermission];
 
-        // Preview Survey / Execute Survey Button 
+        // Preview Survey / Execute Survey Button
         if ($oSurvey->active === 'N') {
             $title = 'preview_survey';
         } else {
@@ -18,8 +18,8 @@
 
         foreach($languages as $language) {
             $buttons[$title] = [
-                'url' => $this->createUrl("survey/index", 
-                            array('sid'     => $surveyid, 
+                'url' => $this->createUrl("survey/index",
+                            array('sid'     => $surveyid,
                                   'newtest' => "Y",
                                   'lang'    => $language)),
                 'name' => gT("Preview survey"),
@@ -68,7 +68,7 @@
                 ];
             }
         }
-        
+
         // Check Logic Button
         $buttons['check_logic'] = [];
 
@@ -88,14 +88,14 @@
                 'icon' => 'icon-expressionmanagercheck'
             ];
         }
-        
+
     }
-    
+
     $hasDeletePermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','delete' );
     if ($hasDeletePermission) {
-        $permissions['delete'] = ['delete', $hasDeletePermission];
+        $permissions['delete'] = ['delete' => $hasDeletePermission];
 
-        // Delete Button 
+        // Delete Button
         $buttons['delete'] = [
             'url'  => $this->createUrl("admin/questions/sa/delete/", ["surveyid" => $surveyid, "qid" => $qid, "gid" => $gid]),
             'name' => gT("Delete"),
@@ -105,7 +105,7 @@
 
     $hasExportPermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export');
     if ($hasExportPermission) {
-        $permissions['export'] = ['export', $hasExportPermission];
+        $permissions['export'] = ['export' => $hasExportPermission];
 
         // Export Button
         $buttons['export'] = [
@@ -117,7 +117,7 @@
 
     $hasCopyPermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','create');
     if ($hasCopyPermission) {
-        $permissions['copy'] = ['copy', $hasCopyPermission];
+        $permissions['copy'] = ['copy' => $hasCopyPermission];
 
         // Copy Button
         $buttons['copy'] = [
@@ -129,9 +129,9 @@
 
     $hasUpdatePermission = Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update');
     if ($hasUpdatePermission) {
-        $permissions['update'] = ['update', $hasUpdatePermission];
+        $permissions['update'] = ['update' => $hasUpdatePermission];
 
-        // Conditions Button 
+        // Conditions Button
         $buttons['conditions'] = [
             'url'  => $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"),
             'name' => gT("Set conditions"),
