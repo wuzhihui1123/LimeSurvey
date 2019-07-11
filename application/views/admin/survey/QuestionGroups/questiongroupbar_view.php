@@ -292,7 +292,7 @@
       }
 
       $buttons[$title] = [];
-      foreach($languageList as $language) {
+      foreach($languages as $language) {
         $buttons[$title] = [
           'url' => $this->createUrl("survey/index", array(
                     'sid'     =>  $surveyid,
@@ -324,10 +324,99 @@
     ];
 
   }
-  $buttonsJSON = json_encode($buttons);
+
+  // Read Permission
+  $hasReadPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update');
+  if ($hasReadPermission) {
+    $permissions['read'] = ['read' => $hasReadPermission];
+    $buttons['preview_question_group'] = [];
+
+    if (count($languages) > 1) {
+      // Preview Question Group Button
+      foreach($languagelist as $language) {
+        $buttons['preview_question_group'] = [
+          'url'  => $this->createUrl("survey/index/action/previewgroup/sid/{$surveyid}/gid/{$gid}/lang/" . $language),
+          'name' => gT('Preview question group'),
+          'icon' => 'fa fa-cog',
+        ];
+      }
+    } else {
+        $buttons['preview_question_group'] = [
+          'url'  => $this->createUrl("survey/index/action/previewgroup/sid/$surveyid/gid/$gid/"),
+          'name' => gT('Preview question group'),
+          'icon' => 'fa fa-cog',
+      ];
+    }
+  }
+
+  // Right Buttons (only shown for question group)
+  if (isset($questiongroupbar['buttons']['view'])) {
+      if ($hasReadPermission) {
+        // Check Survey Logic Button
+        $buttons['check_survey_logic'] = [
+          'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
+          'name' => gT("Check survey logic for current question group"),
+          'icon' => 'icon-expressionmanagercheck',
+          'align' => 'right',
+        ];
+      }
+
+      $hasDeletePermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete');
+      if ($hasDeletePermission) {
+        $permissions['delete'] = [ 'delete' => $hasDeletePermission];
+
+        if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") {
+            // has question
+            if (empty($condarray)) {
+              // can delete group and question
+              $buttons['delete_current_question_group'] = [
+                'url' => $this->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $surveyid, "gid"=>$gid]),
+                'type' => 'modal',
+                'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
+                'icon' => 'fa fa-trash',
+                'name' => gT("Delete current question group"),
+                'align' => 'right',
+              ];
+            } else {
+              // there is at least one question having a condition on its content
+              $buttons['delete_current_question_group'] = [
+                'url' => '',
+                'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
+                'icon' => 'fa fa-trash',
+                'name' => gT("Delete current question group"),
+                'align' => 'right',
+              ];
+            }
+        } else {
+          // Activated
+          $buttons['delete_current_question_group'] = [
+            'title' => gT("You can't delete this question group because the survey is currently active."),
+            'icon'  => 'fa fa-trash',
+            'name'  => gT("Delete current question group"),
+            'align' => 'right',
+          ];
+        }
+      }
+  }
+
+  $hasExportPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'export');
+  if ($hasExportPermission) {
+    $permissions['update'] = ['export' => $hasExportPermission];
+
+    $buttons['export'] = [
+      'url' => $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid"),
+      'icon' => 'icon-export',
+      'name' => gT("Export this question group"),
+      'align' => 'right',
+    ];
+  }
+
+  $permissionsJSON = json_encode($permissions);
+  $buttonsJSON     = json_encode($buttons);
 }
 ?>
 <div id="vue-topbar-container">
-  <topbar :buttons = '<?php echo $buttonsJSON ?>'>
+  <topbar :permissions = '<?php echo $permissionsJSON ?>'
+          :buttons     = '<?php echo $buttonsJSON ?>'>
   </topbar>
 </div>
