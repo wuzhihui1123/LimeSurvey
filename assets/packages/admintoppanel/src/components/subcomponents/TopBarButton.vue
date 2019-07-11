@@ -12,10 +12,8 @@
         name: 'TopBarButton',
         props: ['button'],
         data: () => {
-            return {
-               
-            }
-        }
+            return {}
+        },
     }
 </script>
 
