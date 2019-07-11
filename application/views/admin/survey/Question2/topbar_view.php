@@ -153,7 +153,7 @@
 ?>
 
 <div id="vue-topbar-container">
-    <topbar permissions = '<?php echo $permissionsJSON ?>'
-            buttons     = '<?php echo $buttonsJSON ?>'>
+    <topbar :permissions = '<?php echo $permissionsJSON ?>'
+            :buttons     = '<?php echo $buttonsJSON ?>'>
     </topbar>
 </div>

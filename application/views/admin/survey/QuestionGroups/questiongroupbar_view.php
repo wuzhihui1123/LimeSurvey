@@ -135,7 +135,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid) 
+        <?php if (isset($questiongroupbar['savebutton']['form'])&&isset($qid)
             && (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))): ?>
             <!-- ####### This is only shown when editing questions -->
             <div id="questiongroupbar--questionbuttons" class="text-left ls-flex-item">
@@ -273,3 +273,61 @@
     </div>
 </div>
 
+<?php
+  $languages   = $oSurvey->allLanguages;
+  $permissions = [];
+  $buttons     = [];
+
+  if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])) {
+
+    if (count($languages) > 1) {
+      if ($oSurvey->active == 'N') {
+        // Preview Survey Button
+        $title = 'preview_survey';
+        $name  =  gT('Preview survey');
+      } else {
+        // Execute Survey Button
+        $title = 'execute_survey';
+        $name  = gT('Execute survey');
+      }
+
+      $buttons[$title] = [];
+      foreach($languageList as $language) {
+        $buttons[$title] = [
+          'url' => $this->createUrl("survey/index", array(
+                    'sid'     =>  $surveyid,
+                    'newtest' => "Y",
+                    'lang'    => $language)),
+          'icon' => 'fa fa-cog',
+          'name' => $name,
+        ];
+    }
+  } else {
+
+    if ($oSurvey->active == 'N') {
+      // Preview Survey Button
+      $title = 'preview_survey';
+      $name  = gT('Preview survey');
+    } else {
+      // Execute Survey Button
+      $title = 'execute_survey';
+      $name  = gT('Execute survey');
+    }
+
+    $buttons[$title] = [
+      'url' => $this->createUrl("survey/index", array(
+                'sid'=>$surveyid,
+                'newtest'=>"Y",
+                'lang'=>$oSurvey->language)),
+      'name' => $name,
+      'icon' => 'fa fa-cog',
+    ];
+
+  }
+  $buttonsJSON = json_encode($buttons);
+}
+?>
+<div id="vue-topbar-container">
+  <topbar :buttons = '<?php echo $buttonsJSON ?>'>
+  </topbar>
+</div>

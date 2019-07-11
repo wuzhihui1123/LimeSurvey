@@ -38,8 +38,9 @@ export default {
 
   },
   mounted() {
-    this.ownPermissions = JSON.parse(this.permissions);
-    this.ownButtons     = JSON.parse(this.buttons);
+
+    this.ownPermissions = this.permissions;
+    this.ownButtons     = this.buttons;
 
     this.setPermissions(this.ownPermissions);
     this.setButtons(this.ownButtons);

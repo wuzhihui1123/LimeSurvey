@@ -279,12 +279,13 @@ class questiongroups extends Survey_Common_Action
 
         Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('questiongroupeditor');
-        
+        Yii::app()->getClientScript()->registerPackage('admintoppanel');
+
         $oQuestionGroup = $this->_getQuestionGroupObject($gid);
         $grow           = $oQuestionGroup->attributes;
 
         $grow = array_map('flattenText', $grow);
-                                                 
+
         $aData['oQuestionGroup'] = $oQuestionGroup;
         $aData['surveyid'] = $surveyid;
         $aData['gid'] = $gid;
@@ -350,7 +351,7 @@ class questiongroups extends Survey_Common_Action
     {
         $oQuestionGroup = QuestionGroup::model()->findByPk($iQuestionGroupId);
         $oSurvey = Survey::model()->findByPk($surveyid);
-        
+
         $aLanguages = [];
         $aAllLanguages = getLanguageData(false, Yii::app()->session['adminlang']);
         $aSurveyLanguages = $oSurvey->getAllLanguages();
@@ -395,7 +396,7 @@ class questiongroups extends Survey_Common_Action
 
         $this->renderJSON([
             'questionGroup' => $oQuestionGroup,
-            'permissions' => $aPermissions, 
+            'permissions' => $aPermissions,
             'questonGroupI10N' => $i10N,
             'languages' => $aLanguages
         ]);
@@ -421,7 +422,7 @@ class questiongroups extends Survey_Common_Action
         $questionGroup = App()->request->getPost('questionGroup', []);
         $questionGroupI10N = App()->request->getPost('questionGroupI10N', []);
         $iSurveyId = (int) $sid;
-        
+
         $oQuestionGroup = QuestionGroup::model()->findByPk($questionGroup['gid']);
         if ($oQuestionGroup == null) {
             $oQuestionGroup = $this->_newQuestionGroup($questionGroup);
@@ -429,7 +430,7 @@ class questiongroups extends Survey_Common_Action
             $oQuestionGroup = $this->_editQuestionGroup($oQuestionGroup, $questionGroup);
         }
         //$this->_applyI10N($oQuestionGroup, $oQuestionGroupI10N);
-        
+
         $success = $this->_applyI10N($oQuestionGroup, $questionGroupI10N);
 
         $this->renderJSON([
@@ -553,14 +554,14 @@ class questiongroups extends Survey_Common_Action
             $grouparray = Yii::app()->request->getPost('grouparray', []);
             if (!empty($grouparray)) {
                 foreach ($grouparray as $aQuestiongroup) {
-                    
+
                     //first set up the ordering for questiongroups
                     $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid", [':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid]);
                     array_map(function ($oQuestiongroup) use ($aQuestiongroup, $success) {
                         $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
                         $success = $success && $oQuestiongroup->save();
                     }, $oQuestiongroups);
-                    
+
                     $aQuestiongroup['questions'] = isset($aQuestiongroup['questions']) ? $aQuestiongroup['questions'] : [];
 
                     foreach ($aQuestiongroup['questions'] as $aQuestion) {
@@ -688,7 +689,7 @@ class questiongroups extends Survey_Common_Action
         }
     }
 
-    
+
     private function _getQuestionGroupObject($iQuestionGroupId=null)
     {
         $iSurveyId = Yii::app()->request->getParam('sid') ?? Yii::app()->request->getParam('surveyid');
@@ -712,7 +713,7 @@ class questiongroups extends Survey_Common_Action
                 'sid' => $iSurveyId,
         ], $aQuestionGroupData);
         unset($aQuestionGroupData['gid']);
-   
+
         $oQuestionGroup = new QuestionGroup();
         $oQuestionGroup->setAttributes($aQuestionGroupData, false);
         if ($oQuestionGroup == null) {
@@ -723,7 +724,7 @@ class questiongroups extends Survey_Common_Action
         if ($saved == false) {
             throw new CException("Object creation failed, couldn't save.\n ERRORS:".print_r($oQuestionGroup->getErrors(), true));
         }
-        
+
         $i10N = [];
         foreach ($oSurvey->allLanguages as $sLanguage) {
             $i10N[$sLanguage] = new QuestionGroupL10n();
@@ -735,10 +736,10 @@ class questiongroups extends Survey_Common_Action
             ], false);
             $i10N[$sLanguage]->save();
         }
-        
+
         return $oQuestionGroup;
     }
-    
+
     /**
      * Method to store and filter questionGroupData for editing a questionGroup
      */
