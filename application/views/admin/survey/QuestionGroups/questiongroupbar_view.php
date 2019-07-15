@@ -426,11 +426,11 @@
 
     array_push($topbar['alignment']['right']['buttons'], $buttons['export']);
   }
-
-  $topbarJSON      = json_encode($topbar);
-  $permissionsJSON = json_encode($permissions);
-  $buttonsJSON     = json_encode($buttons);
 }
+
+$topbarJSON      = json_encode($topbar);
+$permissionsJSON = json_encode($permissions);
+$buttonsJSON     = json_encode($buttons);
 ?>
 <div id="vue-topbar-container" class="container-fluid" style="width: 100%">
   <topbar :permissions = '<?php echo $permissionsJSON ?>'
