@@ -277,6 +277,16 @@
   $languages   = $oSurvey->allLanguages;
   $permissions = [];
   $buttons     = [];
+  $topbar = [
+      'alignment' => [
+        'left'  => [
+          'buttons' => []
+        ],
+        'right' => [
+          'buttons' => []
+        ],
+      ]
+  ];
 
   if (isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view'])) {
 
@@ -323,6 +333,7 @@
       'icon' => 'fa fa-cog',
     ];
 
+    array_push($topbar['alignment']['left']['buttons'], $buttons[$title]);
   }
 
   // Read Permission
@@ -347,9 +358,10 @@
           'icon' => 'fa fa-cog',
       ];
     }
+    array_push($topbar['alignment']['left']['buttons'], $buttons['preview_question_group']);
   }
 
-  // Right Buttons (only shown for question group)
+  // Right Buttons (only shown for question group
   if (isset($questiongroupbar['buttons']['view'])) {
       if ($hasReadPermission) {
         // Check Survey Logic Button
@@ -357,8 +369,9 @@
           'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"),
           'name' => gT("Check survey logic for current question group"),
           'icon' => 'icon-expressionmanagercheck',
-          'align' => 'right',
         ];
+
+        array_push($topbar['alignment']['right']['buttons'], $buttons['check_survey_logic']);
       }
 
       $hasDeletePermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'delete');
@@ -397,6 +410,7 @@
           ];
         }
       }
+      array_push($topbar['alignment']['right']['buttons'], $buttons['delete_current_question_group']);
   }
 
   $hasExportPermission = Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'export');
@@ -409,14 +423,17 @@
       'name' => gT("Export this question group"),
       'align' => 'right',
     ];
+
+    array_push($topbar['alignment']['right']['buttons'], $buttons['export']);
   }
 
+  $topbarJSON      = json_encode($topbar);
   $permissionsJSON = json_encode($permissions);
   $buttonsJSON     = json_encode($buttons);
 }
 ?>
-<div id="vue-topbar-container">
+<div id="vue-topbar-container" class="container-fluid" style="width: 100%">
   <topbar :permissions = '<?php echo $permissionsJSON ?>'
-          :buttons     = '<?php echo $buttonsJSON ?>'>
+          :topbar      = '<?php echo $topbarJSON ?>'>
   </topbar>
 </div>

@@ -5,7 +5,7 @@ export default {
     setPermissions: (state, newState) => {
       state.permissions = newState;
     },
-    setButtons: (state, newState) => {
-      state.buttons = newState;
+    setTopBar: (state, newState) => {
+      state.topbar = newState;
     },
 };

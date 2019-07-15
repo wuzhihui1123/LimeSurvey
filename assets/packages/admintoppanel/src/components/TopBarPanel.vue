@@ -1,12 +1,17 @@
 <template>
   <div class="topbarpanel">
     <nav class="navbar navbar-default">
-      <div class="collapse navbar-collapse" id="navbar-topbar">
-          <ul class="nav navbar-nav">
-              <li v-for="button in ownButtons" :key="button.id">
-                <topbarbutton :button="button" />
-              </li>
-          </ul>
+      <div class="ls-flex" id="navbar-topbar">
+        <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item align-content-flex-begin">
+            <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
+              <topbarbutton :button="button" />
+            </li>
+        </ul>
+        <ul v-if="(this.ownTopBar.alignment.right)" class="nav navbar-nav ls-flex-item align-content-flex-end">
+            <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">
+              <topbarbutton :button="button" />
+            </li>
+        </ul>
       </div>
     </nav>
   </div>
@@ -17,14 +22,16 @@ import TopBarButton from "./subcomponents/TopBarButton.vue";
 
 export default {
   name: 'TopBarPanel',
-  props: ['permissions', 'buttons'],
+  props: ['permissions', 'topbar'],
   components: {
     'topbarbutton': TopBarButton,
   },
   data: () => {
     return {
       'ownPermissions' : Array,
-      'ownButtons'     : Array,
+      'ownTopBar'      : {
+        'alignment': {}
+      },
     }
   },
   methods: {
@@ -32,22 +39,23 @@ export default {
       this.$store.commit('setPermissions', permissions);
     },
 
-    setButtons(buttons) {
-      this.$store.commit('setButtons', buttons);
+    setTopBar(topbar) {
+      this.$store.commit('setTopBar', topbar);
     },
 
   },
   mounted() {
-
     this.ownPermissions = this.permissions;
-    this.ownButtons     = this.buttons;
+    this.ownTopBar = this.topbar;
 
     this.setPermissions(this.ownPermissions);
-    this.setButtons(this.ownButtons);
+    this.setTopBar(this.topbar);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+  .nav {
+    width: 100%;
+  }
 </style>
