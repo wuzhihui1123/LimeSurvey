@@ -2438,4 +2438,19 @@ class SurveyAdmin extends Survey_Common_Action
           false
       );
     }
+
+    public function getQuestionGroupTopBar($qid) {
+      $oQuestion = Question::model()->findByPk($qid);
+
+      return Yii::app()->getController()->renderPartial(
+        '/admin/survey/topbar/question_group_topbar',
+        array(
+          'oSurvey' => $oQuestion->survey,
+          'sid'     => $oQuestion->sid,
+          'gid'     => $oQuestion->gid,
+        ),
+        false,
+        false
+      );
+    }
 }

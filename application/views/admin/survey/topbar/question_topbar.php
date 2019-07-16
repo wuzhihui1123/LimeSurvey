@@ -157,12 +157,11 @@ if ($hasUpdatePermission) {
 
 $topbar['alignment']['left']['buttons'] = [$buttons];
 
-$topbarJSON      = json_encode($topbar);
-$permissionsJSON = json_encode($permissions);
 $finalJSON = [
   'permission' => $permissions,
   'topbar' => $topbar
 ];
+
 header("Content-Type: application/json");
 echo json_encode($finalJSON);
 ?>
