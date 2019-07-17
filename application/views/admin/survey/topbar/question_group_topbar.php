@@ -85,8 +85,7 @@ if ($hasReadPermission) {
 }
 
 // Right Buttons (only shown for question group
-if (isset($questiongroupbar['buttons']['view'])) {
-    if ($hasReadPermission) {
+if ($hasReadPermission) {
       // Check Survey Logic Button
       $buttons['check_survey_logic'] = [
         'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
@@ -131,7 +130,6 @@ if (isset($questiongroupbar['buttons']['view'])) {
       }
     }
     array_push($topbar['alignment']['right']['buttons'], $buttons['delete_current_question_group']);
-}
 
 $hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
 if ($hasExportPermission) {
