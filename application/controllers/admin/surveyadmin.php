@@ -2439,8 +2439,10 @@ class SurveyAdmin extends Survey_Common_Action
       );
     }
 
-    public function getQuestionGroupTopBar($qid) {
-      $oQuestion = Question::model()->findByPk($qid);
+    public function getQuestionGroupTopBar($gid) {
+      $oQuestion = Question::model()->findByPk($gid);
+      $sumcount  = Question::model()->countByAttributes(array('gid' => $gid));
+      $activated = QuestionGroup::model()->findByPk($gid)->survey->active;
 
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/question_group_topbar',
@@ -2448,6 +2450,8 @@ class SurveyAdmin extends Survey_Common_Action
           'oSurvey' => $oQuestion->survey,
           'sid'     => $oQuestion->sid,
           'gid'     => $oQuestion->gid,
+          'sumcount4' => $sumcount,
+          'activated'   => $activated,
         ),
         false,
         false
