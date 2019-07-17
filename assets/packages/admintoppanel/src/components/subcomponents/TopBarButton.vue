@@ -19,7 +19,7 @@
 
 <style scoped lang="scss">
  .icon {
-   margin-right: 5px;
+   margin-right: 2px;
   }
   .button {
     margin-left: 2px;
