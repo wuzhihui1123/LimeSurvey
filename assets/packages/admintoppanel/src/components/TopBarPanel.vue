@@ -22,103 +22,81 @@ import TopBarButton from "./subcomponents/TopBarButton.vue";
 
 export default {
   name: 'TopBarPanel',
-  props: {
-
-    'permissions': {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-
-    'topbar': {
-      type: Object,
-      default: () => {
-        return {}
-      },
-    },
-
-    'qid': {
-      type: Number,
-      default: () => {
-        return 0
-      },
-    },
-
-    'gid': {
-      type: Number,
-      default: () => {
-        return 0
-      }
-    },
-
-    type: String,
-
-  },
   components: {
     'topbarbutton': TopBarButton,
   },
-  data: () => {
-    return {
-      'ownPermissions' : {},
-      'ownTopBar'      : {
-        'alignment': {}
-      },
-    }
+  props: {
+    permissions: Object,
+    topbar: Object,
+    qid: Number,
+    gid: Number,
+    type: String,
   },
-  methods: {
-    getTopBar() {
+  data: () => {
+    return {}
+  },
+  computed: {
+    ownTopBar() {
       return this.$store.state.topbar;
     },
-
-    getPermissions() {
+    ownPermissions() {
       return this.$store.state.permissions;
     },
-
+  },
+  methods:  {
     setType(type) {
       this.$store.commit('setType', type);
     },
 
+    setQid(id) {
+      this.$store.commit('setQid', id);
+    },
+
+    setGid(id) {
+      this.$store.commit('setGid', id);
+    },
+
+    setQuestionTopBar(questionID, type) {
+      this.setQid(questionID);
+      this.setType(type);
+      this.$store.dispatch('getTopBarButtonsQuestion')
+        .then( (data) => {
+          console.log('ERFOLGREICH QUESTION');
+        })
+        .catch( (error) => {
+            console.log('FEHLERHAFT QUESTION');
+            console.log(error.xhr.responseText);
+        });
+    },
+
+    setQuestionGroupTopBar(groupID, type) {
+      this.setGid(groupID);
+      this.setType(type);
+      this.$store.dispatch('getTopBarButtonsGroup')
+        .then( (data) => {
+          console.log('ERFOLGREICH GROUP');
+        })
+        .catch( (error) => {
+          console.log('FEHLERHAFT GROUP');
+          console.log(error.xhr.responseText);
+        })
+    },
   },
 
   created() {
-
       console.log('GID: ', this.gid);
       console.log('QID: ', this.qid);
       console.log('TYPE: ', this.type);
 
       if (this.qid !== 0 && this.type === 'question') {
-        this.$store.commit('setQid', this.qid);
-        this.$store.commit('setType', this.type);
-        this.$store.dispatch('getTopBarButtonsQuestion')
-          .then( (data) => {
-              console.log('ERFOLGREICH');
-              this.ownTopBar      = this.getTopBar();
-              this.ownPermissions = this.getPermissions();
-          })
-          .catch( (error) => {
-              console.log('FEHLERHAFT');
-              console.log(error.error.xhr.responseText);
-          });
+        this.setQuestionTopBar(this.qid, this.type);
       }
 
       if (this.gid !== 0 && this.type === 'group') {
-        this.$store.commit('setGid', this.gid);
-        this.$store.commit('setType', this.type);
-        this.$store.dispatch('getTopBarButtonsGroup')
-          .then( (data) => {
-            this.ownTopBar      = this.getTopBar();
-            this.ownPermissions = this.getPermissions();
-          })
-          .catch( (error) => {
-            console.log('FEHLERHAFT');
-            console.log(error.error.xhr.responseText);
-          })
+        this.setQuestionGroupTopBar(this.gid, this.type);
       }
 
   },
-
-  mounted() {}
 }
 </script>
 
