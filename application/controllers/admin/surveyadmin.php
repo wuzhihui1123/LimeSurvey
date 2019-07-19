@@ -82,7 +82,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function generateSelectedList()
     {
-        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
         $aResults = array();
         foreach ($aSurveys as $iSurveyID) {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
@@ -97,7 +97,7 @@ class SurveyAdmin extends Survey_Common_Action
                 'aResults'     => $aResults,
                 'successLabel' => gT('Seleted')
             )
-        );      
+        );
     }
 
     /**
@@ -1011,7 +1011,7 @@ class SurveyAdmin extends Survey_Common_Action
         $menuaction = (string) $subaction;
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
-        // set values from database to survey attributes 
+        // set values from database to survey attributes
 
         if (empty($survey)) {
             throw new Exception('Found no survey with id ' . $iSurveyID);
@@ -1661,7 +1661,7 @@ class SurveyAdmin extends Survey_Common_Action
                 'Cancel' => gT('Cancel'),
             ],
             "questionList" => $aQuestions,
-            "surveyid" => $survey->sid,            
+            "surveyid" => $survey->sid,
             "getParametersUrl" => Yii::app()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $survey->sid)),
         ];
 
@@ -1777,7 +1777,7 @@ class SurveyAdmin extends Survey_Common_Action
         );
         foreach ($aSurveyParameters as $oSurveyParameter) {
             $row = $oSurveyParameter->attributes;
-            
+
             if ($oSurveyParameter->targetqid != '') {
                 $row['questionTitle'] = $oSurveyParameter->question->title;
             }
@@ -2431,7 +2431,7 @@ class SurveyAdmin extends Survey_Common_Action
             'sid' => $oQuestion->sid,
             'gid' => $oQuestion->gid,
             'qid' => $oQuestion->qid,
-            'qrrow' => $qrrow,
+            'qrrow'  => $qrrow,
             'qtypes' => $qtypes,
           ),
           false,
@@ -2451,7 +2451,7 @@ class SurveyAdmin extends Survey_Common_Action
           'sid'     => $oQuestion->sid,
           'gid'     => $oQuestion->gid,
           'sumcount4' => $sumcount,
-          'activated'   => $activated,
+          'activated' => $activated,
         ),
         false,
         false
