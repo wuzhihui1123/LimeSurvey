@@ -323,7 +323,7 @@ class Survey_Common_Action extends CAction
         $aData = $this->_addPseudoParams($aData); //// the check of the surveyid should be done in the Admin controller it self.
 
         $basePath = (string) Yii::getPathOfAlias('application.views.admin.super');
-        
+
         if ($sRenderFile == false) {
             if (!empty($aData['surveyid'])) {
 
@@ -518,6 +518,13 @@ class Survey_Common_Action extends CAction
         }
     }
 
+    public function _generaltopbar($aData) {
+      if( isset($aData['qid']) || isset($aData['gid'])) {
+        $aData['topBarType'] = ( isset($aData['qid']) ? 'question' : 'group' );
+        $this->getController()->renderPartial("/admin/survey/Question2/topbar_view", $aData);
+      }
+    }
+
     /**
      * Shows admin menu for question
      *
@@ -622,7 +629,7 @@ class Survey_Common_Action extends CAction
 
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
-                )->findByPk($surveyid); 
+                )->findByPk($surveyid);
             $aData['activated'] = $activated = $sumresult1->active;
             if($gid !== null) {
                 $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
@@ -1180,8 +1187,8 @@ class Survey_Common_Action extends CAction
             $aErrorFilesInfo[] = array(
                 "filename" => '',
                 "status" => gT("Extracted files not found - maybe a permission problem?")
-            );    
-            return array($aImportedFilesInfo, $aErrorFilesInfo);                        
+            );
+            return array($aImportedFilesInfo, $aErrorFilesInfo);
         }
         while ($direntry = readdir($dh)) {
             if ($direntry != "." && $direntry != "..") {
