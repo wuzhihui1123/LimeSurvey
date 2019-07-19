@@ -77,7 +77,7 @@
     <div class="container-fluid">
         <?php echo CHtml::form(array("admin/questionedit/update"), 'post', array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
         <input type="submit" class="hidden" name="triggerSubmitQuestionEditor" id="triggerSubmitQuestionEditor" />
-        <?=$topbarcontainer?>
+
         <div id="advancedQuestionEditor"><app /></div>
         </form>
     </div>
