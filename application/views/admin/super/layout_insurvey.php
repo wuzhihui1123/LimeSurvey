@@ -16,26 +16,27 @@ $this->_showHeaders($aData, false);
     LimeExpressionManager::StartProcessingPage(false, true);
     $aData['debug'] = $aData;
     $this->_titlebar($aData);
-    
+
     //The load indicator for pjax
     echo ' <div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
 
     //The container to hold the vuejs application
     echo ' <!-- Survey page, started in Survey_Common_Action::render_wrapped_template() -->
-        <div id="vue-apps-main-container" ' 
+        <div id="vue-apps-main-container" '
     . 'class="ls-flex-row align-items-flex-begin align-content-flex-end" '
     . '>';
 
         //Rendered through /admin/super/sidemenu
         $this->_surveysidemenu($aData);
 
-        
+
         echo '<div id="pjax-content" '
         . 'class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" '
         . 'style="max-width:80%;" '
         // . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.inSurveyViewHeight+\'px\'}"'
         . '>';
-
+            //New general top bar (VueComponent)
+            $this->_generaltopbar($aData);
             //Rendered through /admin/survey/surveybar_view
             $this->_surveybar($aData);
             //Rendered through /admin/survey/QuestionGroups/questiongroupbar_view
@@ -67,14 +68,14 @@ $this->_showHeaders($aData, false);
                 //Rendered through /admin/super/sidebody
                 //With content of /admin/survey/surveySummary_view
                 $this->_nsurveysummary($aData);
-                
+
                 echo $content;
 
             echo "</div>\n";
         echo "</div>\n";
     echo "</div>\n";
 echo "<!-- END LAYOUT_INSURVEY -->";
-    
+
 // Footer
 if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
     Yii::app()->getController()->_loadEndScripts();
