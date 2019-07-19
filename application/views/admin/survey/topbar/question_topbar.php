@@ -155,7 +155,7 @@ if ($hasUpdatePermission) {
     }
 }
 
-$topbar['alignment']['left']['buttons'] = [$buttons];
+$topbar['alignment']['left']['buttons'] = $buttons;
 
 $finalJSON = [
   'permission' => $permissions,

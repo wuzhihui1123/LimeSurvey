@@ -2,7 +2,7 @@
 $languages   = $oSurvey->allLanguages;
 $permissions = [];
 $buttons     = [];
-$topbar = [
+$topbar      = [
     'alignment' => [
       'left'  => [
         'buttons' => []
