@@ -30,17 +30,32 @@ export default {
     topbar: Object,
     qid: Number,
     gid: Number,
+    sid: Number,
     type: String,
   },
   data: () => {
     return {}
   },
   computed: {
-    ownTopBar() {
-      return this.$store.state.topbar;
+    ownTopBar: {
+      get() {
+        return this.$store.state.topbar;
+      },
+      set(topbar) {
+        this.$store.commit('setTopBar', topbar);
+      }
     },
-    ownPermissions() {
-      return this.$store.state.permissions;
+    ownPermissions: {
+      get() {
+        return this.$store.state.permissions;
+      },
+    },
+  },
+  watch: {
+    ownTopBar: function (newValue) {
+      console.log('oldValue : ', this.ownTopBar);
+      console.log('newValue : ', newValue);
+      this.ownTopBar = newValue;
     },
   },
   methods:  {
@@ -48,54 +63,59 @@ export default {
       this.$store.commit('setType', type);
     },
 
-    setQid(id) {
+    setSurveyID(id) {
+      this.$store.commit('setSid', id);
+    },
+
+    setQuestionID(id) {
       this.$store.commit('setQid', id);
     },
 
-    setGid(id) {
+    setGroupID(id) {
       this.$store.commit('setGid', id);
     },
 
-    setQuestionTopBar(questionID, type) {
-      this.setQid(questionID);
-      this.setType(type);
+    setQuestionTopBar(questionID) {
+      this.setQuestionID(questionID);
       this.$store.dispatch('getTopBarButtonsQuestion')
         .then( (data) => {
-          console.log('ERFOLGREICH QUESTION');
+          console.log('SUCCESS QUESTION');
+          console.log('TOPBAR :' , data);
         })
         .catch( (error) => {
-            console.log('FEHLERHAFT QUESTION');
+            console.log('ERROR QUESTION');
             console.log(error.xhr.responseText);
         });
     },
 
-    setQuestionGroupTopBar(groupID, type) {
-      this.setGid(groupID);
-      this.setType(type);
+    setQuestionGroupTopBar(groupID) {
+      this.setGroupID(groupID);
       this.$store.dispatch('getTopBarButtonsGroup')
         .then( (data) => {
-          console.log('ERFOLGREICH GROUP');
+          console.log('SUCCESS GROUP');
+          console.log('TOPBAR :' , data);
         })
         .catch( (error) => {
-          console.log('FEHLERHAFT GROUP');
+          console.log('ERROR GROUP');
           console.log(error.xhr.responseText);
         })
     },
   },
 
   created() {
-      console.log('GID: ', this.gid);
-      console.log('QID: ', this.qid);
+      console.log('GROUPID: ', this.gid);
+      console.log('SURVEYID: ', this.sid);
+      console.log('QUESTIONID: ', this.qid);
       console.log('TYPE: ', this.type);
 
-      if (this.qid !== 0 && this.type === 'question') {
-        this.setQuestionTopBar(this.qid, this.type);
-      }
+      this.setSurveyID(this.sid);
+      this.setType(this.type);
 
-      if (this.gid !== 0 && this.type === 'group') {
-        this.setQuestionGroupTopBar(this.gid, this.type);
+      if (this.qid !== 0 && this.type === 'question' && this.gid !== 0) {
+        this.setQuestionTopBar(this.qid);
+      } else if (this.gid !== 0 && this.type === 'group' && this.qid === 0) {
+         this.setQuestionGroupTopBar(this.gid);
       }
-
   },
 }
 </script>

@@ -8,7 +8,7 @@ export default {
        .then( (data) => {
          context.commit('setTopBar', data.data.topbar);
          context.commit('setPermissions', data.data.permissions);
-         resolve();
+         resolve(data.data.topbar);
        })
        .catch( (error) => {
          reject({error: error});
@@ -22,7 +22,7 @@ export default {
         .then( (data) => {
           context.commit('setTopBar', data.data.topbar);
           context.commit('setPermissions', data.data.permissions);
-          resolve();
+          resolve(data.data.topbar);
         })
         .catch( (error) => {
           reject({error: error});

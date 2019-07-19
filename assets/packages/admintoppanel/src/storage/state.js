@@ -4,5 +4,6 @@ export default {
     topbar: [],
     qid: 0,
     gid: 0,
+    sid: 0,
     type: '',
 };

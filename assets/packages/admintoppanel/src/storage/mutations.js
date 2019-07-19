@@ -17,4 +17,7 @@ export default {
     setType: (state, newState) => {
       state.type = newState;
     },
+    setSid: (state, newState) => {
+      state.sid = newState;
+    },
 };
