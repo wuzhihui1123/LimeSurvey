@@ -272,8 +272,3 @@
         </div>
     </div>
 </div>
-
-<div id="vue-topbar-container" class="container-fluid" style="width: 100%">
-  <topbar :gid  = '<?php echo $gid ?>'
-          type  = "group"/>
-</div>
