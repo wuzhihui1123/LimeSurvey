@@ -51,6 +51,7 @@ import panelClickable from './components/panelclickable';
 import panelsAnimation from './components/panelsanimation';
 import notificationSystem from './components/notifications';
 import gridAction from './components/gridAction';
+import getEventBus from './components/eventbus';
 import LOG from './components/lslog';
 
 const AdminCore = function(){
@@ -142,7 +143,17 @@ const AdminCore = function(){
                 panelsAnimation,
                 initNotification : notificationSystem.initNotification,
             }
-            const LsNameSpace = _.merge(BaseNameSpace, globalWindowMethods, parameterGlobals, AjaxHelper, {notifyFader}, subquestionAndAnswersGlobalMethods, notificationSystem, gridAction);
+            const LsNameSpace = _.merge(
+                BaseNameSpace, 
+                globalWindowMethods, 
+                parameterGlobals, 
+                AjaxHelper, 
+                {notifyFader}, 
+                {EventBus: getEventBus()},
+                subquestionAndAnswersGlobalMethods, 
+                notificationSystem, 
+                gridAction
+            );
 
             /*
             * Set the namespace to the global variable LS

@@ -8,7 +8,6 @@ import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
-import { EventBus } from '../../event-bus/event-bus.js';
 
 export default {
     name: 'lsnextquestiongroupeditor',
@@ -47,7 +46,7 @@ export default {
                 });
             }
             this.editQuestionGroup = !this.editQuestionGroup;
-            EventBus.$emit('doFadeEvent');
+            LS.EventBus.$emit('doFadeEvent');
             console.log('doFadeEvent called (QuestionGroup App)');
             console.log('QuestionGroup Vue Instance: ', this);
         },

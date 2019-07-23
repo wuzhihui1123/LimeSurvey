@@ -10,7 +10,6 @@ import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
-import EventBus  from '../../event-bus/event-bus.js';
 
 export default {
     name: 'lsnextquestioneditor',
@@ -63,7 +62,7 @@ export default {
                 $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
-            EventBus.$emit('doFadeEvent');
+            LS.EventBus.$emit('doFadeEvent');
             console.log('doFadeEvent called (QuestionEditor App)');
         },
         setEditQuestion(){
