@@ -1,7 +1,7 @@
 <template>
   <div class="topbarpanel">
     <nav class="navbar navbar-default">
-      <div class="ls-flex flex-row" id="navbar-topbar">
+      <div class="ls-flex flex-row" id="topbar">
         <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
               <topbarbutton :button="button" />
@@ -13,12 +13,27 @@
             </li>
         </ul>
       </div>
+
+      <div v-if="this.doFade" class="ls-flex flex-row" id="topbarextended">
+          <ul v-if="this.doFade && this.fadeTopBar.alignment.left" class="nav navbar-nav ls-flex-item text-left">
+            <li v-for="button in this.fadeTopBar.alignment.left.buttons">
+              <topbarbutton :button="button" />
+            </li>
+          </ul>
+          <ul v-if="this.doFade && this.fadeTopBar.alignment.right" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
+            <li v-for="button in this.fadeTopBar.alignment.right.buttons">
+              <topbarbutton :button="button" />
+            </li>
+          </ul>
+      </div>
     </nav>
   </div>
 </template>
 
 <script>
 import TopBarButton from "./subcomponents/TopBarButton.vue";
+import runAjax  from '../mixins/runAjax.js';
+import EventBus from '../../../event-bus/event-bus.js';
 
 export default {
   name: 'TopBarPanel',
@@ -34,7 +49,28 @@ export default {
     type: String,
   },
   data: () => {
-    return {}
+    return {
+      fadeTopBar: {
+        alignment: {
+          left: {
+            buttons : [
+              { name: 'Preview survey', url: '', icon: 'fa fa-cog' },
+              { name: 'Preview', url: '', icon: 'fa-cog' },
+              { name: 'Preview question group', url: '', icon: 'fa fa-cog' },
+            ]
+          },
+          right: {
+            buttons: [
+              { name: 'Save', url: '', icon: 'fa fa-floppy-o', backgroundcolor: 'green' },
+              { name: 'Save and close', url: '', icon: 'fa fa-check-square' },
+              { name: 'Close', url: '', icon: 'fa fa-close', backgroundcolor: 'red' },
+            ]
+          },
+        },
+      },
+      slide: Boolean,
+      doFade: Boolean,
+    }
   },
   computed: {
     ownTopBar: {
@@ -49,13 +85,6 @@ export default {
       get() {
         return this.$store.state.permissions;
       },
-    },
-  },
-  watch: {
-    ownTopBar: function (newValue) {
-      console.log('oldValue : ', this.ownTopBar);
-      console.log('newValue : ', newValue);
-      this.ownTopBar = newValue;
     },
   },
   methods:  {
@@ -100,7 +129,23 @@ export default {
           console.log(error.xhr.responseText);
         })
     },
+
+    onFade() {
+      if (this.slide) {
+        $('#topbar').slideDown()
+        $('#topbarextended').slideUp();
+      } else {
+        $('#topbar').slideUp()
+        $('#topbarextended').slideDown();
+      }
+      this.slide = !this.slide;
+    }
   },
+
+  // TODO: Wenn Event gefeuert wird, (zum Beispiel slide)
+  // TODO: , dann soll dieser fade Effekt erscheinen und die andere TopBar angezeigt werden.
+  // TODO: Bar in eigene Komponente schreiben, Hauptkomponente leitet dann nur noch Events und Werte an die
+  // TODO: jeweilige Komponente weiter.
 
   created() {
       console.log('GROUPID: ', this.gid);
@@ -108,6 +153,7 @@ export default {
       console.log('QUESTIONID: ', this.qid);
       console.log('TYPE: ', this.type);
 
+      this.doFade = false;
       this.setSurveyID(this.sid);
       this.setType(this.type);
 
@@ -117,6 +163,15 @@ export default {
          this.setQuestionGroupTopBar(this.gid);
       }
   },
+
+  mounted() {
+    console.log('TopBarPanel Vue Instance: ', this);
+    console.log('EventBus ', EventBus);
+
+    EventBus.$on('doFadeEvent', () => {
+      console.log('Fade event received');
+    });
+  }
 }
 </script>
 

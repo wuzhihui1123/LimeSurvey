@@ -10,6 +10,7 @@ import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
+import EventBus  from '../../event-bus/event-bus.js';
 
 export default {
     name: 'lsnextquestioneditor',
@@ -62,6 +63,8 @@ export default {
                 $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
+            EventBus.$emit('doFadeEvent');
+            console.log('doFadeEvent called (QuestionEditor App)');
         },
         setEditQuestion(){
             if(!this.editQuestion) {
@@ -151,7 +154,7 @@ export default {
             this.loading = false;
         })
     },
-    
+
     mounted() {
         let tmpAlerts = this.$store.state.alerts.filter((alert) => {
             return !alert.shown
@@ -190,17 +193,17 @@ export default {
     <div class="container-center scoped-new-questioneditor">
         <transition name="slide-fade">
             <div class="ls-flex ls-flex-row" v-show="showAlerts">
-                <div 
+                <div
                     v-for="alert in currentAlerts"
                     :key="alert.key"
-                    class="col-xs-12 alert" 
+                    class="col-xs-12 alert"
                     :class="alert.class"
                     v-on:load="alert.shown=true"
                 >
-                    <button 
-                        type="button" 
-                        class="close" 
-                        @click="$store.commit('removeAlert', alert.key)" 
+                    <button
+                        type="button"
+                        class="close"
+                        @click="$store.commit('removeAlert', alert.key)"
                         aria-label="Close"
                     >
                         <span aria-hidden="true">&times;</span>
@@ -210,17 +213,17 @@ export default {
             </div>
         </transition>
         <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-            <button 
+            <button
                 id="questionOverviewButton"
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent.stop="triggerEditQuestion"
                 :class="editQuestion ? 'btn-default' : 'btn-primary'"
                 class="btn "
             >
                 {{'Question overview'| translate}}
             </button>
-            <button 
+            <button
                 id="questionEditorButton"
-                @click.prevent.stop="triggerEditQuestion" 
+                @click.prevent.stop="triggerEditQuestion"
                 :class="editQuestion ? 'btn-primary' : 'btn-default'"
                 class="btn "
             >
@@ -239,11 +242,11 @@ export default {
             <div class="row">
                 <div class="form-group col-sm-6">
                     <label for="questionCode">{{'Code' | translate }}</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="questionCode" 
-                        :readonly="!(editQuestion || isCreateQuestion)" 
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="questionCode"
+                        :readonly="!(editQuestion || isCreateQuestion)"
                         v-model="currentQuestionCode"
                         @dblclick="setEditQuestion"
                     />
@@ -257,9 +260,9 @@ export default {
             </div>
             <div class="row">
                 <languageselector
-                    :elId="'question-language-changer'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    :elId="'question-language-changer'"
+                    :aLanguages="$store.state.languages"
+                    :parentCurrentLanguage="$store.state.activeLanguage"
                     @change="selectLanguage"
                 />
             </div>

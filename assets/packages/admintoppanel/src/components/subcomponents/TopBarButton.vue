@@ -8,13 +8,13 @@
 </template>
 
 <script>
-    export default {
-        name: 'TopBarButton',
-        props: ['button'],
-        data: () => {
-            return {}
-        },
-    }
+  export default {
+      name: 'TopBarButton',
+      props: ['button'],
+      data: () => {
+          return {}
+      },
+  }
 </script>
 
 <style scoped lang="scss">

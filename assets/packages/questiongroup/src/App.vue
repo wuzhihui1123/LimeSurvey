@@ -8,6 +8,7 @@ import LanguageSelector from './helperComponents/LanguageSelector.vue';
 
 import runAjax from './mixins/runAjax.js';
 import eventRoot from './mixins/eventRoot.js';
+import { EventBus } from '../../event-bus/event-bus.js';
 
 export default {
     name: 'lsnextquestiongroupeditor',
@@ -46,6 +47,9 @@ export default {
                 });
             }
             this.editQuestionGroup = !this.editQuestionGroup;
+            EventBus.$emit('doFadeEvent');
+            console.log('doFadeEvent called (QuestionGroup App)');
+            console.log('QuestionGroup Vue Instance: ', this);
         },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
@@ -103,7 +107,7 @@ export default {
         },
     },
     created(){
-        this.$store.dispatch('loadQuestionGroup').then( 
+        this.$store.dispatch('loadQuestionGroup').then(
             (resolve) => {
                 $('#questiongroupbarid').css({'display':''});
                 if(this.$store.state.currentQuestionGroup.gid == null) {
@@ -126,7 +130,7 @@ export default {
         );
         this.$store.dispatch('getQuestionsForGroup');
     },
-    
+
     mounted() {
         $('#advancedQuestionEditor').on('jquery:trigger', this.jqueryTriggered);
         this.applyHotkeys();
@@ -153,15 +157,15 @@ export default {
     <div class="container-center scoped-new-questioneditor">
         <template v-if="!loading">
             <div class="btn-group pull-right clear" v-if="allowSwitchEditing">
-                <button 
-                    @click.prevent.stop="triggerEditQuestionGroup" 
+                <button
+                    @click.prevent.stop="triggerEditQuestionGroup"
                     :class="editQuestionGroup ? 'btn-default' : 'btn-primary'"
                     class="btn "
                 >
                     {{'Question group overview'| translate}}
                 </button>
-                <button 
-                    @click.prevent.stop="triggerEditQuestionGroup" 
+                <button
+                    @click.prevent.stop="triggerEditQuestionGroup"
                     :class="editQuestionGroup ? 'btn-primary' : 'btn-default'"
                     class="btn "
                 >
@@ -178,9 +182,9 @@ export default {
             </div>
             <div class="row" >
                 <languageselector
-                    :elId="'questiongroup-language-changer'" 
-                    :aLanguages="$store.state.languages" 
-                    :parentCurrentLanguage="$store.state.activeLanguage" 
+                    :elId="'questiongroup-language-changer'"
+                    :aLanguages="$store.state.languages"
+                    :parentCurrentLanguage="$store.state.activeLanguage"
                     @change="selectLanguage"
                 />
             </div>

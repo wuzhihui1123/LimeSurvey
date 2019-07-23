@@ -1,0 +1,8 @@
+{
+  "name": "event-bus",
+  "version": "1.0.0",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "^2.6.10"
+  }
+}
