@@ -1,7 +1,22 @@
 <template>
   <div class="topbarpanel">
     <nav class="navbar navbar-default">
-      <div class="ls-flex flex-row" id="topbar">
+      <transition name="fade">
+      <div v-if="this.slide" class="ls-flex flex-row" id="topbarextended">
+          <ul v-if="this.slide && this.fadeTopBar.alignment.left" class="nav navbar-nav ls-flex-item text-left">
+            <li v-for="button in this.fadeTopBar.alignment.left.buttons">
+              <topbarbutton :button="button" />
+            </li>
+          </ul>
+          <ul v-if="this.slide && this.fadeTopBar.alignment.right" class="nav navbar-nav ls-flex-item right">
+            <li v-for="button in this.fadeTopBar.alignment.right.buttons">
+              <topbarbutton :button="button" />
+            </li>
+          </ul>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-if="!this.slide" class="ls-flex flex-row" id="topbar">
         <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
               <topbarbutton :button="button" />
@@ -13,19 +28,7 @@
             </li>
         </ul>
       </div>
-
-      <div v-if="this.doFade" class="ls-flex flex-row" id="topbarextended">
-          <ul v-if="this.doFade && this.fadeTopBar.alignment.left" class="nav navbar-nav ls-flex-item text-left">
-            <li v-for="button in this.fadeTopBar.alignment.left.buttons">
-              <topbarbutton :button="button" />
-            </li>
-          </ul>
-          <ul v-if="this.doFade && this.fadeTopBar.alignment.right" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
-            <li v-for="button in this.fadeTopBar.alignment.right.buttons">
-              <topbarbutton :button="button" />
-            </li>
-          </ul>
-      </div>
+    </transition>
     </nav>
   </div>
 </template>
@@ -48,6 +51,9 @@ export default {
     sid: Number,
     type: String,
   },
+
+  // TODO: Für jede Topbar muss eine eigene Struktur für die TopBarExtended erstellt werden.
+  // TODO: Vielleicht als Prop rüberreichen?
   data: () => {
     return {
       fadeTopBar: {
@@ -68,8 +74,7 @@ export default {
           },
         },
       },
-      slide: Boolean,
-      doFade: Boolean,
+      slide: false,
     }
   },
   computed: {
@@ -108,8 +113,7 @@ export default {
       this.setQuestionID(questionID);
       this.$store.dispatch('getTopBarButtonsQuestion')
         .then( (data) => {
-          console.log('SUCCESS QUESTION');
-          console.log('TOPBAR :' , data);
+
         })
         .catch( (error) => {
             console.log('ERROR QUESTION');
@@ -121,8 +125,7 @@ export default {
       this.setGroupID(groupID);
       this.$store.dispatch('getTopBarButtonsGroup')
         .then( (data) => {
-          console.log('SUCCESS GROUP');
-          console.log('TOPBAR :' , data);
+
         })
         .catch( (error) => {
           console.log('ERROR GROUP');
@@ -130,30 +133,17 @@ export default {
         })
     },
 
-    onFade() {
-      if (this.slide) {
-        $('#topbar').slideDown()
-        $('#topbarextended').slideUp();
-      } else {
-        $('#topbar').slideUp()
+    onFade(slideable) {
+      this.slide   = slideable;
+
+      if (slideable) {
         $('#topbarextended').slideDown();
+      } else {
+        $('#topbar').slideUp();
       }
-      this.slide = !this.slide;
     }
   },
-
-  // TODO: Wenn Event gefeuert wird, (zum Beispiel slide)
-  // TODO: , dann soll dieser fade Effekt erscheinen und die andere TopBar angezeigt werden.
-  // TODO: Bar in eigene Komponente schreiben, Hauptkomponente leitet dann nur noch Events und Werte an die
-  // TODO: jeweilige Komponente weiter.
-
   created() {
-      console.log('GROUPID: ', this.gid);
-      console.log('SURVEYID: ', this.sid);
-      console.log('QUESTIONID: ', this.qid);
-      console.log('TYPE: ', this.type);
-
-      this.doFade = false;
       this.setSurveyID(this.sid);
       this.setType(this.type);
 
@@ -163,13 +153,9 @@ export default {
          this.setQuestionGroupTopBar(this.gid);
       }
   },
-
   mounted() {
-    console.log('TopBarPanel Vue Instance: ', this);
-    console.log('EventBus ', EventBus);
-
-    EventBus.$on('doFadeEvent', () => {
-      console.log('Fade event received');
+    EventBus.$on('doFadeEvent', (slideable) => {
+      this.onFade(slideable);
     });
   }
 }
@@ -185,4 +171,7 @@ export default {
     padding-left: 155px;
   }
 
+  .right {
+    padding-left: 40%;
+  }
 </style>
