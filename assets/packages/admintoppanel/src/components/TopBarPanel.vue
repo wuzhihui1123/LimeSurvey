@@ -67,9 +67,9 @@ export default {
           },
           right: {
             buttons: [
-              { name: 'Save', url: '', icon: 'fa fa-floppy-o', backgroundcolor: 'green' },
+              { name: 'Save', url: '', icon: 'fa fa-floppy-o', backgroundcolor: 'btn-success' },
               { name: 'Save and close', url: '', icon: 'fa fa-check-square' },
-              { name: 'Close', url: '', icon: 'fa fa-close', backgroundcolor: 'red' },
+              { name: 'Close', url: '', icon: 'fa fa-close', backgroundcolor: 'btn-danger' },
             ]
           },
         },
