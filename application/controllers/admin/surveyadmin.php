@@ -2458,8 +2458,8 @@ class SurveyAdmin extends Survey_Common_Action
           'gid'     => $oQuestion->gid,
           'sumcount4' => $sumcount,
           'activated' => $activated,
-          // 'ownsSaveButton'         => $ownsSaveButton,
-          // 'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+          'ownsSaveButton'         => $ownsSaveButton,
+          'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
         ),
         false,
         false

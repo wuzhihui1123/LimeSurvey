@@ -23,45 +23,44 @@ $topbarextended = [
   ]
 ];
 
-  if (count($languages) > 1) {
-    if ($oSurvey->active == 'N') {
-      // Preview Survey Button
-      $title = 'preview_survey';
-      $name  =  gT('Preview survey');
-    } else {
-      // Execute Survey Button
-      $title = 'execute_survey';
-      $name  = gT('Execute survey');
-    }
-
-    $buttons[$title] = [];
-    foreach($languages as $language) {
-      $buttons[$title] = [
-        'url' => $this->createUrl("survey/index", array(
-                  'sid'     =>  $sid,
-                  'newtest' => "Y",
-                  'lang'    => $language)),
-        'icon' => 'fa fa-cog',
-        'name' => $name,
-      ];
-  }
-} else {
-
+if (count($languages) > 1) {
   if ($oSurvey->active == 'N') {
     // Preview Survey Button
     $title = 'preview_survey';
-    $name  = gT('Preview survey');
+    $name  =  gT('Preview survey');
   } else {
     // Execute Survey Button
     $title = 'execute_survey';
     $name  = gT('Execute survey');
   }
 
+  $buttons[$title] = [];
+  foreach($languages as $language) {
+    $buttons[$title] = [
+      'url' => $this->createUrl("survey/index", array(
+      'sid'     =>  $sid,
+      'newtest' => "Y",
+      'lang'    => $language)),
+      'icon' => 'fa fa-cog',
+      'name' => $name,
+    ];
+  }
+} else {
+  if ($oSurvey->active == 'N') {
+  // Preview Survey Button
+  $title = 'preview_survey';
+  $name  = gT('Preview survey');
+} else {
+  // Execute Survey Button
+  $title = 'execute_survey';
+  $name  = gT('Execute survey');
+}
+
   $buttons[$title] = [
     'url' => $this->createUrl("survey/index", array(
-              'sid'=>$sid,
-              'newtest'=>"Y",
-              'lang'=>$oSurvey->language)),
+    'sid'=>$sid,
+    'newtest'=>"Y",
+    'lang'=>$oSurvey->language)),
     'name' => $name,
     'icon' => 'fa fa-cog',
   ];
@@ -96,50 +95,50 @@ if ($hasReadPermission) {
 
 // Right Buttons (only shown for question group
 if ($hasReadPermission) {
-      // Check Survey Logic Button
-      $buttons['check_survey_logic'] = [
-        'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
-        'name' => gT("Check survey logic for current question group"),
-        'icon' => 'icon-expressionmanagercheck',
-      ];
+  // Check Survey Logic Button
+  $buttons['check_survey_logic'] = [
+    'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
+    'name' => gT("Check survey logic for current question group"),
+    'icon' => 'icon-expressionmanagercheck',
+  ];
 
-      array_push($topbar['alignment']['right']['buttons'], $buttons['check_survey_logic']);
-    }
+  array_push($topbar['alignment']['right']['buttons'], $buttons['check_survey_logic']);
+}
 
-    $hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
-    if ($hasDeletePermission) {
-      $permissions['delete'] = [ 'delete' => $hasDeletePermission];
+$hasDeletePermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'delete');
+  if ($hasDeletePermission) {
+    $permissions['delete'] = [ 'delete' => $hasDeletePermission];
 
-      if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") {
-          // has question
-          if (empty($condarray)) {
-            // can delete group and question
-            $buttons['delete_current_question_group'] = [
-              'url' => $this->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $sid, "gid"=>$gid]),
-              'type' => 'modal',
-              'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
-              'icon' => 'fa fa-trash',
-              'name' => gT("Delete current question group"),
-            ];
-          } else {
-            // there is at least one question having a condition on its content
-            $buttons['delete_current_question_group'] = [
-              'url' => '',
-              'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
-              'icon' => 'fa fa-trash',
-              'name' => gT("Delete current question group"),
-            ];
-          }
-      } else {
-        // Activated
+    if (($sumcount4 == 0 && $activated != "Y") || $activated != "Y") {
+      // has question
+      if (empty($condarray)) {
+        // can delete group and question
         $buttons['delete_current_question_group'] = [
-          'title' => gT("You can't delete this question group because the survey is currently active."),
-          'icon'  => 'fa fa-trash',
-          'name'  => gT("Delete current question group"),
+          'url' => $this->createUrl("admin/questiongroups/sa/delete/", ["surveyid" => $sid, "gid"=>$gid]),
+          'type' => 'modal',
+          'message' => gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?", "js"),
+          'icon' => 'fa fa-trash',
+          'name' => gT("Delete current question group"),
         ];
+      } else {
+          // there is at least one question having a condition on its content
+          $buttons['delete_current_question_group'] = [
+            'url' => '',
+            'title' => gT("Impossible to delete this group because there is at least one question having a condition on its content"),
+            'icon' => 'fa fa-trash',
+            'name' => gT("Delete current question group"),
+          ];
       }
+    } else {
+      // Activated
+      $buttons['delete_current_question_group'] = [
+        'title' => gT("You can't delete this question group because the survey is currently active."),
+        'icon'  => 'fa fa-trash',
+        'name'  => gT("Delete current question group"),
+      ];
     }
-    array_push($topbar['alignment']['right']['buttons'], $buttons['delete_current_question_group']);
+}
+  array_push($topbar['alignment']['right']['buttons'], $buttons['delete_current_question_group']);
 
 $hasExportPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
 if ($hasExportPermission) {
@@ -157,22 +156,19 @@ if ($hasExportPermission) {
 // TopBar Extended (second TopBar, which will swap if Event triggered)
 $topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['buttons'];
 
-// var_dump($ownsSaveButton);
-//
-// // Save Buttons (right side)
-// if (isset($ownsSaveButton) {
-//
-//   // Save Button
-//   $buttons['save'] = [
-//     'name' => gT('Save'),
-//     'icon' => 'fa fa-floppy-o',
-//     'url'  => '#',
-//     'id'   => 'save-button',
-//     'class' => 'btn-success',
-//   ];
-//   array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
-// }
-//
+// Save Buttons (right side)
+if ($ownsSaveButton == true) {
+  // Save Button
+  $buttons['save'] = [
+    'name' => gT('Save'),
+    'icon' => 'fa fa-floppy-o',
+    'url'  => '#',
+    'id'   => 'save-button',
+    'class' => 'btn-success',
+  ];
+  array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
+}
+
 // // Save and Close Button
 // if ($ownsSaveAndCloseButton) {
 //   $button['save_and_close'] = [

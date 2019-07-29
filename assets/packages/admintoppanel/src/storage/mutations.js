@@ -8,6 +8,9 @@ export default {
     setTopBar: (state, newState) => {
       state.topbar = newState;
     },
+    setTopBarExtended: (state, newState) => {
+      state.topbarextended = newState;
+    },
     setQid: (state, newState) => {
       state.qid = newState;
     },
