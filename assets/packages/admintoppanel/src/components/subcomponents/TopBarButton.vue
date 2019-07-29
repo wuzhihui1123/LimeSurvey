@@ -1,8 +1,20 @@
 <template>
     <div class="topbarbutton">
-        <button v-if="button.backgroundcolor" type="button" :class="'btn btn-default navbar-btn btn white ' + button.backgroundcolor" :href="button.url">
+        <button v-if="button.class && button.icon.includes('-o')"
+                type="button"
+                :class="'btn btn-default navbar-btn white ' + button.class"
+                :href="button.url"
+                :id="button.id">
           <span :class="button.icon + ' icon'" />
           {{ button.name }}
+        </button>
+        <button v-else-if="button.class"
+                type="button"
+                :class="'btn btn-default navbar-btn ' + button.class"
+                :href="button.url"
+                :id="button.id">
+                <span :class="button.icon + ' icon'" />
+                {{ button.name }}
         </button>
         <button v-else type ="button" class="btn btn-default navbar-btn button" :href="button.url">
             <span :class="button.icon + ' icon'" />

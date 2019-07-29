@@ -44,8 +44,6 @@ export default {
     'topbarbutton': TopBarButton,
   },
   props: {
-    // permissions: Object,
-    // topbar: Object,
     qid: Number,
     gid: Number,
     sid: Number,
