@@ -3,13 +3,13 @@
     <nav class="navbar navbar-default">
       <transition name="fade">
       <div v-if="this.slide" class="ls-flex flex-row" id="topbarextended">
-          <ul v-if="this.slide && this.fadeTopBar.alignment.left" class="nav navbar-nav ls-flex-item text-left">
-            <li v-for="button in this.fadeTopBar.alignment.left.buttons">
+          <ul v-if="this.slide && this.ownTopBarExtended.alignment.left" class="nav navbar-nav ls-flex-item text-left">
+            <li v-for="button in this.ownTopBarExtended.alignment.left.buttons">
               <topbarbutton :button="button" />
             </li>
           </ul>
-          <ul v-if="this.slide && this.fadeTopBar.alignment.right" class="nav navbar-nav ls-flex-item right">
-            <li v-for="button in this.fadeTopBar.alignment.right.buttons">
+          <ul v-if="this.slide && this.ownTopBarExtended.alignment.right" class="nav navbar-nav ls-flex-item right">
+            <li v-for="button in this.ownTopBarExtended.alignment.right.buttons">
               <topbarbutton :button="button" />
             </li>
           </ul>
@@ -44,8 +44,8 @@ export default {
     'topbarbutton': TopBarButton,
   },
   props: {
-    permissions: Object,
-    topbar: Object,
+    // permissions: Object,
+    // topbar: Object,
     qid: Number,
     gid: Number,
     sid: Number,
@@ -53,27 +53,8 @@ export default {
   },
 
   // TODO: Für jede Topbar muss eine eigene Struktur für die TopBarExtended erstellt werden.
-  // TODO: Vielleicht als Prop rüberreichen?
   data: () => {
     return {
-      fadeTopBar: {
-        alignment: {
-          left: {
-            buttons : [
-              { name: 'Preview survey', url: '', icon: 'fa fa-cog' },
-              { name: 'Preview', url: '', icon: 'fa-cog' },
-              { name: 'Preview question group', url: '', icon: 'fa fa-cog' },
-            ]
-          },
-          right: {
-            buttons: [
-              { name: 'Save', url: '', icon: 'fa fa-floppy-o', backgroundcolor: 'btn-success' },
-              { name: 'Save and close', url: '', icon: 'fa fa-check-square' },
-              { name: 'Close', url: '', icon: 'fa fa-close', backgroundcolor: 'btn-danger' },
-            ]
-          },
-        },
-      },
       slide: false,
     }
   },
@@ -84,6 +65,11 @@ export default {
       },
       set(topbar) {
         this.$store.commit('setTopBar', topbar);
+      }
+    },
+    ownTopBarExtended: {
+      get() {
+        return this.$store.state.topbarextended;
       }
     },
     ownPermissions: {

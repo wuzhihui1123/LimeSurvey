@@ -12,6 +12,16 @@ $topbar      = [
       ],
     ]
 ];
+$topbarextended = [
+  'alignment' => [
+      'left' => [
+        'buttons' => [],
+      ],
+      'right' => [
+        'buttons' => [],
+      ],
+  ]
+];
 
   if (count($languages) > 1) {
     if ($oSurvey->active == 'N') {
@@ -144,10 +154,64 @@ if ($hasExportPermission) {
   array_push($topbar['alignment']['right']['buttons'], $buttons['export']);
 }
 
+// TopBar Extended (second TopBar, which will swap if Event triggered)
+$topbarextended['alignment']['left']['buttons'] = $topbar['alignment']['left']['buttons'];
+
+// var_dump($ownsSaveButton);
+//
+// // Save Buttons (right side)
+// if (isset($ownsSaveButton) {
+//
+//   // Save Button
+//   $buttons['save'] = [
+//     'name' => gT('Save'),
+//     'icon' => 'fa fa-floppy-o',
+//     'url'  => '#',
+//     'id'   => 'save-button',
+//     'class' => 'btn-success',
+//   ];
+//   array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
+// }
+//
+// // Save and Close Button
+// if ($ownsSaveAndCloseButton) {
+//   $button['save_and_close'] = [
+//     'name' => gT('Save and close'),
+//     'icon' => 'fa fa-check-square',
+//     'url'  => '#',
+//     'id'   => 'save-and-close-button',
+//     'class' => 'btn-default',
+//   ];
+//   array_push($topbarextended['alignment']['right']['buttons'], $button['save_and_close']);
+// }
+
+    // Close Button
+    // if (isset($questiongroupbar['closebutton']['url'])) {
+    //   $button['close'] = [
+    //     'name' => gT('Close'),
+    //     'url'  => $questiongroupbar['closebutton']['url'],
+    //     'icon' => 'fa fa-close',
+    //     'class' => 'btn-danger',
+    //     'id'   => 'close-button',
+    //   ];
+    //   array_push($topbarextended['alignment']['right']['buttons'], $button['close']);
+    // }
+
+    // Return Button
+    // if (isset($questiongroupbar['returnbutton']['url'])) {
+    //   $button['return'] = [
+    //     'name' => gT('Return to survey list'),
+    //     'url'  => $questiongroupbar['returnbutton']['url'],
+    //     'class' => 'btn-default',
+    //     'icon' => 'fa fa-step-backwards',
+    //   ];
+    //   array_push($topbarextended['alignment']['right']['buttons'], $button['return']);
+    // }
 
 $finalJSON = [
-  'permission' => $permissions,
-  'topbar' => $topbar
+  'permission'     => $permissions,
+  'topbar'         => $topbar,
+  'topbarextended' => $topbarextended,
 ];
 
 header("Content-Type: application/json");

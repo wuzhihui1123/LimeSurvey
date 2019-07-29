@@ -46,9 +46,9 @@ export default {
                 });
             }
             this.editQuestionGroup = !this.editQuestionGroup;
-            LS.EventBus.$emit('doFadeEvent');
+            LS.EventBus.$emit('doFadeEvent', this.editQuestionGroup);
+            console.log('editQuestion: ', this.editQuestionGroup);
             console.log('doFadeEvent called (QuestionGroup App)');
-            console.log('QuestionGroup Vue Instance: ', this);
         },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);

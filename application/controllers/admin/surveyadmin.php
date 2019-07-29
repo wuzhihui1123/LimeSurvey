@@ -2443,6 +2443,8 @@ class SurveyAdmin extends Survey_Common_Action
       $oQuestion = Question::model()->findByPk($gid);
       $sumcount  = Question::model()->countByAttributes(array('gid' => $gid));
       $activated = QuestionGroup::model()->findByPk($gid)->survey->active;
+      $ownsSaveButton = true;
+      $ownsSaveAndCloseButton = true;
 
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/question_group_topbar',
@@ -2452,6 +2454,8 @@ class SurveyAdmin extends Survey_Common_Action
           'gid'     => $oQuestion->gid,
           'sumcount4' => $sumcount,
           'activated' => $activated,
+          // 'ownsSaveButton'         => $ownsSaveButton,
+          // 'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
         ),
         false,
         false
