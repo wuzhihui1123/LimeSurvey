@@ -9,6 +9,16 @@ $topbar      = [
     ],
   ],
 ];
+$topbarextended = [
+  'alignment' => [
+    'left' => [
+      'buttons' => []
+    ],
+    'right' => [
+      'buttons' => []
+    ],
+  ]
+];
 
 $hasReadPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
 if ($hasReadPermission) {
@@ -24,7 +34,6 @@ if ($hasReadPermission) {
     }
 
     $buttons[$title] = [];
-
     foreach($languages as $language) {
         $buttons[$title] = [
             'url' => $this->createUrl("survey/index",
@@ -61,7 +70,7 @@ if ($hasReadPermission) {
     if (count($languages) > 1) {
         foreach($languages as $language) {
             $data = [
-                'url' => $this->createUrl("survey/index/action/previewquestion/sid/" . $sid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
+                'url'  => $this->createUrl("survey/index/action/previewquestion/sid/" . $sid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
                 'name' => gT("Preview question"),
                 'icon' => 'fa fa-cog',
             ];
@@ -70,7 +79,7 @@ if ($hasReadPermission) {
     } else {
         foreach($languages as $language) {
             $buttons['preview_question'] = [
-                'url' => $this->createUrl("survey/index/action/previewquestion/sid/" . $sid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
+                'url'  => $this->createUrl("survey/index/action/previewquestion/sid/" . $sid . "/gid/" . $gid . "/qid/" . $qid . "/lang/" . $language),
                 'name' => gT("Preview question"),
                 'icon' => 'fa fa-cog',
             ];
@@ -79,12 +88,11 @@ if ($hasReadPermission) {
 
     // Check Logic Button
     $buttons['check_logic'] = [];
-
     if(count($languages) > 1) {
         foreach($languages as $language) {
             $data = [
                 'lang' => $language,
-                'url' => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
+                'url'  => $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$sid}/gid/{$gid}/"),
                 'name' => gT("Check logic"),
             ];
             array_push($buttons['check_logic'], $data);
@@ -157,9 +165,71 @@ if ($hasUpdatePermission) {
 
 $topbar['alignment']['left']['buttons'] = $buttons;
 
+// Extended Topbar
+  // Left Side
+
+  // Preview Survey
+  if (isset($buttons['preview_survey'])) {
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['preview_survey']);
+  }
+
+  // Preview Question
+  if (isset($buttons['preview'])) {
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['preview']);
+  } else {
+    $buttons['preview'] = [
+      'url' => $this->createUrl("survey/index/action/previewquestion/sid".$sid."/gid/".$gid."/qid/".$qid),
+      'target' => '_blank',
+      'icon' => 'fa fa-cog',
+      'name' => gT("Preview"),
+    ];
+    array_push($topbarextended['alignment']['left']['buttons'], $buttons['preview']);
+  }
+
+  // Preview Question Group
+  if (isset($buttons['preview_question_group'])) {
+      array_push($topbarextended['alignment']['left']['buttons'], $buttons['preview_question_group']);
+  }
+
+
+  // Right Side
+  if ($ownsSaveButton) {
+    // Save Button
+    $buttons['save'] = [
+      'url'  => '#',
+      'icon' => 'fa fa-floppy-o',
+      'name' => gT('Save'),
+      'id'   => 'save-button',
+      'class' => 'btn-success'
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $buttons['save']);
+  }
+
+  // Save and Close Button
+  if ($ownsSaveAndCloseButton) {
+    $buttons['save_and_close'] = [
+      'url'  => $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/{$sid}"),
+      'icon' => 'fa fa-check-square',
+      'name' => gT('Save and close'),
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $buttons['save_and_close']);
+  }
+
+  // Close Button
+  if ($ownsCloseButton) {
+    $buttons['close'] = [
+      'url'  => '/admin/survey/sa/listquestions/surveyid/'.$sid,
+      'name' => gT('Close'),
+      'icon' => 'fa fa-close',
+      'class' => 'btn-danger pull-right margin-left',
+    ];
+    array_push($topbarextended['alignment']['right']['buttons'], $buttons['close']);
+  }
+
 $finalJSON = [
   'permission' => $permissions,
-  'topbar' => $topbar
+  'topbar' => $topbar,
+  'topbarextended' => $topbarextended,
 ];
 
 header("Content-Type: application/json");

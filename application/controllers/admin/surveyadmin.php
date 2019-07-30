@@ -2427,6 +2427,9 @@ class SurveyAdmin extends Survey_Common_Action
       $oQuestion = Question::model()->findByPk($qid);
       $qtypes    = Question::typeList();
       $qrrow     = $oQuestion->attributes;
+      $ownsSaveButton = true;
+      $ownsSaveAndCloseButton = true;
+      $ownsCloseButton = true;
 
       return Yii::app()->getController()->renderPartial(
           '/admin/survey/topbar/question_topbar',
@@ -2437,6 +2440,9 @@ class SurveyAdmin extends Survey_Common_Action
             'qid' => $oQuestion->qid,
             'qrrow'  => $qrrow,
             'qtypes' => $qtypes,
+            'ownsSaveButton'         => $ownsSaveButton,
+            'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+            'ownsCloseButton'        => $ownsCloseButton,
           ),
           false,
           false

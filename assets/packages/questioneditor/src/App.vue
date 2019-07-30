@@ -62,8 +62,7 @@ export default {
                 $('#questiongroupbarid').slideDown()
             }
             this.editQuestion = !this.editQuestion;
-            LS.EventBus.$emit('doFadeEvent');
-            console.log('doFadeEvent called (QuestionEditor App)');
+            LS.EventBus.$emit('doFadeEvent', this.editQuestion);
         },
         setEditQuestion(){
             if(!this.editQuestion) {

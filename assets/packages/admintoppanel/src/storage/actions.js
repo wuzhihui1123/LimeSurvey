@@ -7,7 +7,9 @@ export default {
        ajax.methods.$_get(LS.createUrl('admin/survey/sa/getQuestionTopBar',{ qid: context.state.qid }))
        .then( (data) => {
          context.commit('setTopBar', data.data.topbar);
+         context.commit('setTopBarExtended', data.data.topbarextended);
          context.commit('setPermissions', data.data.permissions);
+         
          resolve(data.data.topbar);
        })
        .catch( (error) => {
@@ -23,7 +25,7 @@ export default {
           context.commit('setTopBar', data.data.topbar);
           context.commit('setTopBarExtended', data.data.topbarextended);
           context.commit('setPermissions', data.data.permissions);
-          
+
           resolve(data.data.topbar);
         })
         .catch( (error) => {

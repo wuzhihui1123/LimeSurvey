@@ -47,8 +47,6 @@ export default {
             }
             this.editQuestionGroup = !this.editQuestionGroup;
             LS.EventBus.$emit('doFadeEvent', this.editQuestionGroup);
-            console.log('editQuestion: ', this.editQuestionGroup);
-            console.log('doFadeEvent called (QuestionGroup App)');
         },
         applyHotkeys() {
             Mousetrap.bind('ctrl+right', this.chooseNextLanguage);
