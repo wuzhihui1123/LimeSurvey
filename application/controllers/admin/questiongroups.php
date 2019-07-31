@@ -279,7 +279,6 @@ class questiongroups extends Survey_Common_Action
 
         Yii::app()->getClientScript()->registerPackage('ace');
         Yii::app()->getClientScript()->registerPackage('questiongroupeditor');
-        Yii::app()->getClientScript()->registerPackage('admintoppanel');
 
         $oQuestionGroup = $this->_getQuestionGroupObject($gid);
         $grow           = $oQuestionGroup->attributes;

@@ -1,6 +1,6 @@
 <template>
     <div class="topbarbutton">
-        <button v-if="button.class && button.class === 'btn-danger'"
+        <!-- <button v-if="button.class && button.class === 'btn-danger'"
                 type="button"
                 :class="'btn btn-default navbar-btn white ' + button.class"
                 :href="button.url"
@@ -28,7 +28,29 @@
         <button v-else type ="button" class="btn btn-default navbar-btn button" :href="button.url">
             <span :class="button.icon + ' icon'" />
             {{ button.name }}
-        </button>
+        </button> -->
+
+        <!-- Button without image and btn-success -->
+        <button v-if="button.icon === undefined && button.class === 'btn-success'"
+                type="button"
+                :class="'btn btn-default navbar-btn white ' + button.class"
+                :href="button.href"
+                :id="button.id">
+                {{ button.name }}
+       </button>
+       <button v-else-if="button.class === 'btntooltip' &&
+                     button.icon !== undefined || button.icon !== '' || button.icon !== 'undefined' &&
+                     button.target !== undefined || button.target !== 'undefined' &&
+                     button.accesskey !== '' || button.accesskey !== undefined || button.accesskey !== 'undefined'"
+               type="button"
+               :class="'btn btn-default navbar-btn ' + button.class"
+               :href="button.url"
+               :accesskey ="button.accesskey"
+               :target ="button.target">
+               <span :class="'icon ' + button.icon" />
+               {{ button.name }}
+     </button>
+
     </div>
 </template>
 

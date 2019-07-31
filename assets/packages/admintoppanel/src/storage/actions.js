@@ -9,7 +9,7 @@ export default {
          context.commit('setTopBar', data.data.topbar);
          context.commit('setTopBarExtended', data.data.topbarextended);
          context.commit('setPermissions', data.data.permissions);
-         
+
          resolve(data.data.topbar);
        })
        .catch( (error) => {
@@ -32,5 +32,21 @@ export default {
           reject({error: error});
         })
      })
-   }
+   },
+
+   getTopBarButtonsSurvey: (context) => {
+     return new Promise( (resolve, reject) => {
+       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', { sid: context.state.sid }))
+        .then( (data) => {
+          context.commit('setTopBar', data.data.topbar);
+          context.commit('setPermissions', data.data.permissions);
+
+          resolve(data.data.topbar);
+        })
+        .catch( (error) => {
+          reject({error: error});
+        })
+     })
+   },
+   
 };

@@ -519,10 +519,19 @@ class Survey_Common_Action extends CAction
     }
 
     public function _generaltopbar($aData) {
-      if( isset($aData['qid']) || isset($aData['gid'])) {
-        $aData['topBarType'] = ( isset($aData['qid']) ? 'question' : 'group' );
-        $this->getController()->renderPartial("/admin/survey/Question2/topbar_view", $aData);
+      Yii::app()->getClientScript()->registerPackage('admintoppanel');
+      if (isset($aData['qid'])) {
+        $aData['topBarType'] = 'question';
+      } else if (isset($aData['gid'])) {
+        $aData['topBarType'] = 'group';
+      } else if (isset($aData['surveyid'])) {
+        $aData['topBarType'] = 'survey';
       }
+      $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
+      // if( isset($aData['qid']) || isset($aData['gid'])) {
+        // $aData['topBarType'] = ( isset($aData['qid']) ? 'question' : 'group' );
+        // $this->getController()->renderPartial("/admin/survey/Question2/topbar_view", $aData);
+      // }
     }
 
     /**

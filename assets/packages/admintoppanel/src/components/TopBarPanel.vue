@@ -117,8 +117,20 @@ export default {
         })
     },
 
+    setSurveyTopBar(surveyID) {
+        this.setSurveyID(surveyID);
+        this.$store.dispatch('getTopBarButtonsSurvey')
+          .then( (data) => {
+
+          })
+          .catch( (error) => {
+            console.log('ERROR SURVEY');
+            console.log(error.error.xhr.responseText);
+          })
+    },
+
     onFade(slideable) {
-      this.slide   = slideable;
+      this.slide = slideable;
 
       if (slideable) {
         $('#topbarextended').slideDown();
@@ -128,13 +140,15 @@ export default {
     }
   },
   created() {
-      this.setSurveyID(this.sid);
+      // this.setSurveyID(this.sid);
       this.setType(this.type);
 
       if (this.qid !== 0 && this.type === 'question' && this.gid !== 0) {
         this.setQuestionTopBar(this.qid);
       } else if (this.gid !== 0 && this.type === 'group' && this.qid === 0) {
          this.setQuestionGroupTopBar(this.gid);
+      } else if (this.sid !== 0 && this.type == 'survey') {
+        this.setSurveyTopBar(this.sid);
       }
   },
   mounted() {

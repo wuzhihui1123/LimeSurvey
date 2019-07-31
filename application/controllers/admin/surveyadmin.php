@@ -82,7 +82,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function renderItemsSelected()
     {
-        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));   
+        $aSurveys = json_decode(Yii::app()->request->getPost('$oCheckedItems'));
         $aResults = [];
         $tableLabels= array(gT('Survey ID'),gT('Survey Title') ,gT('Status'));
         foreach ($aSurveys as $iSurveyID) {
@@ -92,7 +92,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aResults[$iSurveyID]['result'] = 'selected';
             }
         }
-        
+
         Yii::app()->getController()->renderPartial(
             'ext.admin.grid.MassiveActionsWidget.views._selected_items',
             array(
@@ -347,7 +347,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         foreach ($aSIDs as $iSurveyID){
             $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $oSurvey->gsid = $iSurveyGroupId;           
+            $oSurvey->gsid = $iSurveyGroupId;
             $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
             $aResults[$iSurveyID]['result']= $oSurvey->save();
         }
@@ -2466,6 +2466,47 @@ class SurveyAdmin extends Survey_Common_Action
           'activated' => $activated,
           'ownsSaveButton'         => $ownsSaveButton,
           'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+        ),
+        false,
+        false
+      );
+    }
+
+    public function getSurveyTopbar($sid) {
+      $oSurvey   = Survey::model()->findByPk($sid);
+      $isActive  = $oSurvey->isActive;
+      $condition = array('sid' => $sid, 'parent_qid' => 0);
+      $sumcount  = Question::model()->countByAttributes($condition);
+      $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
+      $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
+      $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+      $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+      $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+      $countLanguage = count($oSurvey->allLanguages);
+
+      if (!$isActive) {
+        $context = gT("Preview survey");
+        $contextbutton = 'preview_survey';
+      } else {
+        $context =  gT("Execute survey");
+        $contextbutton = 'execute_survey';
+      }
+
+      $language = $oSurvey->language;
+
+      return Yii::app()->getController()->renderPartial(
+        '/admin/survey/topbar/survey_topbar',
+        array(
+          'isActive' => $isActive,
+          'sid' => $sid,
+          'canactivate' => $canactivate,
+          'expired' => $expired,
+          'notstarted' => $notstarted,
+          'context' => $context,
+          'contextbutton' => $contextbutton,
+          'language' => $language,
+          'hasSurveyContentPermission' => $hasSurveyContentPermission,
+          'countLanguage' => $countLanguage,
         ),
         false,
         false
