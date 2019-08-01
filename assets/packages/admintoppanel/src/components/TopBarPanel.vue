@@ -19,7 +19,8 @@
       <div v-if="!this.slide" class="ls-flex flex-row" id="topbar">
         <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
-              <topbarbutton :button="button" />
+              <topbarbuttongroup v-if="button.class !== undefined && button.class.includes('btn-group')" :class="button.class" :list="button.dropdown" :mainButton="button.main_button" />
+              <topbarbutton v-else :button="button" />
             </li>
         </ul>
         <ul v-if="(this.ownTopBar.alignment.right)" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
@@ -35,6 +36,7 @@
 
 <script>
 import TopBarButton from "./subcomponents/TopBarButton.vue";
+import TopBarButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
 import runAjax  from '../mixins/runAjax.js';
 import EventBus from '../../../event-bus/event-bus.js';
 
@@ -42,6 +44,7 @@ export default {
   name: 'TopBarPanel',
   components: {
     'topbarbutton': TopBarButton,
+    'topbarbuttongroup': TopBarButtonGroup,
   },
   props: {
     qid: Number,

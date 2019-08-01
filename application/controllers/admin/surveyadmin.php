@@ -2474,15 +2474,19 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function getSurveyTopbar($sid) {
       $oSurvey   = Survey::model()->findByPk($sid);
+      $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
+      $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
+      $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
+      $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
+      $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
       $isActive  = $oSurvey->isActive;
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
-      $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
-      $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
-      $expired = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-      $notstarted = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-      $hasSurveyContentPermission = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $countLanguage = count($oSurvey->allLanguages);
+      $hasAdditionalLanguages = (count($oSurvey->additionalLanguages) > 0);
+      $canactivate = $sumcount > 0 && $hasSurveyActivationPermission;
+      $expired     = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+      $notstarted  = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
 
       if (!$isActive) {
         $context = gT("Preview survey");
@@ -2493,6 +2497,8 @@ class SurveyAdmin extends Survey_Common_Action
       }
 
       $language = $oSurvey->language;
+      $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
+      $oneLanguage    = (count($oSurvey->allLanguages) == 1);
 
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
@@ -2507,6 +2513,12 @@ class SurveyAdmin extends Survey_Common_Action
           'language' => $language,
           'hasSurveyContentPermission' => $hasSurveyContentPermission,
           'countLanguage' => $countLanguage,
+          'hasDeletePermission' => $hasDeletePermission,
+          'hasSurveyTranslatePermission' => $hasSurveyTranslatePermission,
+          'hasAdditionalLanguages' => $hasAdditionalLanguages,
+          'conditionsCount' => $conditionsCount,
+          'hasSurveyReadPermission' => $hasSurveyReadPermission,
+          'oneLanguage' => $oneLanguage,
         ),
         false,
         false
