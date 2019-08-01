@@ -107,6 +107,7 @@ $buttonsgroup['tools'] = [
   ],
     'dropdown' => [
       'class' => 'dropdown-menu',
+      'arialabelledby' => 'ls-tools-button',
       'items' => [],
   ],
 ];

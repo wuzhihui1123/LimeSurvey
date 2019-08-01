@@ -4,22 +4,20 @@
     <button-element :button="mainButton" />
 
     <!-- Dropdown -->
-    <ul v-if="list" :class="list.class">
-      <li v-for="item in list.items" :key="item.id">
-        <button-element :button="item" />
-      </li>
-    </ul>
+    <dropdown-element v-if="list" :list="list" />
   </div>
 </template>
 
 <script>
   import Button from './TopBarButton.vue';
+  import DropDown from './TopBarDropDown.vue';
 
   export default {
     name: 'TopBarButtonGroup',
     props: ['list', 'mainButton'],
     components: {
       'button-element': Button,
+      'dropdown-element': DropDown,
     },
     data: () => {
       return {}

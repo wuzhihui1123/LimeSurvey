@@ -29,18 +29,29 @@
              3 {{ button.name }}
        </button>
 
-       <!-- Default Button -->
-       <button v-else-if="button.class &&
-                          button.icon !== undefined   ||
-                          button.icon !== 'undefined' ||
-                          button.icon !== ''"
-               type = "button"
-               :class = "'btn btn-default navbar-btn button ' + button.class"
-               :href = "button.url">
-               <span :class="button.icon + ' icon'" />
-               4 {{ button.name }}
-      </button> 
+      <!-- Dropdown Button -->
+      <button v-else-if="button.class === 'dropdown-toggle'"
+              type ="button"
+              :class="'btn btn-default navbar-btn button ' + button.class"
+              :id ="button.id"
+              :data-toggle="button.datatoggle"
+              :aria-haspopup="button.ariahaspopup"
+              :aria-expanded="button.ariaexpanded">
+              <span :class="button.icon + ' icon'" />
+              5 {{ button.name }}
+              <span :class="button.iconclass + ' icon'" />
+      </button>
 
+      <!-- Default Button with image -->
+      <button v-else
+              type = "button"
+              :class = "'btn btn-default navbar-btn button ' + button.class"
+              :href = "button.url"
+              :target="button.target"
+              :access-key="button.accesskey">
+              <span :class="button.icon + ' icon'" />
+              4 {{ button.name }}
+     </button>
     </div>
 </template>
 
