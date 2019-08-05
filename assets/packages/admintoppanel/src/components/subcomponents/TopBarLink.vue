@@ -30,9 +30,9 @@ export default {
 <style lang="scss" scoped>
   $black: #212529;
   $white: #ffffff;
-  $green: #00e676;
+  $green: #00b248;
   $green-active: #66ffa6;
-  
+
   .icon {
     margin-right: 2px;
   }

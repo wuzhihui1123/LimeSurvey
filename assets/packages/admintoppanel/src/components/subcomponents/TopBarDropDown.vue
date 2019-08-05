@@ -49,9 +49,8 @@
 
 $black: #212529;
 $white: #ffffff;
-$green: #00e676;
+$green: #00b248;
 $green-active: #66ffa6;
-
 
 ul {
   list-style-type: none;
