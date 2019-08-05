@@ -192,6 +192,30 @@ if (!$isActive && $hasSurveyContentPermission) {
     'class' => 'divider',
   ];
   array_push($buttonsgroup ['tools']['dropdown']['items'], $buttons['divider']);
+
+  // Regenerate question codes
+  $buttons['question_codes'] = [
+    'class' => 'dropdown-header',
+    'name'  => gT('Regenerate question codes'),
+  ];
+  array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['question_codes']);
+
+  // Straight
+  $buttons['straight'] = [
+    'url'   => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/straight"),
+    'icon' => 'icon-resetsurveylogic',
+    'name'  => gT('Straight'),
+  ];
+  array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['straight']);
+
+  // By Question Group
+  $buttons['by_question_group'] = [
+    'url' => $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$sid}/subaction/bygroup"),
+    'name' => gT('By question group'),
+    'icon' => 'icon-resetsurveylogic',
+  ];
+
+  array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['by_question_group']);
 }
 
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);

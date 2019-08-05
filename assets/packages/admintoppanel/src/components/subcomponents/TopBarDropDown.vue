@@ -3,18 +3,22 @@
     <button-element v-if="mainButton" :button="mainButton" @click.native="handleClick()" />
     <ul v-if="isOpen && list" :class="'dropdown-box ' + list.class" :aria-labelledby="list.arialabelledby">
       <li v-for="(item, index) in list.items" :key="item.id">
-        <link-element v-if="isActive":active="isActive":item="item" @click="handleLinkClick()"/>
-        <seperator-element v-if="item.class === 'divider' && item.role === 'seperator'" :item="item" />
+        <link-element v-if="isActive" :active="isActive" :item="item" @click="handleLinkClick()"/>
         <link-element v-else :item="item" @click="handleLinkClick()"/>
+        <seperator-element v-if="item.class === 'divider' && item.role === 'seperator'" :item="item" />
+        <dropdown-header-element v-if="item.class === 'dropdown-header'" :item="item" />
       </li>
     </ul>
   </div>
 </template>
-
 <script>
   import Button from './TopBarButton.vue';
   import Link from './TopBarLink.vue';
   import Seperator from './Seperator.vue';
+  import DropDownHeader from './DropDownHeader.vue';
+
+  // TODO: Es wird auch bei einem Seperator oder DropDownHeader Element ein Link-Element mitgerendert.
+  // TODO: Wie kann man das unterdrücken?
 
   export default {
     name: 'TopBarDropDown',
@@ -22,6 +26,7 @@
       'button-element': Button,
       'link-element': Link,
       'seperator-element': Seperator,
+      'dropdown-header-element': DropDownHeader,
     },
     props: ['list', 'mainButton'],
     data: () => {
