@@ -136,7 +136,7 @@ if ($hasSurveyTranslatePermission) {
     $buttons['quick_translation'] = [
       'url' => '#',
       'type' => 'alert',
-      'alert-text' => gT('Currently there are no additional languages configured for this survey.'),
+      'alerttext' => gT('Currently there are no additional languages configured for this survey.'),
       'icon' => 'fa fa-language',
       'name' => gT('Quick-translation'),
    ];
@@ -159,7 +159,7 @@ if ($hasSurveyContentPermission) {
     $buttons['reset_conditions'] = [
       'url' => '#',
       'type' => 'alert',
-      'alert-text' => gT("Currently there are no conditions configured for this survey."),
+      'alerttext' => gT("Currently there are no conditions configured for this survey."),
       'icon' => 'icon-resetsurveylogic',
       'name' => gT("Reset conditions"),
     ];
@@ -168,6 +168,7 @@ if ($hasSurveyContentPermission) {
 }
 
 // TODO: extraToolsMenuItems Plugin?
+// TODO: menues from database
 
 if ($hasSurveyReadPermission) {
   if ($oneLanguage) {

@@ -10,6 +10,7 @@
                 :id="button.id">
                 1 {{ button.name }}
        </button>
+
        <!-- Button with image and btn-danger -->
        <button v-else-if="button.class === 'btn-danger' && button.icon !== undefined"
                type="button"
@@ -19,6 +20,7 @@
                <span :class="'icon ' + button.icon" />
                2 {{ button.name }}
        </button>
+
        <!-- Button with outlined image, so font will be white -->
        <button v-else-if="button.icon.includes('-o')"
                    type="button"
@@ -36,9 +38,10 @@
               :id ="button.id"
               :data-toggle="button.datatoggle"
               :aria-haspopup="button.ariahaspopup"
-              :aria-expanded="button.ariaexpanded">
+              :aria-expanded="button.ariaexpanded"
+              @click="clicked()">
               <span :class="button.icon + ' icon'" />
-              5 {{ button.name }}
+              4 {{ button.name }}
               <span :class="button.iconclass + ' icon'" />
       </button>
 
@@ -50,7 +53,7 @@
               :target="button.target"
               :access-key="button.accesskey">
               <span :class="button.icon + ' icon'" />
-              4 {{ button.name }}
+              5 {{ button.name }}
      </button>
     </div>
 </template>
@@ -61,6 +64,11 @@
       props: ['button'],
       data: () => {
           return {}
+      },
+      methods: {
+        clicked(event) {
+          this.$emit('click', this.button, event);
+        }
       },
   }
 </script>
