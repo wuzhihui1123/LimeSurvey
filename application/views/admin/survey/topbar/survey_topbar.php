@@ -187,6 +187,11 @@ if ($hasSurveyReadPermission) {
 
 if (!$isActive && $hasSurveyContentPermission) {
   // Divider
+  $buttons['divider'] = [
+    'role' => 'seperator',
+    'class' => 'divider',
+  ];
+  array_push($buttonsgroup ['tools']['dropdown']['items'], $buttons['divider']);
 }
 
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);

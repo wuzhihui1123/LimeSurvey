@@ -4,6 +4,7 @@
     <ul v-if="isOpen && list" :class="'dropdown-box ' + list.class" :aria-labelledby="list.arialabelledby">
       <li v-for="(item, index) in list.items" :key="item.id">
         <link-element v-if="isActive":active="isActive":item="item" @click="handleLinkClick()"/>
+        <seperator-element v-if="item.class === 'divider' && item.role === 'seperator'" :item="item" />
         <link-element v-else :item="item" @click="handleLinkClick()"/>
       </li>
     </ul>
@@ -13,12 +14,14 @@
 <script>
   import Button from './TopBarButton.vue';
   import Link from './TopBarLink.vue';
+  import Seperator from './Seperator.vue';
 
   export default {
     name: 'TopBarDropDown',
     components: {
       'button-element': Button,
       'link-element': Link,
+      'seperator-element': Seperator,
     },
     props: ['list', 'mainButton'],
     data: () => {
