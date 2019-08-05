@@ -19,7 +19,7 @@ export default {
   name: 'TopBarLink',
   props: {
     item: Object,
-    active: Boolean
+    active: Boolean,
   },
   data() {
     return {}
@@ -27,8 +27,30 @@ export default {
 }
 </script>
 
-<scoped style>
+<style lang="scss" scoped>
+  $black: #212529;
+  $white: #ffffff;
+  $green: #00e676;
+  $green-active: #66ffa6;
+  
   .icon {
     margin-right: 2px;
+  }
+
+  a {
+    display: block;
+    padding: 0.55em 1em;
+    text-decoration: none;
+    color: $black;
+
+    &:hover {
+      text-decoration: none;
+      color: $white;
+      background-color: $green;
+    }
+
+    &.active {
+      background-color: $green-active;
+    }
   }
 </style>

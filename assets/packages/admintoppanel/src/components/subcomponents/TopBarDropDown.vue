@@ -1,19 +1,12 @@
 <template>
   <div class="topbardropdown">
     <button-element v-if="mainButton" :button="mainButton" @click.native="handleClick()" />
-    <ul v-if="list" :class="list.class" :aria-labelledby="list.arialabelledby">
-      <li v-for="(item, index) in list.items" :key="item.id">
-        <link-element :item="item" @click="" />
-      </li>
-    </ul>
-    <ul v-if="isOpen" class="dropdown-box list.class" :aria-labelledby="list.arialebelledby">
+    <ul v-if="isOpen && list" :class="'dropdown-box ' + list.class" :aria-labelledby="list.arialabelledby">
       <li v-for="(item, index) in list.items" :key="item.id">
         <link-element v-if="isActive":active="isActive":item="item" @click="handleLinkClick()"/>
         <link-element v-else :item="item" @click="handleLinkClick()"/>
       </li>
     </ul>
-
-    <p>Dropdown is open: {{ isOpen }}</p>
   </div>
 </template>
 
@@ -54,37 +47,36 @@
 
 <style scoped lang="scss">
 
+$black: #212529;
 $white: #ffffff;
 $green: #00e676;
 $green-active: #66ffa6;
 
-  ul {
-    list-style-type: none;
-    li {
-      position: relative;
-      margin: 0.25em;
-      text-align: center;
 
-      a {
-        display: block;
-        padding: 0.55em 1em;
-        text-decoration: none;
-
-        &:hover {
-          color: $white;
-          background-color: $green;
-        }
-        &.active {
-          background-color: $green-active;
-        }
-      }
-    }
+ul {
+  list-style-type: none;
+  li {
+    position: relative;
+    margin: 0.20em;
+    text-align: left;
   }
+}
 
-  *, ::before,
-  ::after {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
+* {
+  box-sizing: border-box;
+}
+
+.dropdown-box {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: block;
+  float: left;
+  border:  1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-color: $white;
+  width: 200px;
+}
+
+
 </style>
