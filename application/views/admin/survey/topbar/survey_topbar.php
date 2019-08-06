@@ -217,8 +217,19 @@ if (!$isActive && $hasSurveyContentPermission) {
 
   array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['by_question_group']);
 }
-
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);
+
+  // Display/Export Part
+if ($hasSurveyExportPermission) {
+  // Display/Export Button
+  $buttons['display_export'] = [
+    'name' => gT('Display/Export'),
+    'url'  => '',
+    'icon' => 'fa fa-folder-open',
+    'type' => 'modal',
+  ];
+  array_push($topbar['alignment']['left']['buttons'], $buttons['display_export']);
+}
 
 $finalJSON = [
   'permissions' => $permissions,

@@ -2479,6 +2479,7 @@ class SurveyAdmin extends Survey_Common_Action
       $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
       $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
       $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
+      $hasSurveyExportPermission     = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
       $isActive  = $oSurvey->isActive;
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
@@ -2519,6 +2520,7 @@ class SurveyAdmin extends Survey_Common_Action
           'conditionsCount' => $conditionsCount,
           'hasSurveyReadPermission' => $hasSurveyReadPermission,
           'oneLanguage' => $oneLanguage,
+          'hasSurveyExportPermission' => $hasSurveyExportPermission,
         ),
         false,
         false

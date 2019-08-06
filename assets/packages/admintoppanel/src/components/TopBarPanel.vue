@@ -5,12 +5,12 @@
       <div v-if="this.slide" class="ls-flex flex-row" id="topbarextended">
           <ul v-if="this.slide && this.ownTopBarExtended.alignment.left" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBarExtended.alignment.left.buttons">
-              <topbarbutton :button="button" />
+              <button-element :button="button" />
             </li>
           </ul>
           <ul v-if="this.slide && this.ownTopBarExtended.alignment.right" class="nav navbar-nav ls-flex-item right">
             <li v-for="button in this.ownTopBarExtended.alignment.right.buttons">
-              <topbarbutton :button="button" />
+              <button-element :button="button" />
             </li>
           </ul>
       </div>
@@ -19,13 +19,13 @@
       <div v-if="!this.slide" class="ls-flex flex-row" id="topbar">
         <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
-              <topbarbuttongroup v-if="button.class !== undefined && button.class.includes('btn-group')" :class="button.class" :list="button.dropdown" :mainButton="button.main_button" />
-              <topbarbutton v-else :button="button" />
+              <button-group-element v-if="button.class !== undefined && button.class.includes('btn-group')" :class="button.class" :list="button.dropdown" :mainButton="button.main_button" />
+              <button-element v-else :button="button" />
             </li>
         </ul>
         <ul v-if="(this.ownTopBar.alignment.right)" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
             <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">
-              <topbarbutton :button="button" />
+              <button-element :button="button" />
             </li>
         </ul>
       </div>
@@ -35,16 +35,18 @@
 </template>
 
 <script>
-import TopBarButton from "./subcomponents/TopBarButton.vue";
-import TopBarButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
+import Button from "./subcomponents/TopBarButton.vue";
+import ButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
+import Modal from './subcomponents/Modal.vue';
 import runAjax  from '../mixins/runAjax.js';
 import EventBus from '../../../event-bus/event-bus.js';
 
 export default {
   name: 'TopBarPanel',
   components: {
-    'topbarbutton': TopBarButton,
-    'topbarbuttongroup': TopBarButtonGroup,
+    'button-element': Button,
+    'button-group-element': ButtonGroup,
+    'modal-element': Modal,
   },
   props: {
     qid: Number,
