@@ -50,6 +50,17 @@ export default {
         currentAlerts: {
             get() {return this.$store.state.alerts;},
             set(tmpAlerts) { this.$store.commit('setAlerts', tmpAlerts); }
+        },
+        storedEvent() {
+            return this.$store.state.storedEvent;
+        }
+    },
+    watcher: {
+        storedEvent(newValue) {
+            if(newValue !== null) {
+                this.event = newValue;
+            }
+            this.$store.commit('setStoredEvent', null);
         }
     },
     methods: {
@@ -63,6 +74,13 @@ export default {
             }
             this.editQuestion = !this.editQuestion;
             LS.EventBus.$emit('doFadeEvent', this.editQuestion);
+        },
+        toggleLoading(force=null){
+            if(force===null) {
+                this.loading = !this.loading;
+                return;    
+            }
+            this.loading = force;
         },
         setEditQuestion(){
             if(!this.editQuestion) {
@@ -112,14 +130,14 @@ export default {
                     }
 
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: result.data.message, id: 'well-alert', class: 'well-lg bg-primary text-center questioneditor-alert-pan'});
+                    window.LS.notifyFader(result.data.message, 'well-lg bg-primary text-center');
                     this.$store.dispatch('updateObjects', result.data.newQuestionDetails)
                     this.event = { target: 'MainEditor', method: 'getQuestionPreview', content: {} };
                     this.$log.log('OBJECT AFTER TRANSFER: ', result);
                 },
                 (reject) => {
                     $('#in_survey_common').trigger('lsStopLoading');
-                    this.$store.commit('addAlert', {message: "Question could not be stored. Reloading page.", id: 'well-alert', class: 'well-lg bg-danger text-center questioneditor-alert-pan'});
+                    window.LS.notifyFader("Question could not be stored. Reloading page.", 'well-lg bg-danger text-center');
                     setTimeout(()=>{window.location.reload();}, 1500);
                 }
             )
@@ -131,7 +149,10 @@ export default {
             tempQuestionObject.type = newValue;
             this.$store.commit('setCurrentQuestion', tempQuestionObject);
             this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: true, chain: 'AdvancedSettings' };
-            this.$store.dispatch('reloadQuestion').finally(()=>{
+            Promise.all([
+                this.$store.dispatch('getQuestionGeneralSettings'),
+                this.$store.dispatch('getQuestionAdvancedSettings')
+            ]).finally(()=>{
                 this.event = { target: 'GeneralSettings', method: 'toggleLoading', content: false, chain: 'AdvancedSettings' };
             });
         },

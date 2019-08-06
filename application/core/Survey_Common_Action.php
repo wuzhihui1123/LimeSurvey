@@ -44,7 +44,6 @@ class Survey_Common_Action extends CAction
     {
         // Default method that would be called if the subaction and run() do not exist
         $sDefault = 'index';
-
         // Check for a subaction
         if (empty($params['sa'])) {
             $sSubAction = $sDefault; // default
@@ -70,7 +69,9 @@ class Survey_Common_Action extends CAction
         $oMethod  = new ReflectionMethod($this, $sSubAction);
 
         // Get the action classes from the admin controller as the urls necessarily do not equal the class names. Eg. survey -> surveyaction
-        $aActions = Yii::app()->getController()->getActionClasses();
+        // Merges it with actions from admin modules
+        $aActions = array_merge(Yii::app()->getController()->getActionClasses(), Yii::app()->getController()->getAdminModulesActionClasses() );
+
 
         if (empty($aActions[$this->getId()]) || strtolower($oMethod->getDeclaringClass()->name) != strtolower($aActions[$this->getId()]) || !$oMethod->isPublic()) {
             // Either action doesn't exist in our whitelist, or the method class doesn't equal the action class or the method isn't public
@@ -251,7 +252,7 @@ class Survey_Common_Action extends CAction
      * @param array $aData
      * @return string
      */
-    private function renderCentralContents($sAction, $aViewUrls, $aData = [])
+    protected function renderCentralContents($sAction, $aViewUrls, $aData = [])
     {
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
@@ -261,6 +262,7 @@ class Survey_Common_Action extends CAction
         ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
         // Load views
         $content = "";
+
         foreach ($aViewUrls as $sViewKey => $viewUrl) {
             if (empty($sViewKey) || !in_array($sViewKey, array('message', 'output'))) {
                 if (is_numeric($sViewKey)) {
@@ -341,7 +343,6 @@ class Survey_Common_Action extends CAction
         } else {
             $renderFile = $basePath.'/'.$sRenderFile;
         }
-
         $content = $this->renderCentralContents($sAction, $aViewUrls, $aData);
         $out = $this->renderInternal($renderFile, ['content' => $content, 'aData' => $aData], true);
 
