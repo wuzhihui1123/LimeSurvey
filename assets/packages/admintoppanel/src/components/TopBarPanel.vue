@@ -23,7 +23,7 @@
               <button-element v-else :button="button" />
             </li>
         </ul>
-        <ul v-if="(this.ownTopBar.alignment.right)" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
+        <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length > 1" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
             <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">
               <button-element :button="button" />
             </li>
