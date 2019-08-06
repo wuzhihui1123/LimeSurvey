@@ -21,6 +21,16 @@
                2 {{ button.name }}
        </button>
 
+       <!-- Modal Button -->
+       <button v-else-if="button.type === 'modal'"
+               type="button"
+               :href ="button.url"
+               class="btn btn-default navbar-btn button"
+               @click="emitEventOpenModal()">
+               <span :class="'icon ' + button.icon" />
+                 6 {{ button.name }}
+       </button>
+
        <!-- Button with outlined image, so font will be white -->
        <button v-else-if="button.icon.includes('-o')"
                    type="button"
@@ -68,6 +78,10 @@
       methods: {
         clicked(event) {
           this.$emit('click', this.button, event);
+        },
+        emitEventOpenModal() {
+          this.$emit('openModal', this.button);
+          console.log('Event openModal emitted');
         }
       },
   }
