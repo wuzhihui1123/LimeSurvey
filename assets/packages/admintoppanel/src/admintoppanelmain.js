@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import VModal from 'vue-js-modal';
 import TopBarPanel from './components/TopBarPanel.vue';
 import getAppState from "./storage/store.js";
 import {PluginLog} from "./mixins/logSystem.js";
@@ -9,6 +10,9 @@ Vue.config.ignoredElements = ["x-test"];
 Vue.config.devtools = true;
 
 Vue.use( PluginLog );
+Vue.use( VModal, {
+  dynamic: true,
+});
 
 Vue.component('loader-widget', Loader);
 

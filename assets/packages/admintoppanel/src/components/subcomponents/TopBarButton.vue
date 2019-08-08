@@ -79,9 +79,12 @@
         clicked(event) {
           this.$emit('click', this.button, event);
         },
-        emitEventOpenModal() {
-          this.$emit('openModal', this.button);
-          console.log('Event openModal emitted');
+        emitEventOpenModal(event) {
+          let name = this.button.name;
+          if (name === 'Display/Export') {
+            LS.EventBus.$emit('doOpenModalDisplayExport', this.button, event);
+            console.log('Das Event doOpenModalDisplayExport wurde geworfen.');
+          }
         }
       },
   }

@@ -19,7 +19,16 @@
       <div v-if="!this.slide" class="ls-flex flex-row" id="topbar">
         <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
-              <button-group-element v-if="button.class !== undefined && button.class.includes('btn-group')" :class="button.class" :list="button.dropdown" :mainButton="button.main_button" />
+              <button-group-element v-if="button.dropdown !== undefined &&
+                                          button.class.includes('btn-group')"
+                                    :class="button.class"
+                                    :list="button.dropdown"
+                                    :mainButton="button.main_button" />
+              <button-group-element v-else-if="button.modal !== undefined &&
+                                               button.class.includes('btn-group')"
+                                    :class="button.class"
+                                    :modal="button.modal"
+                                    :mainButton="button.main_button" />
               <button-element v-else :button="button" />
             </li>
         </ul>
@@ -37,7 +46,6 @@
 <script>
 import Button from "./subcomponents/TopBarButton.vue";
 import ButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
-import Modal from './subcomponents/Modal.vue';
 import runAjax  from '../mixins/runAjax.js';
 import EventBus from '../../../event-bus/event-bus.js';
 
@@ -46,7 +54,6 @@ export default {
   components: {
     'button-element': Button,
     'button-group-element': ButtonGroup,
-    'modal-element': Modal,
   },
   props: {
     qid: Number,
@@ -142,10 +149,10 @@ export default {
       } else {
         $('#topbar').slideUp();
       }
-    }
+    },
+
   },
   created() {
-      // this.setSurveyID(this.sid);
       this.setType(this.type);
 
       if (this.qid !== 0 && this.type === 'question' && this.gid !== 0) {

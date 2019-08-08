@@ -1,15 +1,23 @@
 <template>
   <div class="topbarlink">
-    <a v-if="item.url && item.name && item.icon === ''"
+    <a v-if="item.url  &&
+             item.name &&
+             item.icon === ''"
       :href="item.url">
       1 {{ item.name }}
     </a>
-    <a v-else-if="item.url &&
+    <a v-else-if="item.url  &&
                   item.name &&
                   item.icon !== ''"
       :href="item.url">
       <span :class="item.icon + ' icon'" />
       2 {{ item.name }}
+    </a>
+    <a v-else-if="item.url   &&
+                  item.title &&
+                  preview_title !== ''"
+      :href="item.url">
+      3 {{ item.title }} <small><i>{{ preview_title}} {{ item.title }}</i></small>
     </a>
   </div>
 </template>
@@ -20,6 +28,7 @@ export default {
   props: {
     item: Object,
     active: Boolean,
+    preview_title: String,
   },
   data() {
     return {}

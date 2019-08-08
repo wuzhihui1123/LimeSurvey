@@ -2499,7 +2499,11 @@ class SurveyAdmin extends Survey_Common_Action
 
       $language = $oSurvey->language;
       $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
-      $oneLanguage    = (count($oSurvey->allLanguages) == 1);
+      $oneLanguage     = (count($oSurvey->allLanguages) == 1);
+
+      $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+                       Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
+                       Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
 
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
@@ -2521,6 +2525,7 @@ class SurveyAdmin extends Survey_Common_Action
           'hasSurveyReadPermission' => $hasSurveyReadPermission,
           'oneLanguage' => $oneLanguage,
           'hasSurveyExportPermission' => $hasSurveyExportPermission,
+          'respstatsread' => $respstatsread,
         ),
         false,
         false
