@@ -2,7 +2,7 @@
   <div class="topbardropdown">
     <button-element v-if="mainButton" :button="mainButton" @click.native="handleClick()" />
     <ul v-if="isOpen && list" :class="'dropdown-box ' + list.class" :aria-labelledby="list.arialabelledby">
-      <li v-for="(item, index) in list.items" :key="item.id">
+      <li v-for="item in list.items" :key="item.id">
         <link-element v-if="isActive" :active="isActive" :item="item" @click="handleLinkClick()"/>
         <link-element v-else :item="item" @click="handleLinkClick()"/>
         <seperator-element v-if="item.class === 'divider' && item.role === 'seperator'" :item="item" />

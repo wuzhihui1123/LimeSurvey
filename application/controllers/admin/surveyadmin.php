@@ -2479,7 +2479,8 @@ class SurveyAdmin extends Survey_Common_Action
       $hasDeletePermission           = Permission::model()->hasSurveyPermission($sid, 'survey', 'delete');
       $hasSurveyTranslatePermission  = Permission::model()->hasSurveyPermission($sid, 'translations', 'read');
       $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
-      $hasSurveyExportPermission     = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+      $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') ||
+                                       Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
       $isActive  = $oSurvey->isActive;
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
@@ -2501,10 +2502,6 @@ class SurveyAdmin extends Survey_Common_Action
       $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
       $oneLanguage     = (count($oSurvey->allLanguages) == 1);
 
-      $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
-                       Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
-                       Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
-
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
         array(
@@ -2524,8 +2521,7 @@ class SurveyAdmin extends Survey_Common_Action
           'conditionsCount' => $conditionsCount,
           'hasSurveyReadPermission' => $hasSurveyReadPermission,
           'oneLanguage' => $oneLanguage,
-          'hasSurveyExportPermission' => $hasSurveyExportPermission,
-          'respstatsread' => $respstatsread,
+          'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
         ),
         false,
         false

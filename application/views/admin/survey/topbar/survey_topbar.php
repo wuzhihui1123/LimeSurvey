@@ -57,7 +57,7 @@ if (!$isActive) {
 if ($isActive || $hasSurveyContentPermission) {
   if ($countLanguage > 1) {
     // TODO: Multinlinguage
-    // TODO: BTN-GROUP
+    // TODO: BTN-GROUP (implemented in Vue JS as Component, has to be in the right array structure, to render it correctly.)
     // <?php if (count($oSurvey->allLanguages) > 1):
     // <div class="btn-group"> -->
     // <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
@@ -218,6 +218,17 @@ if (!$isActive && $hasSurveyContentPermission) {
   array_push($buttonsgroup['tools']['dropdown']['items'], $buttons['by_question_group']);
 }
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);
+
+// TODO: Token
+if ($hasSurveyTokensPermission) {
+  $buttons['survey_participants'] = [
+    'url'   => $this->createUrl("admin/tokens/sa/index/surveyid/$sid"),
+    'class' => 'pjax btntooltip',
+    'icon'  => 'fa fa-user',
+    'name'  => gT('Survey participants'),
+  ];
+  array_push($topbar['alignment']['left']['buttons'], $buttons['survey_participants']);
+}
 
 $finalJSON = [
   'permissions' => $permissions,
