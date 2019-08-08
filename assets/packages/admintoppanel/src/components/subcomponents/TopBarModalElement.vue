@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: WIDGET ALS SLOT ANZEIGEN LASSEN, php code über vue komponente -> mit getModal(true)
   <div class="topbarmodalelement">
     <h4><b>{{ item.title }}</b></h4>
     <hr>
@@ -10,14 +11,14 @@
     </div>
     <!-- TODO: Modal Content muss rechts neben den Items stehen -->
     <div class="modalcontent">
-      <h5><b>{{ item.preview_title }}</b></h5>
+      <!-- <h5><b>{{ item.preview_title }}</b></h5>
       <div v-if="show">
         <h5> {{ currentSelectedItem.title }}</h5>
         <div v-for="(detail, index) in currentSelectedItem.details" :key="detail.id">
           <p v-if="index === 'p'">{{ detail }}</p>
           <p v-if="index === 'pb'"><b>{{ detail }}</b></p>
           <!-- TODO: Liste Details muss gerendert werden -->
-          <ul v-if="index === 'ul'">
+          <!-- <ul v-if="index === 'ul'">
 
           </ul>
         </div>
@@ -27,7 +28,7 @@
     <hr>
     <div class="content-footer" v-if="item.buttons">
       <button-element v-for="button in item.buttons" :item="button" />
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -526,7 +526,17 @@ class Survey_Common_Action extends CAction
       } else if (isset($aData['gid'])) {
         $aData['topBarType'] = 'group';
       } else if (isset($aData['surveyid'])) {
-        $aData['topBarType'] = 'survey';
+        $sid = $aData['sid'];
+        $oSurvey       = Survey::model()->findByPk($sid);
+        $respstatsread = Permission::model()->hasSurveyPermission($sid, 'responses', 'read')  ||
+                         Permission::model()->hasSurveyPermission($sid, 'statistics', 'read') ||
+                         Permission::model()->hasSurveyPermission($sid, 'responses', 'export');
+        $surveyexport = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'export');
+        $oneLanguage  = (count($oSurvey->allLanguages) == 1);
+        $aData['respstatsread'] = $respstatsread;
+        $aData['surveyexport']  = $surveyexport;
+        $aData['onelanguage']   = $oneLanguage;
+        $aData['topBarType']    = 'survey';
       }
       $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
       // if( isset($aData['qid']) || isset($aData['gid'])) {

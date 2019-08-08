@@ -222,25 +222,6 @@ array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);
   // Display/Export Part
 if ($hasSurveyExportPermission) {
 
-  $buttonsgroup['tools'] = [
-    'class' => 'btn-group hidden-xs',
-    'main_button' => [
-      'id'            => 'ls-tools-button',
-      'class'         => 'dropdown-toggle',
-      'datatoggle'   => 'dropdown',
-      'ariahaspopup' => 'true',
-      'ariaexpanded' => 'false',
-      'icon'          => 'icon-tools',
-      'iconclass'    => 'caret',
-      'name'          => gT('Tools'),
-    ],
-      'dropdown' => [
-        'class' => 'dropdown-menu',
-        'arialabelledby' => 'ls-tools-button',
-        'items' => [],
-    ],
-  ];
-
   $exportItems = [
     'survey_structure' => [
       'title' => gT('Survey structure (.lss)'),
@@ -291,20 +272,20 @@ if ($hasSurveyExportPermission) {
         'type' => 'modal',
       ],
       'modal' => [
-        'component_name' => 'display-export',
-        'title' => gT('Display/Export'),
-        'preview_title' => gT('Export type'),
-        'current_selected_item' => gT("Display/Export"),
-        'items' => $exportItems,
-        'buttons' => [
-          'close' => [
-            'name' => gT('Close'),
-          ],
-          'export' => [
-            'name' => gt('Export'),
-            'class' => 'btn-success',
-          ],
-        ],
+        // 'component_name' => 'display-export',
+        // 'title' => gT('Display/Export'),
+        // 'preview_title' => gT('Export type'),
+        // 'current_selected_item' => gT("Display/Export"),
+        // 'items' => $exportItems,
+        // 'buttons' => [
+        //   'close' => [
+        //     'name' => gT('Close'),
+        //   ],
+        //   'export' => [
+        //     'name' => gt('Export'),
+        //     'class' => 'btn-success',
+        //   ],
+        // ],
       ],
   ];
   // Display/Export Button

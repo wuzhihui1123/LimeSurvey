@@ -31,6 +31,11 @@
                                     :mainButton="button.main_button" />
               <button-element v-else :button="button" />
             </li>
+            <li>
+              <slot name="exportbutton">
+                <button @click="()=>false" class="btn btn-default">Blablabutton</button>
+              </slot>
+            </li>
         </ul>
         <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length > 1" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
             <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">

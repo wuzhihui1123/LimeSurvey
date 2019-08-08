@@ -37,7 +37,7 @@ export default {
   mounted() {
     LS.EventBus.$on('doOpenModalDisplayExport', () => {
       console.log('Received doOpenModalDisplayExport');
-      this.showModal();
+      // this.showModal();
     });
   }
 }
