@@ -24,11 +24,6 @@
                                     :class="button.class"
                                     :list="button.dropdown"
                                     :mainButton="button.main_button" />
-              <button-group-element v-else-if="button.modal !== undefined &&
-                                               button.class.includes('btn-group')"
-                                    :class="button.class"
-                                    :modal="button.modal"
-                                    :mainButton="button.main_button" />
               <button-element v-else :button="button" />
             </li>
             <li>

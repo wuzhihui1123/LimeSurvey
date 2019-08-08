@@ -21,16 +21,6 @@
                2 {{ button.name }}
        </button>
 
-       <!-- Modal Button -->
-       <button v-else-if="button.type === 'modal'"
-               type="button"
-               :href ="button.url"
-               class="btn btn-default navbar-btn button"
-               @click="emitEventOpenModal()">
-               <span :class="'icon ' + button.icon" />
-                 6 {{ button.name }}
-       </button>
-
        <!-- Button with outlined image, so font will be white -->
        <button v-else-if="button.icon.includes('-o')"
                    type="button"
@@ -79,13 +69,6 @@
         clicked(event) {
           this.$emit('click', this.button, event);
         },
-        emitEventOpenModal(event) {
-          let name = this.button.name;
-          if (name === 'Display/Export') {
-            LS.EventBus.$emit('doOpenModalDisplayExport', this.button, event);
-            console.log('Das Event doOpenModalDisplayExport wurde geworfen.');
-          }
-        }
       },
   }
 </script>
