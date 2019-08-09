@@ -2519,6 +2519,8 @@ class SurveyAdmin extends Survey_Common_Action
       $language = $oSurvey->language;
       $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
       $oneLanguage     = (count($oSurvey->allLanguages) == 1);
+
+      // TODO: Es wird nun der SaveButton in jeder Seite, die die Surveybar einbindet, gerendert. Wie kann man das beheben?
       $aData['surveybar']['savebutton']['form'] = 'globalsetting';
       $ownsSaveButton  = $aData['surveybar']['savebutton']['form'];
 

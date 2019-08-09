@@ -34,7 +34,8 @@
               </slot>
             </li>
         </ul>
-        <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length > 1" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
+        <!-- TODO: Breite der Bar dynamisch (FLEX?)-->
+        <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length >= 1" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
             <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">
               <button-element :button="button" />
             </li>
@@ -62,6 +63,7 @@ export default {
     gid: Number,
     sid: Number,
     type: String,
+    ownsSaveButton: Boolean,
   },
 
   // TODO: Für jede Topbar muss eine eigene Struktur für die TopBarExtended erstellt werden.

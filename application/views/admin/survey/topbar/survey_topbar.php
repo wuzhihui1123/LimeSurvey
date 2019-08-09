@@ -304,6 +304,10 @@ if ($isActive) {
 if ($ownsSaveButton) {
   $buttons['save'] = [
     'name' => gT('Save'),
+    'id'   => 'save-button',
+    'class' => 'btn-success',
+    'icon'  => 'fa fa-floppy-o',
+    'url'   => '#',
   ];
   array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
 }

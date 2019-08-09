@@ -10,9 +10,10 @@
                 :id="button.id">
                 1 {{ button.name }}
        </button>
-
+              
        <!-- Button with image and btn-danger -->
-       <button v-else-if="button.class === 'btn-danger' && button.icon !== undefined"
+       <button v-else-if="button.class === 'btn-danger' && 
+                          button.icon !== undefined"
                type="button"
                :class="'btn btn-default navbar-btn button white ' + button.class"
                :href="button.url"
@@ -22,7 +23,10 @@
        </button>
 
        <!-- Button with outlined image, so font will be white -->
-       <button v-else-if="button.icon.includes('-o')"
+       <button v-else-if="button.icon.includes('-o') &&
+                          button.class               &&
+                          button.url                 && 
+                          button.id"
                    type="button"
                    :class="'btn btn-default navbar-btn button white ' + button.class"
                    :href="button.url"
