@@ -1,6 +1,7 @@
 
 <?php
-  if ($topBarType = 'survey') {
+  if ($topBarType == 'survey') {
+    
     $aExportItemsArray = [];
 
     $aExportItemsArray["surveystructure"] = [
@@ -183,13 +184,13 @@
     ));
   }
 ?>
-<?php if($topBarType = 'survey'): ?>
+<?php if($topBarType == 'survey'): ?>
 <div class="btn-group hidden-xs">
     <?=$oExportSelector->getModal(); ?>
 
 </div>
-<?php endif; ?>
 <?php $this->endWidget('ext.admin.PreviewModalWidget.PreviewModalWidget'); ?>
+<?php endif; ?>
 
 <div id="vue-topbar-container" class="container-fluid" style="width: 100%">
   <topbar
@@ -199,7 +200,9 @@
     type  = '<?php echo $topBarType ?>'
   >
   <template v-slot:exportbutton>
-        <?=$oExportSelector->getButtonOrSelect(); ?>
+        <? if($topBarType == 'survey') {
+            $oExportSelector->getButtonOrSelect(); 
+        }?>
   </template>
 </topbar>
 </div>

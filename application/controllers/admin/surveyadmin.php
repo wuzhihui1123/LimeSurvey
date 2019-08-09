@@ -2481,6 +2481,9 @@ class SurveyAdmin extends Survey_Common_Action
       $hasSurveyReadPermission       = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read');
       $hasSurveyTokensPermission     = Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') ||
                                        Permission::model()->hasSurveyPermission($sid, 'tokens', 'create');
+      $hasResponsesCreatePermission = Permission::model()->hasSurveyPermission($sid, 'responses', 'create');
+      $hasResponsesReadPermission   = Permission::model()->hasSurveyPermission($sid, 'responses', 'read');
+
       $isActive  = $oSurvey->isActive;
       $condition = array('sid' => $sid, 'parent_qid' => 0);
       $sumcount  = Question::model()->countByAttributes($condition);
@@ -2521,7 +2524,9 @@ class SurveyAdmin extends Survey_Common_Action
           'conditionsCount' => $conditionsCount,
           'hasSurveyReadPermission' => $hasSurveyReadPermission,
           'oneLanguage' => $oneLanguage,
-          'hasSurveyTokensPermission' => $hasSurveyTokensPermission,
+          'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
+          'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
+          'hasResponsesReadPermission'   => $hasResponsesReadPermission,
         ),
         false,
         false

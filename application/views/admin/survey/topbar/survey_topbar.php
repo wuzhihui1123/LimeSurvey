@@ -244,8 +244,46 @@ if ($isActive) {
       'name' => gT('Responses'),
       'iconclass' => 'caret',
     ],
-    'dropdown' => [],
+    'dropdown' => [
+      'class' => 'dropdown-menu',
+      'items' => [],
+    ],
   ];
+
+  // Responses & statistics
+  if ($respstatsread && $isActive) {
+    $buttons['responses_statistics'] = [
+      'class' => 'pjax',
+      'url'   => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),
+      'icon'  => 'icon-browse',
+      'name'  =>  gT('Responses & statistics'),
+    ];
+
+    array_push($buttonsgroup['statistics']['dropdown']['items'], $buttons['responses_statistics']);
+  }
+
+  // Data Entry Screen 
+  if ($hasResponsesCreatePermission && $isActive) {
+    $buttons['data_entry_screen'] = [
+      'url' => $this->createUrl("admin/dataentry/sa/view/surveyid/$sid"),
+      'icon' => 'fa fa-keyboard-o',
+      'name' => gT('Data entry screen'),
+    ];
+
+    array_push($buttonsgroup['statistics']['dropdown']['items'], $buttons['data_entry_screen']);
+  }
+
+  // Partial (saved) Responses 
+  if ($hasResponsesReadPermission && $isActive) {
+    $buttons['partial_saved_responses'] = [
+      'url'  => $this->createUrl("admin/saved/sa/view/surveyid/$sid"),
+      'icon' => 'icon-saved',
+      'name' => gT('Partial (saved) responses'),
+    ];
+
+    array_push($buttonsgroup['statistics']['dropdown']['items'], $buttons['partial_saved_responses']);
+  }
+
 } else {
   $buttonsgroup['statistics'] = [
     'class' => 'btn-group',
