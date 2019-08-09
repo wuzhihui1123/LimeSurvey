@@ -539,10 +539,6 @@ class Survey_Common_Action extends CAction
         $aData['topBarType']    = 'survey';
       }
       $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
-      // if( isset($aData['qid']) || isset($aData['gid'])) {
-        // $aData['topBarType'] = ( isset($aData['qid']) ? 'question' : 'group' );
-        // $this->getController()->renderPartial("/admin/survey/Question2/topbar_view", $aData);
-      // }
     }
 
     /**

@@ -2472,7 +2472,7 @@ class SurveyAdmin extends Survey_Common_Action
       );
     }
 
-    public function getSurveyTopbar($sid) {
+    public function getSurveyTopbar($sid, $subactions = '') {
       $oSurvey   = Survey::model()->findByPk($sid);
       $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
@@ -2504,6 +2504,8 @@ class SurveyAdmin extends Survey_Common_Action
       $language = $oSurvey->language;
       $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
       $oneLanguage     = (count($oSurvey->allLanguages) == 1);
+      $aData['surveybar']['savebutton']['form'] = 'globalsetting';
+      $ownsSaveButton  = $aData['surveybar']['savebutton']['form'];
 
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
@@ -2527,6 +2529,7 @@ class SurveyAdmin extends Survey_Common_Action
           'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
           'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
           'hasResponsesReadPermission'   => $hasResponsesReadPermission,
+          'ownsSaveButton'  => $ownsSaveButton,
         ),
         false,
         false

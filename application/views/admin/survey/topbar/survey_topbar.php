@@ -300,6 +300,14 @@ if ($isActive) {
   array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['statistics']);
 }
 
+// save button 
+if ($ownsSaveButton) {
+  $buttons['save'] = [
+    'name' => gT('Save'),
+  ];
+  array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
+}
+
 $finalJSON = [
   'permissions' => $permissions,
   'topbar'      => $topbar,
