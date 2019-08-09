@@ -17,7 +17,7 @@
     </transition>
     <transition name="fade">
       <div v-if="!this.slide" class="ls-flex flex-row" id="topbar">
-        <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left">
+        <ul v-if="(this.ownTopBar.alignment.left)" class="nav navbar-nav ls-flex-item text-left  grow-3">
             <li v-for="button in this.ownTopBar.alignment.left.buttons" :key="button.id">
               <button-group-element v-if="button.dropdown !== undefined &&
                                           button.class.includes('btn-group')"
@@ -35,7 +35,7 @@
             </li>
         </ul>
         <!-- TODO: Breite der Bar dynamisch (FLEX?)-->
-        <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length >= 1" class="nav navbar-nav ls-flex-item text-center grow-2 padding-left">
+        <ul v-if="(this.ownTopBar.alignment.right) && this.ownTopBar.alignment.right.buttons.length >= 1" class="nav navbar-nav ls-flex-item text-center padding-left scoped-switch-floats">
             <li v-for="button in this.ownTopBar.alignment.right.buttons" :key="button.id">
               <button-element :button="button" />
             </li>
@@ -194,6 +194,14 @@ export default {
     .navbar, .navbar-default {
         padding-left: 15px;
         border:none;
+    }
+
+    .scoped-switch-floats {
+        .navbar-nav {
+            li {
+                float: right;
+            }
+        }
     }
 
     .nav > li {
