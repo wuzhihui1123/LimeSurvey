@@ -230,8 +230,7 @@ if ($hasSurveyTokensPermission) {
   array_push($topbar['alignment']['left']['buttons'], $buttons['survey_participants']);
 }
 
-// TODO: Statistics 
-// TODO: Implement active Statistics for active surveys.
+// Statistics 
 if ($isActive) {
   $buttonsgroup['statistics'] = [
     'class' => 'btn-group',
