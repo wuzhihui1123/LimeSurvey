@@ -219,7 +219,7 @@ if (!$isActive && $hasSurveyContentPermission) {
 }
 array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['tools']);
 
-// TODO: Token
+// Token
 if ($hasSurveyTokensPermission) {
   $buttons['survey_participants'] = [
     'url'   => $this->createUrl("admin/tokens/sa/index/surveyid/$sid"),
@@ -228,6 +228,38 @@ if ($hasSurveyTokensPermission) {
     'name'  => gT('Survey participants'),
   ];
   array_push($topbar['alignment']['left']['buttons'], $buttons['survey_participants']);
+}
+
+// TODO: Statistics 
+// TODO: Implement active Statistics for active surveys.
+if ($isActive) {
+  $buttonsgroup['statistics'] = [
+    'class' => 'btn-group',
+    'main_button' => [
+      'class' => 'dropdown-toggle',
+      'datatoggle'   => 'dropdown',
+      'ariahaspopup' => true,
+      'ariaexpanded' => false,
+      'icon' => 'icon-responses',
+      'name' => gT('Responses'),
+      'iconclass' => 'caret',
+    ],
+    'dropdown' => [],
+  ];
+} else {
+  $buttonsgroup['statistics'] = [
+    'class' => 'btn-group',
+    'main_button' => [
+      'class' => 'readonly',
+      'name'  => gT('Responses'),
+      'datatoggle'    => 'tooltip',
+      'dataplacement' => 'bottom',
+      'title'     => gT('This survey is not active - no responses are available.'),
+      'iconclass' => 'caret',
+    ],
+  ];
+
+  array_push($topbar['alignment']['left']['buttons'], $buttonsgroup['statistics']);
 }
 
 $finalJSON = [

@@ -4,12 +4,12 @@
       <transition name="fade">
       <div v-if="this.slide" class="ls-flex flex-row" id="topbarextended">
           <ul v-if="this.slide && this.ownTopBarExtended.alignment.left" class="nav navbar-nav ls-flex-item text-left">
-            <li v-for="button in this.ownTopBarExtended.alignment.left.buttons">
+            <li v-for="button in this.ownTopBarExtended.alignment.left.buttons" :key="button.id">
               <button-element :button="button" />
             </li>
           </ul>
           <ul v-if="this.slide && this.ownTopBarExtended.alignment.right" class="nav navbar-nav ls-flex-item right">
-            <li v-for="button in this.ownTopBarExtended.alignment.right.buttons">
+            <li v-for="button in this.ownTopBarExtended.alignment.right.buttons" :key="button.id">
               <button-element :button="button" />
             </li>
           </ul>
@@ -24,6 +24,9 @@
                                     :class="button.class"
                                     :list="button.dropdown"
                                     :mainButton="button.main_button" />
+              <button-group-element v-if="button.class === 'btn-group'"
+                                    :class="button.class"
+                                    :mainButton="button.mainButton" />
               <button-element v-else :button="button" />
             </li>
             <li>
