@@ -31,7 +31,6 @@
             </li>
             <li>
               <slot name="exportbutton">
-                <button @click="()=>false" class="btn btn-default">Blablabutton</button>
               </slot>
             </li>
         </ul>
