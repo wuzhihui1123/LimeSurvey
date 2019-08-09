@@ -45,6 +45,19 @@
               <span :class="button.iconclass + ' icon'" />
       </button>
 
+      <!-- Button with class readonly -->
+      <button v-else-if="button.class === 'readonly' && 
+                         button.dataplacement === 'bottom'"
+              type = "button"
+              :data-placement="button.dataplacement"
+              :class ="'btn btn-default navbar-btn button ' + button.class"
+              :data-toggle="button.datatoggle"
+              :title ="button.title">
+              <span v-if="button.icon !== undefined" :class="'icon ' + button.icon" />
+              {{ button.name }}
+              <span v-if="button.iconclass !== undefined" :class="'icon ' + button.iconclass" />
+      </button>
+
       <!-- Default Button with image -->
       <button v-else
               type = "button"

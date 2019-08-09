@@ -252,6 +252,7 @@ if ($isActive) {
     'main_button' => [
       'class' => 'readonly',
       'name'  => gT('Responses'),
+      'icon'  => 'icon-responses',
       'datatoggle'    => 'tooltip',
       'dataplacement' => 'bottom',
       'title'     => gT('This survey is not active - no responses are available.'),

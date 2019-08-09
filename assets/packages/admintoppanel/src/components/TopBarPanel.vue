@@ -26,7 +26,7 @@
                                     :mainButton="button.main_button" />
               <button-group-element v-if="button.class === 'btn-group'"
                                     :class="button.class"
-                                    :mainButton="button.mainButton" />
+                                    :mainButton="button.main_button" />
               <button-element v-else :button="button" />
             </li>
             <li>
