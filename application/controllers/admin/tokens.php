@@ -1370,7 +1370,11 @@ class tokens extends Survey_Common_Action
         initKcfinder();
         Yii::app()->loadHelper('replacements');
 
-        $token = Token::model($iSurveyId)->find()->decrypt();
+        $oToken = Token::model($iSurveyId)->find();
+        $token = null;
+        if ($oToken !== null) {
+            $token = Token::model($iSurveyId)->find()->decrypt();
+        }
 
         $aExampleRow = isset($token) ? $token->attributes : array();
         $aSurveyLangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
@@ -1394,6 +1398,9 @@ class tokens extends Survey_Common_Action
         $aData['examplerow'] = $aExampleRow;
         $aData['tokenids'] = $aTokenIds;
         $aData['ishtml'] = $bHtml;
+        $aData['reminderbutton'] = (Yii::app()->request->getParam('action') == "remind");
+                        
+                        
         $iMaxEmails = Yii::app()->getConfig('maxemails');
 
         // TODO: Rename 'ok' to something meaningful.

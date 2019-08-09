@@ -1,7 +1,7 @@
 <template>
     <div class="topbarbutton">
         <!-- Button without image and btn-success -->
-        <button v-if="button.icon  === undefined &&
+        <a v-if="button.icon  === undefined &&
                       button.class === 'btn-success' &&
                       button.id"
                 type="button"
@@ -12,15 +12,14 @@
        </button>
               
        <!-- Button with image and btn-danger -->
-       <button v-else-if="button.class === 'btn-danger' && 
-                          button.icon !== undefined"
+       <button v-else-if="button.class === 'btn-danger' && button.icon !== undefined"
                type="button"
                :class="'btn btn-default navbar-btn button white ' + button.class"
                :href="button.url"
                :id="button.id">
                <span :class="'icon ' + button.icon || ''" />
                2 {{ button.name }}
-       </button>
+       </a>
 
        <!-- Button with outlined image, so font will be white -->
        <button v-else-if="button.icon.includes('-o') &&
@@ -33,7 +32,7 @@
                    :id="button.id">
              <span :class="button.icon || '' + ' icon'" />
              3 {{ button.name }}
-       </button>
+       </a>
 
       <!-- Dropdown Button -->
       <button v-else-if="button.class === 'dropdown-toggle'"
@@ -63,7 +62,7 @@
       </button>
 
       <!-- Default Button with image -->
-      <button v-else
+      <a v-else
               type = "button"
               :class = "'btn btn-default navbar-btn button ' + button.class"
               :href = "button.url"
@@ -71,7 +70,7 @@
               :access-key="button.accesskey">
               <span :class="button.icon || '' + ' icon'" />
               5 {{ button.name }}
-     </button>
+     </a>
     </div>
 </template>
 
@@ -95,10 +94,6 @@
 
  .icon {
    margin-right: 2px;
-  }
-
-  .button {
-    margin-left: 2px;
   }
 
   .white {

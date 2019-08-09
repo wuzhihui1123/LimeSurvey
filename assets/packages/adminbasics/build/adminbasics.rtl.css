@@ -90,21 +90,6 @@
   animation: pulse ease-in-out 1.8s infinite 1.4s;
 }
 
-@keyframes pulse {
-  00.000% {
-    box-shadow: 0 0 1em #0f3e12;
-  }
-  50.000% {
-    box-shadow: 0 0 0.3em #2db936;
-    height: 1em;
-    margin-top: 1em;
-    opacity: 0.8;
-  }
-  100.00% {
-    box-shadow: 0 0 1em #0f3e12;
-  }
-}
-
 .simpleWrapper {
   padding: 0;
   margin: 0;

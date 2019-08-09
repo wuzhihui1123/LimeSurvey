@@ -16,6 +16,17 @@ $topbar  = [
     ],
   ],
 ];
+$topbarextended = [
+    'alignment' => [
+      'left' => [
+        'buttons' => []
+      ],
+      'right' => [
+        'buttons' => []
+      ],
+    ]
+  ];
+###### Left aligned
 
   // Display participants
 if (Permission::model()->hasSurveyPermission($sid, 'tokens', 'read')) {
@@ -261,9 +272,71 @@ array_push($topbar['alignment']['left']['buttons'], $buttons['view_in_cpdb']);
 //   ];
 //   array_push($topbar['alignment']['left']['buttons'], $buttons['import_from']);
 
+
+###### Right aligned
+
+if (Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update') 
+    || Permission::model()->hasSurveyPermission($sid, 'tokens', 'delete')
+) {
+    $buttons['delete_tokens'] = [
+        'url'  => $this->createUrl("admin/tokens/sa/kill/surveyid/$sid"),
+        'name' => gT('Delete participants table'),
+        'icon' => 'fa fa-trash-o',
+        'class' => 'btn btn-danger',
+    ];
+    array_push($topbar['alignment']['right']['buttons'], $buttons['delete_tokens']);
+}
+
+
+/* OLD HTML CODE  ->  only for completioncontrol
+            <?php if(isset($token_bar['exportbutton']['form'])):?>
+            <a class="btn btn-success" href="#" role="button" id="save-button">
+                <span class="fa fa fa-export" ></span>
+                <?php eT("Download CSV file"); ?>
+            </a>
+            <?php endif;?>
+
+
+            <!-- Save buttons -->
+            <?php if(isset($token_bar['savebutton']['form'])):?>
+
+                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
+                    <span class="fa fa-floppy-o" ></span>
+                    <?php eT("Save");?>
+                </a>
+            <?php endif;?>
+
+      
+
+            <!-- Close -->
+            <?php if(isset($token_bar['closebutton']['url'])):?>
+                <a class="btn btn-danger" href="<?php echo $token_bar['closebutton']['url']; ?>" role="button">
+                    <span class="fa fa-close" ></span>
+                    <?php eT("Close");?>
+                </a>
+            <?php endif;?>
+
+            <!-- Return -->
+            <?php if(isset($token_bar['returnbutton'])):?>
+                <a class="btn btn-default" href="<?php echo $token_bar['returnbutton']['url']; ?>" role="button">
+                    <span class="fa fa-step-backward" ></span>
+                    <?php echo $token_bar['returnbutton']['text'];?>
+                </a>
+            <?php endif;?>
+        </div>
+
+    </div>
+
+*/
+
+
+
+
+
 $finalJSON = [
-    'permission'     => $permissions,
-    'topbar'         => $topbar,
+    'permission'       => $permissions,
+    'topbar'           => $topbar,
+    'topbarextended'  => $topbarextended,
   ];
   
   header("Content-Type: application/json");

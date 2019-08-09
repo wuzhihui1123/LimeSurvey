@@ -191,15 +191,20 @@ export default {
 
 <style lang="scss" scoped>
 
-  .topbarpanel {
-    box-shadow: 3px 3px 3px #35363f;
-  }
+    .navbar, .navbar-default {
+        padding-left: 15px;
+        border:none;
+    }
 
-  .padding-left {
-    padding-left: 155px;
-  }
+    .nav > li {
+        margin-left: 2px;
+    }
 
-  .right {
-    padding-left: 40%;
-  }
+    .padding-left {
+        padding-left: 5px;
+    }
+
+    .right {
+        align-self: flex-end;
+    }
 </style>

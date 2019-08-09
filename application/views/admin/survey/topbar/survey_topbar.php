@@ -250,7 +250,7 @@ if ($isActive) {
   ];
 
   // Responses & statistics
-  if ($respstatsread && $isActive) {
+  if (isset($respstatsread) && $respstatsread && $isActive) {
     $buttons['responses_statistics'] = [
       'class' => 'pjax',
       'url'   => $this->createUrl("admin/responses/sa/index/surveyid/$sid/"),

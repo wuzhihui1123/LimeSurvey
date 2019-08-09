@@ -1,6 +1,6 @@
 <template>
   <div class="topbardropdown">
-    <button-element v-if="mainButton" :button="mainButton" @click.native="handleClick()" />
+    <button-element v-if="mainButton" :button="mainButton" @click.native.stop="handleClick" />
     <ul v-if="isOpen && list" :class="'dropdown-box ' + list.class" :aria-labelledby="list.arialabelledby">
       <li v-for="item in list.items" :key="item.id">
         <link-element v-if="isActive" :active="isActive" :item="item" @click="handleLinkClick()"/>
@@ -12,45 +12,53 @@
   </div>
 </template>
 <script>
-  import Button from './TopBarButton.vue';
-  import Link from './TopBarLink.vue';
-  import Seperator from './Seperator.vue';
-  import DropDownHeader from './DropDownHeader.vue';
+    import Button from './TopBarButton.vue';
+    import Link from './TopBarLink.vue';
+    import Seperator from './Seperator.vue';
+    import DropDownHeader from './DropDownHeader.vue';
 
-  // TODO: Es wird auch bei einem Seperator oder DropDownHeader Element ein Link-Element mitgerendert.
-  // TODO: Wie kann man das unterdrücken?
+    // TODO: Es wird auch bei einem Seperator oder DropDownHeader Element ein Link-Element mitgerendert.
+    // TODO: Wie kann man das unterdrücken?
 
-  export default {
-    name: 'TopBarDropDown',
-    components: {
-      'button-element': Button,
-      'link-element': Link,
-      'seperator-element': Seperator,
-      'dropdown-header-element': DropDownHeader,
-    },
-    props: ['list', 'mainButton'],
-    data: () => {
-      return {
-        isOpen: false,
-        isActive: false,
-        selectedItem: 0,
-      }
-    },
-    methods: {
-      handleClick() {
-        this.isOpen = !this.isOpen;
-
-        if (this.isOpen) {
-          console.log('Dropdown is open');
-        } else {
-          console.log('Dropdown is closed');
+    export default {
+        name: 'TopBarDropDown',
+        components: {
+            'button-element': Button,
+            'link-element': Link,
+            'seperator-element': Seperator,
+            'dropdown-header-element': DropDownHeader,
+        },
+        props: ['list', 'mainButton'],
+        data: () => {
+            return {
+                uniquid: Math.floor((1+Math.random())*1000000),
+                isOpen: false,
+                isActive: false,
+                selectedItem: 0,
+            }
+        },
+        methods: {
+            toggleOpen(){
+                this.isOpen = !this.isOpen;
+                if (this.isOpen) {
+                    console.log('Dropdown is open');
+                    $('body').on('click.topbardropdown'+this.uniquid, ':not(.topbardropdown)', () => {
+                        this.isOpen= false;
+                         $('body').off('click.topbardropdown'+this.uniquid);
+                    });
+                } else {
+                    console.log('Dropdown is closed');
+                    $('body').off('click.topbardropdown'+this.uniquid);
+                }
+            },
+            handleClick() {
+                this.toggleOpen();
+            },
+            handleLinkClick() {
+                this.isActive = true;
+            },
         }
-      },
-      handleLinkClick() {
-        this.isActice = true;
-      },
-    },
-  }
+    }
 </script>
 
 <style scoped lang="scss">
