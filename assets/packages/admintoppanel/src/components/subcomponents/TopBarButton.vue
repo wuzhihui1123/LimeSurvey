@@ -17,7 +17,7 @@
                :class="'btn btn-default navbar-btn button white ' + button.class"
                :href="button.url"
                :id="button.id">
-               <span :class="'icon ' + button.icon" />
+               <span :class="'icon ' + button.icon || ''" />
                2 {{ button.name }}
        </button>
 
@@ -27,7 +27,7 @@
                    :class="'btn btn-default navbar-btn button white ' + button.class"
                    :href="button.url"
                    :id="button.id">
-             <span :class="button.icon + ' icon'" />
+             <span :class="button.icon || '' + ' icon'" />
              3 {{ button.name }}
        </button>
 
@@ -40,7 +40,7 @@
               :aria-haspopup="button.ariahaspopup"
               :aria-expanded="button.ariaexpanded"
               @click="clicked()">
-              <span :class="button.icon + ' icon'" />
+              <span :class="button.icon || '' + ' icon'" />
               4 {{ button.name }}
               <span :class="button.iconclass + ' icon'" />
       </button>
@@ -65,7 +65,7 @@
               :href = "button.url"
               :target="button.target"
               :access-key="button.accesskey">
-              <span :class="button.icon + ' icon'" />
+              <span :class="button.icon || '' + ' icon'" />
               5 {{ button.name }}
      </button>
     </div>

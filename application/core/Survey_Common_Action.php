@@ -536,9 +536,11 @@ class Survey_Common_Action extends CAction
         $aData['respstatsread'] = $respstatsread;
         $aData['surveyexport']  = $surveyexport;
         $aData['onelanguage']   = $oneLanguage;
-        $aData['topBarType']    = 'survey';
+        $aData['topBarType']    = isset($aData['topBarType']) ? $aData['topBarType'] : 'survey';
       }
+
       $this->getController()->renderPartial("/admin/survey/topbar/topbar_view", $aData);
+
     }
 
     /**

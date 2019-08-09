@@ -48,5 +48,20 @@ export default {
         })
      })
    },
+
+   getTopBarButtonsTokens: (context) => {
+     return new Promise( (resolve, reject) => {
+       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', { sid: context.state.sid }))
+        .then( (data) => {
+          context.commit('setTopBar', data.data.topbar);
+          context.commit('setPermissions', data.data.permissions);
+
+          resolve(data.data.topbar);
+        })
+        .catch( (error) => {
+          reject({error: error});
+        })
+     })
+   },
    
 };

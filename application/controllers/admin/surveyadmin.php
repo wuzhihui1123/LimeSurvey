@@ -2472,7 +2472,22 @@ class SurveyAdmin extends Survey_Common_Action
       );
     }
 
-    public function getSurveyTopbar($sid, $subactions = '') {
+    public function getTokenTopBar($sid) {
+        $oSurvey   = Survey::model()->findByPk($sid);
+        
+
+        return Yii::app()->getController()->renderPartial(
+                '/admin/survey/topbar/token_bar',
+                array(
+                'oSurvey'     => Survey::model()->findByPk($sid),
+                'sid'     => $sid,
+            ),
+            false,
+            false
+      );
+    }
+
+    public function getSurveyTopbar($sid) {
       $oSurvey   = Survey::model()->findByPk($sid);
       $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');

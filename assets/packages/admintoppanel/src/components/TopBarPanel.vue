@@ -143,6 +143,18 @@ export default {
           })
     },
 
+    setTokenTopBar(surveyID) {
+        this.setSurveyID(surveyID);
+        this.$store.dispatch('getTopBarButtonsTokens')
+          .then( (data) => {
+
+          })
+          .catch( (error) => {
+            console.log('ERROR SURVEY');
+            console.log(error.error.xhr.responseText);
+          })
+    },
+
     onFade(slideable) {
       this.slide = slideable;
 
@@ -163,6 +175,8 @@ export default {
          this.setQuestionGroupTopBar(this.gid);
       } else if (this.sid !== 0 && this.type == 'survey') {
         this.setSurveyTopBar(this.sid);
+      } else if (this.sid !== 0 && this.type == 'tokens') {
+        this.setTokenTopBar(this.sid);
       }
   },
   mounted() {
