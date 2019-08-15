@@ -12,6 +12,7 @@ module.exports = {
         output: {
             filename: () => {return 'js/'+appName+'.js'}
         },
+        devtool: 'source-map',
         externals: {
             LS: 'LS',
             jquery: 'jQuery',

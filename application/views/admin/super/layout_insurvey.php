@@ -29,21 +29,22 @@ $this->_showHeaders($aData, false);
         //Rendered through /admin/super/sidemenu
         $this->_surveysidemenu($aData);
 
-
         echo '<div id="pjax-content" '
         . 'class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" '
         . 'style="max-width:80%;" '
         // . 'v-bind:style="{\'max-width\': $store.getters.substractContainer, \'min-height\': $store.state.inSurveyViewHeight+\'px\'}"'
         . '>';
+        
             //New general top bar (VueComponent)
             $this->_generaltopbar($aData);
+
             //Rendered through /admin/survey/surveybar_view
-            $this->_surveybar($aData);
+            // $this->_surveybar($aData);
             //Rendered through /admin/survey/QuestionGroups/questiongroupbar_view
-            $this->_nquestiongroupbar($aData);
+            // $this->_nquestiongroupbar($aData);
             //Rendered through /admin/survey/Question/questionbar_view
             //This function may redirect to the main controller with an error of wrong survey id
-            $this->_questionbar($aData);
+            // $this->_questionbar($aData);
             //Rendered through /admin/responses/browsemenubar_view
             $this->_browsemenubar($aData);
             //Rendered through /admin/token/token_bar
@@ -70,7 +71,8 @@ $this->_showHeaders($aData, false);
                 $this->_nsurveysummary($aData);
 
                 echo $content;
-
+                
+                $this->_generaltopbarAdditions($aData);
             echo "</div>\n";
         echo "</div>\n";
     echo "</div>\n";

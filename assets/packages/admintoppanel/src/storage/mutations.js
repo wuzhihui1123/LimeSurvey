@@ -23,4 +23,7 @@ export default {
     setSid: (state, newState) => {
       state.sid = newState;
     },
+    setShowSaveButton: (state, newState) => {
+        state.showSaveButton = newState;
+    },
 };

@@ -16,19 +16,6 @@ Vue.use( VModal, {
 
 Vue.component('loader-widget', Loader);
 
-Vue.mixin({
-  methods: {
-      translate: (value) => {
-          return window.TopBarData.i10N[value] || value;
-      }
-  },
-  filters: {
-      translate: (value) => {
-          return window.TopBarData.i10N[value] || value;
-      }
-  }
-});
-
 let surveyid = 'newSurvey';
 if(window.LS != undefined) {
     surveyid = window.LS.parameters.$GET.surveyid || window.LS.parameters.keyValuePairs.surveyid;

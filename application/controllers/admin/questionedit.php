@@ -150,10 +150,12 @@ class questionedit extends Survey_Common_Action
                 '__SCRIPTHELP' => gT("This optional script field will be wrapped, so that the script is correctly executed after the question is on the screen. If you do not have the correct permissions, this will be ignored")
             ]
         ];
-        $aData['questiongroupbar']['importquestion'] = true;
-        $aData['questiongroupbar']['savebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['saveandclosebutton']['form'] = 'frmeditgroup';
-        $aData['questiongroupbar']['closebutton']['url'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
+        
+        $aData['topBar']['type'] = 'question';
+
+        $aData['topBar']['importquestion'] = true;
+        $aData['topBar']['savebuttonform'] = 'frmeditgroup';
+        $aData['topBar']['closebuttonurl'] = '/admin/survey/sa/listquestions/surveyid/'.$iSurveyID; // Close button
 
         $this->_renderWrappedTemplate('survey/Question2', 'view', $aData);
     }

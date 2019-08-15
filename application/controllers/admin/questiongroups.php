@@ -693,6 +693,31 @@ class questiongroups extends Survey_Common_Action
         }
     }
 
+    public function getQuestionGroupTopBar($gid) {
+        $oQuestionGroup = QuestionGroup::model()->findByPk($gid);
+        $sumcount  = safecount($oQuestionGroup->questions);
+        $activated = $oQuestionGroup->survey->active;
+        $languagelist = $oQuestionGroup->survey->allLanguages;
+        $ownsSaveButton = true;
+        $ownsSaveAndCloseButton = true;
+  
+        return Yii::app()->getController()->renderPartial(
+          '/admin/survey/topbar/question_group_topbar',
+          array(
+            'oSurvey' => $oQuestionGroup->survey,
+            'sid'     => $oQuestionGroup->sid,
+            'gid'     => $oQuestionGroup->gid,
+            'sumcount4' => $sumcount,
+            'languagelist' => $languagelist,
+            'activated' => $activated,
+            'ownsSaveButton'         => $ownsSaveButton,
+            'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
+          ),
+          false,
+          false
+        );
+      }
+  
 
     private function _getQuestionGroupObject($iQuestionGroupId=null)
     {

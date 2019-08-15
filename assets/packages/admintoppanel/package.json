@@ -27,6 +27,10 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "stylelint": "^10.1.0",
+    "stylelint-config-standard": "^18.3.0",
+    "stylelint-processor-html": "^1.0.0",
+    "stylelint-webpack-plugin": "^0.10.5",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {
@@ -38,7 +42,23 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ],
+      "vue/html-indent": [
+        "error",
+        4,
+        {
+          "attribute": 1,
+          "baseIndent": 0,
+          "closeBracket": 0,
+          "alignAttributesVertically": true,
+          "ignores": []
+        }
+      ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }

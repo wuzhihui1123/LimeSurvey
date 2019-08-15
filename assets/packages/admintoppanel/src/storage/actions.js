@@ -20,7 +20,7 @@ export default {
 
    getTopBarButtonsGroup: (context) => {
      return new Promise( (resolve, reject) => {
-       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getQuestionGroupTopBar', { gid: context.state.gid }))
+       ajax.methods.$_get(LS.createUrl('admin/questiongroups/sa/getQuestionGroupTopBar', { gid: context.state.gid }))
         .then( (data) => {
           context.commit('setTopBar', data.data.topbar);
           context.commit('setTopBarExtended', data.data.topbarextended);
@@ -36,7 +36,7 @@ export default {
 
    getTopBarButtonsSurvey: (context) => {
      return new Promise( (resolve, reject) => {
-       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', { sid: context.state.sid }))
+       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getSurveyTopBar', { sid: context.state.sid, saveButton: context.state.showSaveButton }))
         .then( (data) => {
           context.commit('setTopBar', data.data.topbar);
           context.commit('setPermissions', data.data.permissions);
@@ -51,7 +51,7 @@ export default {
 
    getTopBarButtonsTokens: (context) => {
      return new Promise( (resolve, reject) => {
-       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', { sid: context.state.sid }))
+       ajax.methods.$_get(LS.createUrl('admin/survey/sa/getTokenTopBar', { sid: context.state.sid, saveButton: context.state.showSaveButton }))
         .then( (data) => {
           context.commit('setTopBar', data.data.topbar);
           context.commit('setPermissions', data.data.permissions);

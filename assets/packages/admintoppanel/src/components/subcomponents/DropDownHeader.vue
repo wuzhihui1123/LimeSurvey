@@ -1,24 +1,21 @@
 <template>
-  <div :class="'dropdownheader ' + item.class">
-    {{item.name}}
-  </div>
+    <div :class="'dropdownheader ' + item.class">{{item.name}}</div>
 </template>
 
 <script>
 export default {
-  name: 'DropDownHeader',
-  props: {
-    item: {
-      class: String,
-      name: String,
+    name: "DropDownHeader",
+    props: {
+        item: {
+            class: String,
+            name: String
+        }
+    },
+    data() {
+        return {};
     }
-  },
-  data() {
-    return {}
-  }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>

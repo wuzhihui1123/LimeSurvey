@@ -417,6 +417,14 @@ return array(
             'build/panelboxes'.$minVersion.'.css',
         )
     ),
+    'eventbus' => array(
+        'devBaseUrl' => 'assets/packages/eventbus/',
+        'basePath' => 'core.eventbus',
+        'position' =>CClientScript::POS_HEAD,
+        'js' => array(
+            'build/event-bus.min.js',
+        ),
+    ),
     'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
@@ -436,6 +444,7 @@ return array(
             'jquery',
             'pjaxbackend',
             'lslog',
+            'eventbus'
         )
     ),
 

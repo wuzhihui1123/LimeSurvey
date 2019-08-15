@@ -2449,28 +2449,6 @@ class SurveyAdmin extends Survey_Common_Action
       );
     }
 
-    public function getQuestionGroupTopBar($gid) {
-      $oQuestion = Question::model()->findByPk($gid);
-      $sumcount  = Question::model()->countByAttributes(array('gid' => $gid));
-      $activated = QuestionGroup::model()->findByPk($gid)->survey->active;
-      $ownsSaveButton = true;
-      $ownsSaveAndCloseButton = true;
-
-      return Yii::app()->getController()->renderPartial(
-        '/admin/survey/topbar/question_group_topbar',
-        array(
-          'oSurvey' => $oQuestion->survey,
-          'sid'     => $oQuestion->sid,
-          'gid'     => $oQuestion->gid,
-          'sumcount4' => $sumcount,
-          'activated' => $activated,
-          'ownsSaveButton'         => $ownsSaveButton,
-          'ownsSaveAndCloseButton' => $ownsSaveAndCloseButton,
-        ),
-        false,
-        false
-      );
-    }
 
     public function getTokenTopBar($sid) {
         $oSurvey   = Survey::model()->findByPk($sid);
@@ -2487,7 +2465,7 @@ class SurveyAdmin extends Survey_Common_Action
       );
     }
 
-    public function getSurveyTopbar($sid) {
+    public function getSurveyTopbar($sid, $saveButton=false) {
       $oSurvey   = Survey::model()->findByPk($sid);
       $hasSurveyContentPermission    = Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'update');
       $hasSurveyActivationPermission = Permission::model()->hasSurveyPermission($sid, 'surveyactivation', 'update');
@@ -2520,10 +2498,6 @@ class SurveyAdmin extends Survey_Common_Action
       $conditionsCount = Condition::model()->with(array('questions'=>array('condition'=>'sid ='.$sid)))->count();
       $oneLanguage     = (count($oSurvey->allLanguages) == 1);
 
-      // TODO: Es wird nun der SaveButton in jeder Seite, die die Surveybar einbindet, gerendert. Wie kann man das beheben?
-      $aData['surveybar']['savebutton']['form'] = 'globalsetting';
-      $ownsSaveButton  = $aData['surveybar']['savebutton']['form'];
-
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
         array(
@@ -2546,7 +2520,7 @@ class SurveyAdmin extends Survey_Common_Action
           'hasSurveyTokensPermission'    => $hasSurveyTokensPermission,
           'hasResponsesCreatePermission' => $hasResponsesCreatePermission,
           'hasResponsesReadPermission'   => $hasResponsesReadPermission,
-          'ownsSaveButton'  => $ownsSaveButton,
+          'addSaveButton'  => $saveButton,
         ),
         false,
         false
