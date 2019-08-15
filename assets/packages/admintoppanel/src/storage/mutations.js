@@ -26,4 +26,7 @@ export default {
     setShowSaveButton: (state, newState) => {
         state.showSaveButton = newState;
     },
+    setCloseButtonUrl: (state, newState) => {
+        state.closeButtonUrl = newState;
+    },
 };

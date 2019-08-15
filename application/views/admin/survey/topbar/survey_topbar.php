@@ -297,18 +297,16 @@ if ($isActive) {
     array_push($topbar['alignment']['left']['buttons'], $button_statistics);
 }
 
-$addSaveButton = $addSaveButton ?? false;
-// save button
-if ($addSaveButton) {
-    $buttons['save'] = [
-        'name' => gT('Save'),
-        'id' => 'save-button',
-        'class' => 'btn-success',
-        'icon' => 'fa fa-floppy-o',
-        'url' => '#',
-    ];
-    array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
-}
+$buttons['save'] = [
+    'name' => gT('Save'),
+    'id' => 'save-button',
+    'class' => 'btn-success',
+    'icon' => 'fa fa-floppy-o',
+    'url' => '#',
+    'isSaveButton' => true
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
+
 
 $finalJSON = [
     'permissions' => $permissions,

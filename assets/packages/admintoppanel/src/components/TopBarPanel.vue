@@ -42,25 +42,29 @@
                                 :list="button.dropdown"
                                 :mainButton="button.main_button"
                             />
-                            <button-group-element
-                                v-if="button.class === 'btn-group'"
-                                :class="button.class"
-                                :mainButton="button.main_button"
-                            />
+                            <divider-element v-else-if="button.class.includes('divider')" :button="button" />
                             <button-element v-else :button="button" />
                         </li>
                         <li v-if="slotbutton != null" v-html="slotbutton" />
                     </ul>
                     <!-- TODO: Breite der Bar dynamisch (FLEX?)-->
                     <ul
-                        v-if="(ownTopBar.alignment.right) && ownTopBar.alignment.right.buttons.length >= 1"
+                        v-if="getRightButtons.length >= 1"
                         class="nav navbar-nav ls-flex-item  ls-flex-row nowrap align-content-flex-end text-right padding-left scoped-switch-floats"
                     >
                         <li
-                            v-for="button in ownTopBar.alignment.right.buttons"
+                            v-for="button in getRightButtons"
                             :key="button.id"
                         >
-                            <button-element :button="button" />
+                            <button-group-element
+                                v-if="button.dropdown !== undefined &&
+                                button.class.includes('btn-group')"
+                                :class="button.class"
+                                :list="button.dropdown"
+                                :mainButton="button.main_button"
+                            />
+                            <divider-element v-else-if="button.class.includes('divider')" :button="button" />
+                            <button-element v-else :button="button" />
                         </li>
                     </ul>
                 </div>
@@ -72,6 +76,7 @@
 <script>
 import filter from "lodash/filter";
 import empty from "lodash/isEmpty";
+import Divider from "./subcomponents/TopBarDivider.vue";
 import Button from "./subcomponents/TopBarButton.vue";
 import ButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
 import runAjax from "../mixins/runAjax.js";
@@ -81,6 +86,7 @@ const EventBus = window.EventBus;
 export default {
     name: "TopBarPanel",
     components: {
+        "divider-element": Divider,
         "button-element": Button,
         "button-group-element": ButtonGroup,
     },
@@ -137,6 +143,14 @@ export default {
                 this.$store.commit("setShowSaveButton", newValue);
             }
         },
+        closeButtonUrl: {
+            get() {
+                return this.$store.state.closeButtonUrl;
+            },
+            set(newValue) {
+                this.$store.commit("setCloseButtonUrl", newValue);
+            }
+        },
 
         ownTopBar() {
             return this.$store.state.topbar;
@@ -150,7 +164,13 @@ export default {
         getLeftButtons() {
             return filter(
                 this.ownTopBar.alignment.left.buttons,
-                button => !empty(button.name)
+                button => !empty(button.name) || !empty(button.main_button.name)
+            );
+        },
+        getRightButtons() {
+            return filter(
+                this.ownTopBar.alignment.right.buttons,
+                button =>!(!this.showSaveButton && button.isSaveButton)
             );
         }
     },
@@ -243,6 +263,7 @@ export default {
             this.qid = globalObject.qid;
             this.type = globalObject.type;
             this.showSaveButton = globalObject.showSaveButton;
+            this.closeButtonUrl = globalObject.closeButtonUrl || LS.createUrl('admin/survey/sa/view/', {sid: this.sid});
         }
     },
     created() {

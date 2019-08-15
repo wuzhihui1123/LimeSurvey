@@ -137,7 +137,7 @@ if (Permission::model()->hasSurveyPermission($sid, 'tokens', 'export')) {
       'url'  => $this->createUrl("admin/tokens/sa/exportdialog/surveyid/$sid"),
       'name' => gT('Export'),
       'icon' => 'icon-exportcsv',
-      'id' => 'display-participants-button',
+      'id' => 'export-participants-button',
       'class' => 'btn btn-default pjax',
     ];
     array_push($topbar['alignment']['left']['buttons'], $buttons['export_participants']);
@@ -286,6 +286,32 @@ if (Permission::model()->hasSurveyPermission($sid, 'surveysettings', 'update')
     ];
     array_push($topbar['alignment']['right']['buttons'], $buttons['delete_tokens']);
 }
+$buttons['divider'] = [
+    'role' => 'seperator',
+    'class' => 'divider',
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['divider']);
+
+$buttons['save'] = [
+    'name' => gT('Save'),
+    'id' => 'save-button',
+    'class' => 'btn-success',
+    'icon' => 'fa fa-floppy-o',
+    'url' => '#',
+    'isSaveButton' => true
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['save']);
+
+$buttons['close'] = [
+    'name' => gT('Close'),
+    'id' => 'close-button',
+    'class' => 'btn-danger',
+    'icon' => 'fa fa-times',
+    'url' => '#',
+    'isCloseButton' => true
+];
+array_push($topbar['alignment']['right']['buttons'], $buttons['close']);
+
 
 
 /* OLD HTML CODE  ->  only for completioncontrol

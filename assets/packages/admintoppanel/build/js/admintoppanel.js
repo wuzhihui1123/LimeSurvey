@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "347ba7ae6cf9313bde3f";
+/******/ 	var hotCurrentHash = "379e8d8015f23b13862c";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1249,9 +1249,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_filter__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_filter__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/isEmpty */ "./node_modules/lodash/isEmpty.js");
 /* harmony import */ var lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _subcomponents_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./subcomponents/TopBarButton.vue */ "./src/components/subcomponents/TopBarButton.vue");
-/* harmony import */ var _subcomponents_TopBarButtonGroup_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./subcomponents/TopBarButtonGroup.vue */ "./src/components/subcomponents/TopBarButtonGroup.vue");
-/* harmony import */ var _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../mixins/runAjax.js */ "./src/mixins/runAjax.js");
+/* harmony import */ var _subcomponents_TopBarDivider_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./subcomponents/TopBarDivider.vue */ "./src/components/subcomponents/TopBarDivider.vue");
+/* harmony import */ var _subcomponents_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./subcomponents/TopBarButton.vue */ "./src/components/subcomponents/TopBarButton.vue");
+/* harmony import */ var _subcomponents_TopBarButtonGroup_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./subcomponents/TopBarButtonGroup.vue */ "./src/components/subcomponents/TopBarButtonGroup.vue");
+/* harmony import */ var _mixins_runAjax_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../mixins/runAjax.js */ "./src/mixins/runAjax.js");
 
 
 //
@@ -1325,6 +1326,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -1334,8 +1340,9 @@ var EventBus = window.EventBus;
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "TopBarPanel",
   components: {
-    "button-element": _subcomponents_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
-    "button-group-element": _subcomponents_TopBarButtonGroup_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
+    "divider-element": _subcomponents_TopBarDivider_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+    "button-element": _subcomponents_TopBarButton_vue__WEBPACK_IMPORTED_MODULE_5__["default"],
+    "button-group-element": _subcomponents_TopBarButtonGroup_vue__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
   props: {
     initialSid: {
@@ -1396,6 +1403,14 @@ var EventBus = window.EventBus;
         this.$store.commit("setShowSaveButton", newValue);
       }
     },
+    closeButtonUrl: {
+      get: function get() {
+        return this.$store.state.closeButtonUrl;
+      },
+      set: function set(newValue) {
+        this.$store.commit("setCloseButtonUrl", newValue);
+      }
+    },
     ownTopBar: function ownTopBar() {
       return this.$store.state.topbar;
     },
@@ -1407,7 +1422,14 @@ var EventBus = window.EventBus;
     },
     getLeftButtons: function getLeftButtons() {
       return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.ownTopBar.alignment.left.buttons, function (button) {
-        return !lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default()(button.name);
+        return !lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default()(button.name) || !lodash_isEmpty__WEBPACK_IMPORTED_MODULE_3___default()(button.main_button.name);
+      });
+    },
+    getRightButtons: function getRightButtons() {
+      var _this = this;
+
+      return lodash_filter__WEBPACK_IMPORTED_MODULE_2___default()(this.ownTopBar.alignment.right.buttons, function (button) {
+        return !(!_this.showSaveButton && button.isSaveButton);
       });
     }
   },
@@ -1424,51 +1446,51 @@ var EventBus = window.EventBus;
       }
     },
     setQuestionTopBar: function setQuestionTopBar(questionID) {
-      var _this = this;
+      var _this2 = this;
 
       this.qid = questionID;
       this.$store.dispatch("getTopBarButtonsQuestion").then(function (data) {}).catch(function (error) {
-        _this.$log.error("ERROR QUESTION");
-
-        _this.$log.error(error.xhr.responseText);
-      }).finally(function () {
-        _this.loading = false;
-      });
-    },
-    setQuestionGroupTopBar: function setQuestionGroupTopBar(groupID) {
-      var _this2 = this;
-
-      this.gid = groupID;
-      this.$store.dispatch("getTopBarButtonsGroup").then(function (data) {}).catch(function (error) {
-        _this2.$log.error("ERROR GROUP");
+        _this2.$log.error("ERROR QUESTION");
 
         _this2.$log.error(error.xhr.responseText);
       }).finally(function () {
         _this2.loading = false;
       });
     },
-    setSurveyTopBar: function setSurveyTopBar(surveyID) {
+    setQuestionGroupTopBar: function setQuestionGroupTopBar(groupID) {
       var _this3 = this;
 
-      this.sid = surveyID;
-      this.$store.dispatch("getTopBarButtonsSurvey").then(function (data) {}).catch(function (error) {
-        _this3.$log.error("ERROR SURVEY");
+      this.gid = groupID;
+      this.$store.dispatch("getTopBarButtonsGroup").then(function (data) {}).catch(function (error) {
+        _this3.$log.error("ERROR GROUP");
 
-        _this3.$log.error(error.error.xhr.responseText);
+        _this3.$log.error(error.xhr.responseText);
       }).finally(function () {
         _this3.loading = false;
       });
     },
-    setTokenTopBar: function setTokenTopBar(surveyID) {
+    setSurveyTopBar: function setSurveyTopBar(surveyID) {
       var _this4 = this;
 
       this.sid = surveyID;
-      this.$store.dispatch("getTopBarButtonsTokens").then(function (data) {}).catch(function (error) {
+      this.$store.dispatch("getTopBarButtonsSurvey").then(function (data) {}).catch(function (error) {
         _this4.$log.error("ERROR SURVEY");
 
         _this4.$log.error(error.error.xhr.responseText);
       }).finally(function () {
         _this4.loading = false;
+      });
+    },
+    setTokenTopBar: function setTokenTopBar(surveyID) {
+      var _this5 = this;
+
+      this.sid = surveyID;
+      this.$store.dispatch("getTopBarButtonsTokens").then(function (data) {}).catch(function (error) {
+        _this5.$log.error("ERROR SURVEY");
+
+        _this5.$log.error(error.error.xhr.responseText);
+      }).finally(function () {
+        _this5.loading = false;
       });
     },
     onFade: function onFade(slideable) {
@@ -1486,29 +1508,32 @@ var EventBus = window.EventBus;
       this.qid = globalObject.qid;
       this.type = globalObject.type;
       this.showSaveButton = globalObject.showSaveButton;
+      this.closeButtonUrl = globalObject.closeButtonUrl || LS.createUrl('admin/survey/sa/view/', {
+        sid: this.sid
+      });
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.sid = this.initialSid;
     this.type = this.initialType;
     EventBus.$on("slotbuttonSet", function (payload) {
-      _this5.slotbutton = payload.html || null;
+      _this6.slotbutton = payload.html || null;
     });
     EventBus.$on("reloadTopBar", function () {
-      _this5.readGlobalObject(window.TopBarData);
+      _this6.readGlobalObject(window.TopBarData);
 
-      _this5.setType();
+      _this6.setType();
     });
   },
   mounted: function mounted() {
-    var _this6 = this;
+    var _this7 = this;
 
     this.readGlobalObject(window.TopBarData);
     this.setType();
     EventBus.$on("doFadeEvent", function (slideable) {
-      _this6.onFade(slideable);
+      _this7.onFade(slideable);
     });
   }
 });
@@ -1722,6 +1747,25 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {};
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/cache-loader/dist/cjs.js?!./node_modules/babel-loader/lib/index.js!./node_modules/cache-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js??ref--12-0!./node_modules/babel-loader/lib!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "TopBarDivider"
 });
 
 /***/ }),
@@ -2038,13 +2082,9 @@ var render = function() {
                                               mainButton: button.main_button
                                             }
                                           })
-                                        : _vm._e(),
-                                      button.class === "btn-group"
-                                        ? _c("button-group-element", {
-                                            class: button.class,
-                                            attrs: {
-                                              mainButton: button.main_button
-                                            }
+                                        : button.class.includes("divider")
+                                        ? _c("divider-element", {
+                                            attrs: { button: button }
                                           })
                                         : _c("button-element", {
                                             attrs: { button: button }
@@ -2064,29 +2104,38 @@ var render = function() {
                               2
                             )
                           : _vm._e(),
-                        _vm.ownTopBar.alignment.right &&
-                        _vm.ownTopBar.alignment.right.buttons.length >= 1
+                        _vm.getRightButtons.length >= 1
                           ? _c(
                               "ul",
                               {
                                 staticClass:
                                   "nav navbar-nav ls-flex-item  ls-flex-row nowrap align-content-flex-end text-right padding-left scoped-switch-floats"
                               },
-                              _vm._l(
-                                _vm.ownTopBar.alignment.right.buttons,
-                                function(button) {
-                                  return _c(
-                                    "li",
-                                    { key: button.id },
-                                    [
-                                      _c("button-element", {
-                                        attrs: { button: button }
-                                      })
-                                    ],
-                                    1
-                                  )
-                                }
-                              ),
+                              _vm._l(_vm.getRightButtons, function(button) {
+                                return _c(
+                                  "li",
+                                  { key: button.id },
+                                  [
+                                    button.dropdown !== undefined &&
+                                    button.class.includes("btn-group")
+                                      ? _c("button-group-element", {
+                                          class: button.class,
+                                          attrs: {
+                                            list: button.dropdown,
+                                            mainButton: button.main_button
+                                          }
+                                        })
+                                      : button.class.includes("divider")
+                                      ? _c("divider-element", {
+                                          attrs: { button: button }
+                                        })
+                                      : _c("button-element", {
+                                          attrs: { button: button }
+                                        })
+                                  ],
+                                  1
+                                )
+                              }),
                               0
                             )
                           : _vm._e()
@@ -2315,6 +2364,30 @@ var render = function() {
     ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"node_modules/.cache/vue-loader\",\"cacheIdentifier\":\"76b49456-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/cache-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&":
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76b49456-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c& ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { staticClass: "navbar-text" }, [_vm._v(" | ")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -6340,7 +6413,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\n.loader--loaderWidget[data-v-1bc94e55] {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 3em;\n}\n", ""]);
+exports.push([module.i, "\n.loader--loaderWidget[data-v-1bc94e55] {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 3em;\n}\r\n", ""]);
 
 // exports
 
@@ -28452,6 +28525,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/components/subcomponents/TopBarDivider.vue":
+/*!********************************************************!*\
+  !*** ./src/components/subcomponents/TopBarDivider.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopBarDivider.vue?vue&type=template&id=67b9b27c& */ "./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&");
+/* harmony import */ var _TopBarDivider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TopBarDivider.vue?vue&type=script&lang=js& */ "./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _TopBarDivider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (true) {
+  var api = __webpack_require__(/*! ./node_modules/vue-hot-reload-api/dist/index.js */ "./node_modules/vue-hot-reload-api/dist/index.js")
+  api.install(__webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js"))
+  if (api.compatible) {
+    module.hot.accept()
+    if (!module.hot.data) {
+      api.createRecord('67b9b27c', component.options)
+    } else {
+      api.reload('67b9b27c', component.options)
+    }
+    module.hot.accept(/*! ./TopBarDivider.vue?vue&type=template&id=67b9b27c& */ "./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&", function(__WEBPACK_OUTDATED_DEPENDENCIES__) { /* harmony import */ _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TopBarDivider.vue?vue&type=template&id=67b9b27c& */ "./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&");
+(function () {
+      api.rerender('67b9b27c', {
+        render: _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["render"],
+        staticRenderFns: _TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]
+      })
+    })(__WEBPACK_OUTDATED_DEPENDENCIES__); })
+  }
+}
+component.options.__file = "src/components/subcomponents/TopBarDivider.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_cache_loader_dist_cjs_js_ref_12_0_node_modules_babel_loader_lib_index_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TopBarDivider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/cache-loader/dist/cjs.js??ref--12-0!../../../node_modules/babel-loader/lib!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TopBarDivider.vue?vue&type=script&lang=js& */ "./node_modules/cache-loader/dist/cjs.js?!./node_modules/babel-loader/lib/index.js!./node_modules/cache-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./src/components/subcomponents/TopBarDivider.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_cache_loader_dist_cjs_js_ref_12_0_node_modules_babel_loader_lib_index_js_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TopBarDivider_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&":
+/*!***************************************************************************************!*\
+  !*** ./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _cache_loader_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_76b49456_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!cache-loader?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"76b49456-vue-loader-template"}!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/cache-loader/dist/cjs.js??ref--0-0!../../../node_modules/vue-loader/lib??vue-loader-options!./TopBarDivider.vue?vue&type=template&id=67b9b27c& */ "./node_modules/cache-loader/dist/cjs.js?{\"cacheDirectory\":\"node_modules/.cache/vue-loader\",\"cacheIdentifier\":\"76b49456-vue-loader-template\"}!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/cache-loader/dist/cjs.js?!./node_modules/vue-loader/lib/index.js?!./src/components/subcomponents/TopBarDivider.vue?vue&type=template&id=67b9b27c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _cache_loader_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_76b49456_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _cache_loader_cacheDirectory_node_modules_cache_vue_loader_cacheIdentifier_76b49456_vue_loader_template_node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_TopBarDivider_vue_vue_type_template_id_67b9b27c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./src/components/subcomponents/TopBarDropDown.vue":
 /*!*********************************************************!*\
   !*** ./src/components/subcomponents/TopBarDropDown.vue ***!
@@ -28986,6 +29146,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   setShowSaveButton: function setShowSaveButton(state, newState) {
     state.showSaveButton = newState;
+  },
+  setCloseButtonUrl: function setCloseButtonUrl(state, newState) {
+    state.closeButtonUrl = newState;
   }
 });
 
@@ -29027,7 +29190,8 @@ __webpack_require__.r(__webpack_exports__);
   gid: 0,
   sid: 0,
   type: '',
-  showSaveButton: false
+  showSaveButton: false,
+  closeButtonUrl: ''
 });
 
 /***/ }),
