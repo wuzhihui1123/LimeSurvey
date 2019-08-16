@@ -226,7 +226,10 @@ echo $topBarExtra;
 Yii::app()->getClientScript()->registerScript(
     "TopBarDefinition", '
         window.TopBarData = '.json_encode($topBar).';
-        setTimeout(function(){ window.EventBus.$emit("reloadTopBar");}, 0);
+        setTimeout(function(){ 
+            console.ls.log("Emitting reload");
+            window.EventBus.$emit("reloadTopBar", '.json_encode($topBar).');
+        }, 0);
     ', 
     LSYii_ClientScript::POS_BEGIN
 );

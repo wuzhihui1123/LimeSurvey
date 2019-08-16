@@ -105,6 +105,7 @@ ul {
     border: 1px solid rgba(0, 0, 0, 0.15);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     background-color: $white;
-    width: 200px;
+    width: auto;
+    max-width: 80vw;
 }
 </style>

@@ -2501,6 +2501,7 @@ class SurveyAdmin extends Survey_Common_Action
       return Yii::app()->getController()->renderPartial(
         '/admin/survey/topbar/survey_topbar',
         array(
+          'oSurvey' => $oSurvey,
           'isActive' => $isActive,
           'sid' => $sid,
           'canactivate' => $canactivate,

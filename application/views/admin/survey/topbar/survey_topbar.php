@@ -54,39 +54,66 @@ if (!$isActive) {
     }
 }
 
-if ($isActive || $hasSurveyContentPermission) {
-    if ($countLanguage > 1) {
-        // TODO: Multinlinguage
-        // TODO: BTN-GROUP (implemented in Vue JS as Component, has to be in the right array structure, to render it correctly.)
-        // <?php if (count($oSurvey->allLanguages) > 1):
-        // <div class="btn-group"> -->
-        // <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
-        // <span class="icon-do" ></span> -->
-        //  echo $icontext;
-        //  <span class="caret"></span> -->
-        //</button>
-        //<ul class="dropdown-menu" style="min-width : 252px;">
-        //<?php foreach ($oSurvey->allLanguages as $tmp_lang):
-        //<li>
-        //  <a target='_blank' href='<?php echo $this->createUrl("survey/index", array('sid'=>$oSurvey->sid, 'newtest'=>"Y", 'lang'=>$tmp_lang)); '>
-        //    echo getLanguageNameFromCode($tmp_lang, false);
-        //</a>
-        //</li>
-        //endforeach;
-        //</ul>
-        //</div>
-    } else {
-        // TODO: Unique Language
-        $buttons[$contextbutton] = [
-            'class' => 'btntooltip',
-            'url' => $this->createUrl("survey/index",
-                array('sid' => $sid, 'newtest' => "Y", 'lang' => $language)),
-            'icon' => 'fa fa-cog',
-            'name' => $context,
-            'accesskey' => 'd',
-            'target' => '_blank',
+if ($hasSurveyContentPermission) {
+    
+    // Preview Survey Button
+    $title = ($isActive) ? 'preview_survey' : 'execute_survey';
+    $name = ($isActive) ? gT('Preview survey') : gT('Execute survey');
+
+    if (safecount($oSurvey->allLanguages) > 1) {
+        $buttons[$title] = [];
+        foreach ($oSurvey->allLanguages as $language) {
+            $buttons[$title.'_'.$language] = [
+                'url' => $this->createAbsoluteUrl(
+                    "survey/index", 
+                    array(
+                        'sid' => $sid,
+                        'newtest' => "Y",
+                        'lang' => $language
+                    )
+                ),
+                'icon' => 'fa fa-cog',
+                'iconclass' => 'fa fa-external-link',
+                'name' => $name.' ('.getLanguageNameFromCode($language, false).')',
+                'class' => ' external',
+                'target' => '_blank'
+            ];
+        }
+
+        $buttonsurvey_preview_dropdown = [
+            'class' => 'btn-group',
+            'main_button' => [
+                'class' => 'dropdown-toggle',
+                'datatoggle' => 'dropdown',
+                'ariahaspopup' => true,
+                'ariaexpanded' => false,
+                'icon' => 'fa fa-cog',
+                'name' => $name,
+                'iconclass' => 'caret',
+            ],
+            'dropdown' => [
+                'class' => 'dropdown-menu',
+                'items' => $buttons,
+            ],
         ];
-        array_push($topbar['alignment']['left']['buttons'], $buttons[$contextbutton]);
+        array_push($topbar['alignment']['left']['buttons'], $buttonsurvey_preview_dropdown);
+    } else {
+        $buttons[$title] = [
+            'url' => $this->createAbsoluteUrl(
+                "survey/index", 
+                array(
+                    'sid' => $sid,
+                    'newtest' => "Y",
+                )
+            ),
+            'name' => $name,
+            'icon' => 'fa fa-cog',
+            'iconclass' => 'fa fa-external-link',
+            'class' => ' external',
+            'target' => '_blank'
+        ];
+
+        array_push($topbar['alignment']['left']['buttons'], $buttons[$title]);
     }
 
 }

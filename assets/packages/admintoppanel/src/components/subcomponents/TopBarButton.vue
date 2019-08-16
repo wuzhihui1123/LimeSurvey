@@ -9,7 +9,14 @@
             :class="'btn btn-default navbar-btn button white ' + button.class"
             :href="button.url"
             :id="button.id"
-        >1 {{ button.name }}</a>
+            data-btntype="1"
+        >
+            {{ button.name }}
+            <span
+                v-if="button.iconclass !== undefined"
+                :class="'icon ' + button.iconclass"
+            />
+        </a>
 
         <!-- Button with image and btn-danger -->
         <a
@@ -18,9 +25,14 @@
             :class="'btn btn-default navbar-btn button white ' + button.class"
             :href="button.url"
             :id="button.id"
+            data-btntype="2"
         >
             <span :class="'icon ' + buttonIcon" />
-            2 {{ button.name }}
+            {{ button.name }}
+            <span
+                v-if="button.iconclass !== undefined"
+                :class="'icon ' + button.iconclass"
+            />
         </a>
 
         <!-- Button with outlined image, so font will be white -->
@@ -33,9 +45,10 @@
             :class="'btn btn-default navbar-btn button white ' + button.class"
             :href="button.url"
             :id="button.id"
+            data-btntype="3"
         >
             <span :class="buttonIcon + ' icon'" />
-            3 {{ button.name }}
+            {{ button.name }}
         </a>
 
         <!-- Dropdown Button -->
@@ -48,9 +61,10 @@
             :aria-haspopup="button.ariahaspopup"
             :aria-expanded="button.ariaexpanded"
             @click="clicked()"
+            data-btntype="4"
         >
             <span :class="buttonIcon + ' icon'" />
-            4 {{ button.name }}
+            {{ button.name }}
             <span :class="button.iconclass + ' icon'" />
         </button>
 
@@ -63,6 +77,7 @@
             :class="'btn btn-default navbar-btn button ' + button.class"
             :data-toggle="button.datatoggle"
             :title="button.title"
+            data-btntype="5ro"
         >
             <span v-if="buttonIcon !== ''" :class="'icon ' + button.icon" />
             {{ button.name }}
@@ -80,9 +95,14 @@
             :href="button.url"
             :target="button.target"
             :access-key="button.accesskey"
+            data-btntype="5"
         >
             <span :class="buttonIcon + ' icon'" />
-            5 {{ button.name }}
+            {{ button.name }}
+            <span
+                v-if="button.iconclass !== undefined"
+                :class="'icon ' + button.iconclass"
+            />
         </a>
     </div>
 </template>

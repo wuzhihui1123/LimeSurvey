@@ -23,7 +23,7 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
             window.activePjax = new Pjax({
                 elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
                 selectors: [
-                    '#pjax-content',
+                    '#in_survey_common',
                     '#breadcrumb-container',
                     '#bottomScripts',
                     '#beginScripts'
@@ -31,7 +31,7 @@ var switchOuterHTML = function (oldEl, newEl, opt) {
                 switches: {
                     '#bottomScripts': switchOuterHTML,
                     '#beginScripts': switchOuterHTML,
-                    '#pjax-content': switchInnerHTML,
+                    '#in_survey_common': switchInnerHTML,
                     '#breadcrumb-container': switchOuterHTML,
                 },
                 debug: window.debugState.backend,

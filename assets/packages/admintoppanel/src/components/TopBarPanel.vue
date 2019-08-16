@@ -1,74 +1,29 @@
 <template>
     <div class="topbarpanel">
-        <loader-widget v-if="loading" />
-        <nav class="navbar navbar-default scoped-topbar-nav" v-if="!loading" >
+        <nav class="navbar navbar-default scoped-topbar-nav" >
             <transition name="fade">
-                <div v-if="slide" class="ls-flex ls-flex-row" id="topbarextended">
-                    <ul
-                        v-if="ownTopBarExtended.alignment.left"
-                        class="nav navbar-nav ls-flex-item ls-flex-row nowrap text-left"
-                    >
-                        <li
-                            v-for="button in ownTopBarExtended.alignment.left.buttons"
-                            :key="button.id"
-                        >
-                            <button-element :button="button" />
-                        </li>
-                    </ul>
-                    <ul
-                        v-if="ownTopBarExtended.alignment.right"
-                        class="nav navbar-nav ls-flex-item ls-flex-row align-content-flex-end nowrap right"
-                    >
-                        <li
-                            v-for="button in ownTopBarExtended.alignment.right.buttons"
-                            :key="button.id"
-                        >
-                            <button-element :button="button" />
-                        </li>
-                    </ul>
-                </div>
+                <loader-widget v-if="loading" />
             </transition>
-            <transition name="fade">
-                <div v-if="!slide" class="ls-flex ls-flex-row" id="topbar">
-                    <ul
-                        v-if="(ownTopBar.alignment.left)"
-                        class="nav navbar-nav ls-flex-item ls-flex-row nowrap text-left grow-3"
-                    >
-                        <li v-for="button in getLeftButtons" :key="button.id">
-                            <button-group-element
-                                v-if="button.dropdown !== undefined &&
-                                button.class.includes('btn-group')"
-                                :class="button.class"
-                                :list="button.dropdown"
-                                :mainButton="button.main_button"
-                            />
-                            <divider-element v-else-if="button.class.includes('divider')" :button="button" />
-                            <button-element v-else :button="button" />
-                        </li>
-                        <li v-if="slotbutton != null" v-html="slotbutton" />
-                    </ul>
-                    <!-- TODO: Breite der Bar dynamisch (FLEX?)-->
-                    <ul
-                        v-if="getRightButtons.length >= 1"
-                        class="nav navbar-nav ls-flex-item  ls-flex-row nowrap align-content-flex-end text-right padding-left scoped-switch-floats"
-                    >
-                        <li
-                            v-for="button in getRightButtons"
-                            :key="button.id"
-                        >
-                            <button-group-element
-                                v-if="button.dropdown !== undefined &&
-                                button.class.includes('btn-group')"
-                                :class="button.class"
-                                :list="button.dropdown"
-                                :mainButton="button.main_button"
-                            />
-                            <divider-element v-else-if="button.class.includes('divider')" :button="button" />
-                            <button-element v-else :button="button" />
-                        </li>
-                    </ul>
-                </div>
-            </transition>
+            <template v-if="!loading">
+                <transition name="fade">
+                    <top-bar-content 
+                        v-if="slide" 
+                        item-id="topbar-extended" 
+                        :leftButtons="getLeftButtonsExtended"
+                        :rightButtons="getRightButtonsExtended"
+                        :slotbutton="slotbutton"
+                    />
+                </transition>
+                <transition name="fade">
+                    <top-bar-content 
+                        v-if="!slide" 
+                        item-id="topbar-regular" 
+                        :leftButtons="getLeftButtons"
+                        :rightButtons="getRightButtons"
+                        :slotbutton="slotbutton"
+                    />
+                </transition>
+            </template>
         </nav>
     </div>
 </template>
@@ -76,9 +31,7 @@
 <script>
 import filter from "lodash/filter";
 import empty from "lodash/isEmpty";
-import Divider from "./subcomponents/TopBarDivider.vue";
-import Button from "./subcomponents/TopBarButton.vue";
-import ButtonGroup from "./subcomponents/TopBarButtonGroup.vue";
+import TopBarContent from "./subcomponents/TopBarContent.vue";
 import runAjax from "../mixins/runAjax.js";
 
 const EventBus = window.EventBus;
@@ -86,9 +39,7 @@ const EventBus = window.EventBus;
 export default {
     name: "TopBarPanel",
     components: {
-        "divider-element": Divider,
-        "button-element": Button,
-        "button-group-element": ButtonGroup,
+        TopBarContent
     },
     props: {
         initialSid: {type: Number|String, default: 0},
@@ -162,85 +113,70 @@ export default {
             return this.$store.state.permissions;
         },
         getLeftButtons() {
-            return filter(
-                this.ownTopBar.alignment.left.buttons,
-                button => !empty(button.name) || !empty(button.main_button.name)
-            );
+            if(this.ownTopBar.alignment.left != undefined) {
+                return filter(
+                    this.ownTopBar.alignment.left.buttons,
+                    button => !empty(button.name) || !empty(button.main_button.name)
+                );
+            }
+            return [];
         },
         getRightButtons() {
-            return filter(
-                this.ownTopBar.alignment.right.buttons,
-                button =>!(!this.showSaveButton && button.isSaveButton)
-            );
+            if(this.ownTopBar.alignment.right != undefined) {
+                return filter(
+                    this.ownTopBar.alignment.right.buttons,
+                    button =>!(!this.showSaveButton && button.isSaveButton)
+                );
+            }
+            return [];
+        },
+        getLeftButtonsExtended() {
+            if(this.ownTopBarExtended.alignment.left != undefined) {
+                return filter(
+                    this.ownTopBarExtended.alignment.left.buttons,
+                    button => !empty(button.name) || !empty(button.main_button.name)
+                );
+            }
+            return [];
+        },
+        getRightButtonsExtended() {
+            if(this.ownTopBarExtended.alignment.right != undefined) {
+                return filter(
+                    this.ownTopBarExtended.alignment.right.buttons,
+                    button =>!(!this.showSaveButton && button.isSaveButton)
+                );
+            }
+            return [];
         }
     },
     methods: {
         setType() {
+            this.loading = true;
+            let promise = null;
+            let errorHeader = '';
             if (this.qid !== 0 && this.type === "question" && this.gid !== 0) {
-                this.setQuestionTopBar(this.qid);
+                promise = this.$store.dispatch("getTopBarButtonsQuestion")
+                errorHeader = "ERROR QUESTION";
             } else if (
                 this.gid !== 0 &&
                 this.type === "group" &&
                 this.qid === 0
             ) {
-                this.setQuestionGroupTopBar(this.gid);
+                promise = this.$store.dispatch("getTopBarButtonsGroup");
+                errorHeader = "ERROR GROUP";
             } else if (this.sid !== 0 && this.type == "survey") {
-                this.setSurveyTopBar(this.sid);
+                promise = this.$store.dispatch("getTopBarButtonsSurvey");
+                errorHeader = "ERROR SURVEY";
             } else if (this.sid !== 0 && this.type == "tokens") {
-                this.setTokenTopBar(this.sid);
+                promise = this.$store.dispatch("getTopBarButtonsTokens");
+                errorHeader = "ERROR TOKEN";
             }
-        },
 
-        setQuestionTopBar(questionID) {
-            this.qid = questionID;
-            this.$store
-                .dispatch("getTopBarButtonsQuestion")
+            promise
                 .then(data => {})
                 .catch(error => {
-                    this.$log.error("ERROR QUESTION");
-                    this.$log.error(error.xhr.responseText);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-
-        setQuestionGroupTopBar(groupID) {
-            this.gid = groupID;
-            this.$store
-                .dispatch("getTopBarButtonsGroup")
-                .then(data => {})
-                .catch(error => {
-                    this.$log.error("ERROR GROUP");
-                    this.$log.error(error.xhr.responseText);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-
-        setSurveyTopBar(surveyID) {
-            this.sid = surveyID;
-            this.$store
-                .dispatch("getTopBarButtonsSurvey")
-                .then(data => {})
-                .catch(error => {
-                    this.$log.error("ERROR SURVEY");
-                    this.$log.error(error.error.xhr.responseText);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-        },
-
-        setTokenTopBar(surveyID) {
-            this.sid = surveyID;
-            this.$store
-                .dispatch("getTopBarButtonsTokens")
-                .then(data => {})
-                .catch(error => {
-                    this.$log.error("ERROR SURVEY");
-                    this.$log.error(error.error.xhr.responseText);
+                    this.$log.error(errorHeader);
+                    this.$log.error(error);
                 })
                 .finally(() => {
                     this.loading = false;
@@ -256,8 +192,16 @@ export default {
                 $("#topbar").slideUp();
             }
         },
+        unsetThis() {
+            this.sid = 0
+            this.gid = 0;
+            this.qid = 0;
+            this.type = 'survey';
+            this.showSaveButton = false;
+            this.closeButtonUrl = "#";
+        },
         readGlobalObject(globalObject) {
-            
+            this.unsetThis();
             this.sid = globalObject.sid;
             this.gid = globalObject.gid;
             this.qid = globalObject.qid;
@@ -274,7 +218,8 @@ export default {
             this.slotbutton = payload.html || null;
         });
 
-        EventBus.$on("reloadTopBar", () => {
+        EventBus.$on("reloadTopBar", (data) => {
+            this.$log.log("reloadTopBar triggered with -> ", data)
             this.readGlobalObject(window.TopBarData);
             this.setType();
         });
