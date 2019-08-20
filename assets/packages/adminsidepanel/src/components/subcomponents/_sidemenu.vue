@@ -69,7 +69,7 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0 margin top-5" >
+    <div id="sidemenu" class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0 margin top-5" >
         <div v-show="!loading"  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row wrap ls-space padding all-0" v-bind:key="menu.id">
             <label class="menu-label">{{menu.title}}</label>
             <submenu :menu="menu"></submenu>
@@ -78,5 +78,7 @@ export default {
     </div>
 </template>
 <style lang="scss">
-
+    #sidemenu {
+        margin-right: 1.5rem;
+    }
 </style>

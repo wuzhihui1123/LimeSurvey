@@ -95,7 +95,7 @@ export default {
             v-bind:title="reConvertHTML(menuItem.menu_description)"  
             data-toggle="tooltip" >
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
-                    <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
+                    <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon" class="menu-icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>
                     <i class="fa fa-external-link" v-if="menuItem.link_external == true">&nbsp;</i>
                 </div>
@@ -122,5 +122,7 @@ export default {
     </ul>
 </template>
 <style lang="scss">
-
+    .menu-icon {
+        margin-right: 1.0rem;
+    }
 </style>
