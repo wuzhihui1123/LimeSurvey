@@ -348,6 +348,7 @@ export default {
 }
 #questionexplorer {
     overflow: auto;
+    margin-right: 1.5rem;
 }
 
 </style>
