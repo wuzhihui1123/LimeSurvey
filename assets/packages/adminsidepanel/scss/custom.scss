@@ -24,6 +24,10 @@
     .resize-handle {
         position: absolute;
         right: 14px;
+            html[dir=rtl] & {
+                left: 14px;
+                right: initial;
+            }
         top: 0;
         bottom: 0;
         height: 100%;
