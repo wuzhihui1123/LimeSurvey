@@ -1,4 +1,6 @@
 <script>
+    // Beim ersten Mal Laden wird die SideBar richtig angezeigt. Wenn man dann auf eine Survey klickt, wird die SideBar fehlerhaft gerendert.
+    // Vielleicht hat der Ckeditor damit zutun. Denn dort wird dieser mehrmals erzeugt. Und dies schonmal zu einem komischen Verhalten geführt hat.
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
 import Questionexplorer from "./subcomponents/_questionsgroups.vue";
