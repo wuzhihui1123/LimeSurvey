@@ -76,11 +76,14 @@ const Lsadminsidepanel = (userid, surveyid) => {
             },
             mounted() {
                 applySurveyId(this.$store);
+                
+                let alignment = $('html').attr('dir');
+                console.log('ALIGNMENT: ', alignment);
+                this.$emit('htmldir', alignment);
 
                 const maxHeight = $("#in_survey_common").height() - 35 || 400;
                 this.$store.commit("changeMaxHeight", maxHeight);
                 this.updatePjaxLinks();
-
 
                 $(document).on("vue-redraw", () => {
                     this.updatePjaxLinks();
@@ -167,8 +170,6 @@ const Lsadminsidepanel = (userid, surveyid) => {
 
     return createPanelAppliance;
 };
-
-
 
 $(document).ready(function(){
     let surveyid = 'newSurvey'; 
