@@ -40,14 +40,6 @@ export default {
             get(){return this.$store.state.collapsedmenus; },
             set(newValue) { this.$store.commit("updateCollapsedmenus", newValue); }
         },
-        // topmenus: {
-        //     get(){return this.$store.state.topmenus; },
-        //     set(newValue) { this.$store.commit("updateTopmenus", newValue); }
-        // },
-        // bottommenus: {
-        //     get(){return this.$store.state.bottommenus; },
-        //     set(newValue) { this.$store.commit("updateBottommenus", newValue); }
-        // },
         currentTab() { return this.$store.state.currentTab; },
         getSideBarWidth() {
             return this.$store.state.isCollapsed ? "98" : this.sideBarWidth;
@@ -200,12 +192,7 @@ export default {
 
             //unload every selection
             this.$store.commit("closeAllMenus");
-            // self.$log.debug('setMenuActive', {
-            //     lastMenuItemObject : lastMenuItemObject,
-            //     lastQuickMenuItemObject : lastQuickMenuItemObject,
-            //     lastQuestionObject : lastQuestionObject,
-            //     lastQuestionGroupObject : lastQuestionGroupObject
-            // });
+
             //apply selection based on the url
             if (
                 lastMenuItemObject != false &&
@@ -340,24 +327,6 @@ export default {
                         ["desc"]
                     );
                     break;
-                // case 'top':
-                //     this.topmenus = LS.ld.orderBy(
-                //         entries,
-                //         a => {
-                //             return parseInt(a.order || 999999);
-                //         },
-                //         ["desc"]
-                //     );
-                //     break;
-                // case 'bottom':
-                //     this.bottommenus = LS.ld.orderBy(
-                //         entries,
-                //         a => {
-                //             return parseInt(a.order || 999999);
-                //         },
-                //         ["desc"]
-                //     );
-                //     break;
             };
         },
     },
@@ -365,7 +334,6 @@ export default {
         const self = this;
         
         self.$store.commit('setSurveyActiveState', (parseInt(this.isActive)===1));
-        // self.$log.debug(this.$store.state);
         this.activeMenuIndex = this.$store.state.lastMenuOpen;
         if (this.$store.state.isCollapsed) {
             this.sideBarWidth = "98";
@@ -378,6 +346,7 @@ export default {
         const self = this;
 
         $(document).trigger("sidebar:mounted");
+        
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
         window.addEventListener("resize", () => {

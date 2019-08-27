@@ -64,19 +64,11 @@ export default {
     },
     created(){
         const self = this;
-        //first load old settings from localStorage
-        
     },
     mounted(){
         const self = this;
         this.updatePjaxLinks();
         this.redoTooltips();
-        // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     self.$log.debug('sidemenues',result);
-        //     self.menues =  LS.ld.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-        //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
-        //     self.$forceUpdate();
-        // });
     }
 }
 </script>

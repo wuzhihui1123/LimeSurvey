@@ -76,12 +76,6 @@ export default {
     updateCollapsedmenus(state, collapsedmenus) {
         state.collapsedmenus = collapsedmenus;
     },
-    updateTopmenus(state, topmenus) {
-        state.topmenus = topmenus;
-    },
-    updateBottommenus(state, bottommenus) {
-        state.bottommenus = bottommenus;
-    },
     setSurveyActiveState(state, surveyState) {
         state.surveyActiveState = !!surveyState;
     },
