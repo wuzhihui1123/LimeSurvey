@@ -1,6 +1,4 @@
 <script>
-    // Beim ersten Mal Laden wird die SideBar richtig angezeigt. Wenn man dann auf eine Survey klickt, wird die SideBar fehlerhaft gerendert.
-    // Vielleicht hat der Ckeditor damit zutun. Denn dort wird dieser mehrmals erzeugt. Und dies schonmal zu einem komischen Verhalten geführt hat.
 import _ from "lodash";
 import ajaxMixin from "../mixins/runAjax.js";
 import Questionexplorer from "./subcomponents/_questionsgroups.vue";
@@ -27,7 +25,8 @@ export default {
             isMouseDown: false,
             isMouseDownTimeOut: null,
             sideBarHeight: "400px",
-            showLoader: false
+            showLoader: false,
+            alignment: '',
         };
     },
     computed: {
@@ -290,15 +289,31 @@ export default {
         },
         mousemove(e, self) {
             if (this.isMouseDown) {
+
                 // prevent to emit unwanted value on dragend
                 if (e.screenX === 0 && e.screenY === 0) {
+                    console.log('Prevent to emit unwanted value on dragend');
                     return;
                 }
-                if (e.clientX > screen.width / 2) {
-                    this.$store.commit("maxSideBarWidth", true);
-                    return;
+
+                if (this.alignment === 'ltr') {
+                    console.log('Alignment is ltr');
+                    if (e.clientX > screen.width / 2) {
+                        console.log('clientX is greater than screen.width / 2');
+                        this.$store.commit("maxSideBarWidth", true);
+                        return;
+                    }
+                    self.sideBarWidth = e.pageX + 8 + "px";
+                } else {
+                    console.log('Alignment is rtl');
+                    if (e.clientY > screen.width / 2) {
+                        console.log('clientY is greater than screen.width / 2');
+                        this.$store.commit('maxSideBarWidth', true);
+                        return;
+                    }
+                    self.sideBarWidth = e.pageY + 8 + "px";
                 }
-                self.sideBarWidth = e.pageX + 8 + "px";
+
                 this.$store.commit("changeSidebarwidth", this.sideBarWidth);
                 this.$store.commit("maxSideBarWidth", false);
                 window.clearTimeout(self.isMouseDownTimeOut);
@@ -369,7 +384,6 @@ export default {
             self.calculateHeight(self);
         });
         
-
         $(document).on("vue-sidemenu-update-link", () => {
             this.controlActiveLink();
         });
@@ -385,6 +399,11 @@ export default {
             this.$log.log('vue-redraw');
             this.$store.dispatch('getQuestions');
             this.$store.dispatch('collectMenus');
+        });
+
+        this.$on('htmldir', (alignment) => {
+            console.log('HTMLDIR is ' + alignment);
+            this.alignment = alignment;
         });
 
         //control the active link
