@@ -1,6 +1,7 @@
 
 const appName = 'adminsidepanel';
 const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
+const scssDir = 'scss';
 
 module.exports = {
     outputDir: process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/',
@@ -20,6 +21,16 @@ module.exports = {
     },
 
     chainWebpack: config => {
+    
+        if (config.plugins.has("extract-css")) {
+            const extractCSSPlugin = config.plugin("extract-css");
+            extractCSSPlugin && extractCSSPlugin.tap(() => [
+                {
+                    filename: scssDir + "/adminsidepanel.css",
+                }
+            ])
+        }
+
         config.plugins
             .delete("html")
             .delete("prefetch")
