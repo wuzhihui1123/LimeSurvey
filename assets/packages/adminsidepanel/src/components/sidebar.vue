@@ -388,7 +388,6 @@ export default {
         });
 
         this.$on('htmldir', (alignment) => {
-            console.log('HTMLDIR is ' + alignment);
             this.alignment = alignment;
         });
 
