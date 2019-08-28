@@ -277,35 +277,52 @@ export default {
         mousemove(e, self) {
             if (this.isMouseDown) {
 
-                // prevent to emit unwanted value on dragend
-                if (e.screenX === 0 && e.screenY === 0) {
-                    console.log('Prevent to emit unwanted value on dragend');
-                    return;
-                }
-
                 if (this.alignment === 'ltr') {
+                    this.preventUnwantedValueOnDragged(e.screenX, e.screenY);
                     console.log('Alignment is ltr');
                     if (e.clientX > screen.width / 2) {
-                        console.log('clientX is greater than screen.width / 2');
-                        this.$store.commit("maxSideBarWidth", true);
+                        this.storeMaxSideBarWidth(true);
                         return;
                     }
                     self.sideBarWidth = e.pageX + 8 + "px";
+
+                    this.storeChangedSideBarWidth(this.sideBarWidth);
+                    this.storeMaxSideBarWidth(false);
+                    this.setMouseTimeOut(self.isMouseDownTimeOut);
                 } else {
+                    this.preventUnwantedValueOnDragged(e.screenX, e.screenY);
                     console.log('Alignment is rtl');
-                    if (e.clientY > screen.width / 2) {
-                        console.log('clientY is greater than screen.width / 2');
-                        this.$store.commit('maxSideBarWidth', true);
+                    if (e.clientY - screen.width > screen.width / 2) {
+                        console.log('Max Side Bar Width');
+                        this.storeMaxSideBarWidth(true);
                         return;
                     }
+                    //self.sideBarWidth = e.pageX + 8 + "px";
                     self.sideBarWidth = e.pageY + 8 + "px";
+                    
+                    console.log('SideBarWidth: ' + self.sideBarWidth);
+                    this.storeChangedSideBarWidth(this.sideBarWidth);
+                    this.storeMaxSideBarWidth(false);
+                    this.setMouseTimeOut(self.isMouseDownTimeOut);
                 }
-
-                this.$store.commit("changeSidebarwidth", this.sideBarWidth);
-                this.$store.commit("maxSideBarWidth", false);
-                window.clearTimeout(self.isMouseDownTimeOut);
-                self.isMouseDownTimeOut = null;
             }
+        },
+        preventUnwantedValueOnDragged(screenX, screenY) {
+            // prevent to emit unwanted value on dragend
+            if (screenX === 0 && e.screenY === 0) {
+                console.log('Prevent to emit unwanted value on dragend');
+                return;
+            }
+        },
+        storeChangedSideBarWidth(width) {
+            this.$store.commit("changeSidebarwidth", width);
+        },
+        storeMaxSideBarWidth(maxSideBarWidth) {
+            this.$store.commit("maxSideBarWidth", maxSideBarWidth);
+        },
+        setMouseTimeOut(isMouseDownTimeOut) {
+            window.clearTimeout(isMouseDownTimeOut);
+            self.isMouseDownTimeOut = null;
         },
         setBaseMenuPosition(entries, position){
             switch(position) {
@@ -402,7 +419,20 @@ export default {
             </div>
         </div>
         <div class="resize-handle ls-flex-column" :style="{'height': calculateSideBarMenuHeight, 'max-height': getWindowHeight}">
-            <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
+            <button v-if="alignment === 'ltr'" 
+                    v-show="!$store.state.isCollapsed" 
+                    class="btn btn-default" 
+                    @mousedown="mousedown" 
+                    @click.prevent="()=>{return false;}">
+                <i class="fa fa-ellipsis-v"></i>
+            </button>
+            <button v-else
+                    v-show="!$store.state.isCollapsed" 
+                    class="btn btn-default alignment-left" 
+                    @mousedown="mousedown" 
+                    @click.prevent="()=>{return false;}">
+                <i class="fa fa-ellipsis-v" />
+            </button>
         </div>
     </div>
     
@@ -417,4 +447,7 @@ export default {
     box-shadow: 8px 0px 15px rgba(231, 231, 231, 0.3);
     top: 0;
 }
+    .alignment-left {
+        margin-right:1.3rem;
+    }   
 </style>
