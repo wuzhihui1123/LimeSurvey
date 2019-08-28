@@ -1,9 +1,6 @@
-
 const appName = 'adminsidepanel';
 const outputDir = process.env.NODE_ENV === 'production' ? 'build.min/' : 'build/';
 const entryPoint = ['./lib/surveysettings.js','./src/'+appName+'main.js', './scss/'+appName+'main.scss'];
-const scssDir = 'scss';
-
 const RtlCSS = require("../meta/LSRTLPlugin/LSRTLPlugin.js");
 
 
