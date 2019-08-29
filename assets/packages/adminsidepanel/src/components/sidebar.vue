@@ -292,13 +292,13 @@ export default {
                 } else {
                     this.preventUnwantedValueOnDragged(e.screenX, e.screenY);
                     console.log('Alignment is rtl');
-                    if (e.clientY - screen.width > screen.width / 2) {
+                    if (screen.width - e.clientX > screen.width / 2) {
                         console.log('Max Side Bar Width');
                         this.storeMaxSideBarWidth(true);
                         return;
                     }
                     //self.sideBarWidth = e.pageX + 8 + "px";
-                    self.sideBarWidth = e.pageY + 8 + "px";
+                    self.sideBarWidth = (screen.width - e.clientX) + 8 + "px";
                     
                     console.log('SideBarWidth: ' + self.sideBarWidth);
                     this.storeChangedSideBarWidth(this.sideBarWidth);
