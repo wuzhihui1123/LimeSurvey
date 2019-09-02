@@ -336,7 +336,7 @@ class TemplateConfig extends CActiveRecord
      */
     protected function getDependsPackages($oTemplate)
     {
-        $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
+        $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr'; // hier wird das gesetzt
 
         /* Core package */
         $packages[] = 'limesurvey-public';

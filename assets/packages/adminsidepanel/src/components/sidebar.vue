@@ -297,7 +297,6 @@ export default {
                         this.storeMaxSideBarWidth(true);
                         return;
                     }
-                    //self.sideBarWidth = e.pageX + 8 + "px";
                     self.sideBarWidth = (screen.width - e.clientX) + 8 + "px";
                     
                     console.log('SideBarWidth: ' + self.sideBarWidth);

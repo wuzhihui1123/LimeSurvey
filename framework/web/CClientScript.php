@@ -551,6 +551,7 @@ class CClientScript extends CApplicationComponent
 	}
 
     /**
+	 * @todo: Is this working right? Check if an unregistered Package is there with this method, then it will be returning true.
      * Checks if package is available.
      * @param string $name the name of the script package.
      * @return bool

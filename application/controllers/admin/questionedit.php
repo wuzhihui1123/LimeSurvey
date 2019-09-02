@@ -35,6 +35,16 @@ class questionedit extends Survey_Common_Action
         $oTemplateConfiguration = TemplateConfiguration::getInstance($oSurvey->template, null, $iSurveyID);
         Yii::app()->getClientScript()->registerPackage('questioneditor');
         Yii::app()->getClientScript()->registerPackage('ace');
+
+        $hasAdminBasics = Yii::app()->getClientScript()->hasPackage('adminbasics');
+        $hasAdminBascisJS = Yii::app()->getClientScript()->hasPackage('adminbasicsjs');
+        $hasAdminBasicsCSSLTR = Yii::app()->getClientScript()->hasPackage('adminbasicsltr');
+        $hasAdminBasicsCSSRTL = Yii::app()->getClientScript()->hasPackage('adminbasicsrtl');
+
+        $hasAdminSidePanelJS = Yii::app()->getClientScript()->hasPackage('adminsidepaneljs');
+        $hasAdminSidePanelCSSLTR = Yii::app()->getClientScript()->hasPackage('adminsidepanelcss');
+        $hasAdminSidePanelCSSRTL = Yii::app()->getClientScript()->hasPackage('adminsidepanelcssrtl');
+
         $qrrow = $oQuestion->attributes;
         $baselang = $oSurvey->language;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($oQuestion->qid, $qrrow['type'], $iSurveyID, $baselang);

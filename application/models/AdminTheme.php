@@ -159,7 +159,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage((getLanguageRTL(Yii::app()->language) ?  'adminsidepanelcssrtl' : 'adminsidepanelcss')); // The new admin panel javascript
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
         }
-
+        
         $aCssFiles = array();
         $aJsFiles = array();
 
